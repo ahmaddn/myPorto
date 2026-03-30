@@ -954,7 +954,7 @@ function renderSkills(skills) {
 // ─────────────────────────────────────────
 function renderHiburan() {
   renderFilms();
-  renderMusicList();
+  renderMusic();
   renderBooks();
   renderGames();
 }
@@ -1027,7 +1027,7 @@ function renderFilms() {
   });
 }
 
-function renderMusicList() {
+function renderMusic() {
   const music = getData("music") || [];
   const grid = document.getElementById("music-grid");
   grid.innerHTML = music
