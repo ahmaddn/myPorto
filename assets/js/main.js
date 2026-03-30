@@ -501,7 +501,7 @@ function refreshPageContent(page) {
       renderBlog();
       break;
     case "contact":
-      // Contact tidak perlu render pesan lagi
+      renderContact();
       break;
     case "admin":
       // Refresh admin overview saat masuk
@@ -1175,18 +1175,11 @@ function renderBlog() {
 // ─────────────────────────────────────────
 function renderContact() {
   const p = getData("profile");
-
-  // FIX: Render email sebagai mailto link
-  const contactEmailEl = document.getElementById("contact-email");
-  contactEmailEl.innerHTML = `<a href="mailto:${p.email}" class="hover:text-cyan transition-colors">${p.email}</a>`;
-
+  document.getElementById("contact-email").textContent = p.email;
   document.getElementById("contact-location").textContent = p.location;
-
-  // Social links
   document.getElementById("social-github").href = p.github;
   document.getElementById("social-linkedin").href = p.linkedin;
   document.getElementById("social-Instagram").href = p.Instagram;
-
   renderMessages();
   lucide.createIcons();
 }
