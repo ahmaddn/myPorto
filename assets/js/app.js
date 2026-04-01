@@ -388,7 +388,7 @@ async function initData() {
 
   try {
     // Load profile dari document 'profile'
-    const profileDoc = await getDocumentById("portfolio", "profile");
+    const profileDoc = await getDocumentById("profile", "main");
     FIREBASE_CACHE.profile = profileDoc || DEFAULTS.profile;
 
     // Load collections
@@ -400,6 +400,7 @@ async function initData() {
     FIREBASE_CACHE.books = await getFirebaseData("books");
     FIREBASE_CACHE.games = await getFirebaseData("games");
     FIREBASE_CACHE.blogs = await getFirebaseData("blogs");
+    // NOTE: profile sudah diload via getDocumentById di atas, jangan fetch lagi sebagai collection
 
     // Jika data kosong, gunakan defaults
     if (!FIREBASE_CACHE.skills.length) FIREBASE_CACHE.skills = DEFAULTS.skills;
@@ -412,6 +413,9 @@ async function initData() {
     if (!FIREBASE_CACHE.books.length) FIREBASE_CACHE.books = DEFAULTS.books;
     if (!FIREBASE_CACHE.games.length) FIREBASE_CACHE.games = DEFAULTS.games;
     if (!FIREBASE_CACHE.blogs.length) FIREBASE_CACHE.blogs = DEFAULTS.blogs;
+    // Profile adalah object, cek dengan !FIREBASE_CACHE.profile atau field yang wajib ada
+    if (!FIREBASE_CACHE.profile || !FIREBASE_CACHE.profile.name)
+      FIREBASE_CACHE.profile = DEFAULTS.profile;
 
     CACHE_LOADED = true;
     console.log("✅ Firebase data loaded successfully:", FIREBASE_CACHE);
@@ -445,7 +449,7 @@ async function setData(key, value) {
     // Kemudian save ke Firebase
     if (key === "profile") {
       // Profile disimpan sebagai document dengan ID 'profile'
-      await setFirebaseData("portfolio", "profile", value);
+      await setFirebaseData("profile", "main", value);
     } else {
       // Collections lain perlu di-clear dan batch add
       await clearCollection(key);
@@ -711,12 +715,12 @@ function uid() {
 //  RENDER: DASHBOARD
 // ─────────────────────────────────────────
 async function renderDashboard() {
-  const profile = getData("profile");
+  const profile = getData("profile") || {};
   const skills = getData("skills") || [];
   const exp = getData("experience") || [];
   const projects = getData("projects") || [];
   const blogs = getData("blogs") || [];
-
+  console.log("profile:", profile.name);
   // Intro - with null checks
   safeSet("hero-avatar-display", "textContent", profile.avatar || "👨‍💻");
   safeSet("hero-name-display", "textContent", profile.name);
@@ -1736,9 +1740,15 @@ window.showBlogDetail = function (id) {
 // ─────────────────────────────────────────
 function renderContact() {
   const profile = getData("profile");
+  if (!profile) return; // ← guard jika profile belum loaded
 
+  // textContent tetap pakai safeSet
   safeSet("contact-email", "textContent", profile.email);
-  safeSet("contact-email", "href", `mailto:${profile.email}`);
+  safeSet("contact-location", "textContent", profile.location);
+
+  // href harus set langsung ke element, bukan lewat safeSet
+  const emailLink = safeGet("contact-email");
+  if (emailLink) emailLink.href = `mailto:${profile.email}`;
 
   const githubLink = safeGet("contact-github");
   const linkedinLink = safeGet("contact-linkedin");
