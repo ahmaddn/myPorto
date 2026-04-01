@@ -934,7 +934,7 @@ function renderFeaturedProjects() {
             <span class="text-3xl">${p.image || "📁"}</span>
             <span class="text-xs px-2 py-1 rounded-lg ${p.status === "Selesai" ? "bg-mint/10 text-mint" : "bg-cyan/10 text-cyan"}">${p.status}</span>
           </div>
-          <h3 class="font-display font-bold text-base mb-2 group-hover:text-cyan transition-colors">${p.title}</h3>
+          <h3 class="font-mono font-bold text-base mb-2 group-hover:text-cyan transition-colors">${p.title}</h3>
           <p class="text-sm text-dim leading-relaxed mb-4">${p.desc}</p>
           <div class="flex flex-wrap gap-1.5 mb-4">
             ${p.tech
@@ -990,7 +990,7 @@ function renderProjects() {
           <span class="text-3xl">${p.image || "📁"}</span>
           <span class="text-xs px-2 py-1 rounded-lg ${p.status === "Selesai" ? "bg-mint/10 text-mint" : p.status === "Proses" ? "bg-cyan/10 text-cyan" : "bg-ink4 text-muted"}">${p.status}</span>
         </div>
-        <h3 class="font-display font-bold text-base mb-2">${p.title}</h3>
+        <h3 class="font-mono font-bold text-base mb-2">${p.title}</h3>
         <p class="text-sm text-dim leading-relaxed mb-4">${p.desc}</p>
         <div class="flex flex-wrap gap-1.5 mb-4">
           ${p.tech
@@ -1703,7 +1703,7 @@ function renderBlog() {
           <span class="text-3xl flex-shrink-0">${b.emoji}</span>
           <div class="flex-1 min-w-0">
             <p class="text-xs text-muted mb-1">${b.category} · ${b.date || "2024"}</p>
-            <h3 class="font-display font-bold text-base mb-2 group-hover:text-cyan transition-colors">${b.title}</h3>
+            <h3 class="font-mono font-bold text-base mb-2 group-hover:text-cyan transition-colors">${b.title}</h3>
             <p class="text-sm text-dim leading-relaxed">${b.summary}</p>
           </div>
         </div>
@@ -3154,7 +3154,7 @@ async function viewMessage(id) {
     modal.innerHTML = `
       <div class="bg-ink2 border border-white/10 rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="font-display font-bold text-xl">Detail Pesan</h3>
+          <h3 class="font-mono font-bold text-xl">Detail Pesan</h3>
           <button onclick="this.closest('.fixed').remove()" class="text-muted hover:text-cyan transition-colors">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
