@@ -1741,6 +1741,7 @@ window.showBlogDetail = function (id) {
 function renderContact() {
   const profile = getData("profile");
   if (!profile) return; // ← guard jika profile belum loaded
+  console.log("Rendering contact with profile:", profile);
 
   // textContent tetap pakai safeSet
   safeSet("contact-email", "textContent", profile.email);
