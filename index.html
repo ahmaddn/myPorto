@@ -181,19 +181,15 @@
               navigate('admin');
               return false;
             "
-            class="ml-2 hidden items-center gap-1.5 text-cyan border border-cyan/25 text-sm font-semibold px-3 py-2 rounded-lg hover:bg-cyan/10 transition-all"
+            class="ml-2 hidden flex items-center gap-1.5 text-cyan border border-cyan/25 text-sm font-semibold px-3 py-2 rounded-lg hover:bg-cyan/10 transition-all whitespace-nowrap"
           >
-            <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i> Dashboard
-            Admin
+            <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+            Dashboard Admin
           </a>
         </nav>
 
         <!-- Hamburger -->
-        <button
-          id="ham-btn"
-          class="md:hidden flex flex-col gap-1.5 p-2"
-          onclick="toggleMobile()"
-        >
+        <button id="ham-btn" class="md:hidden flex flex-col gap-1.5 p-2">
           <span
             class="block w-5 h-0.5 bg-[#e8f4f0] transition-all"
             id="h1"
@@ -273,7 +269,7 @@
         id="admin-nav-btn-mob"
         onclick="
           openAdminLogin();
-          if (mobileOpen) toggleMobile();
+          if (isMobileMenuOpen()) toggleMobile();
         "
         class="mobile-nav-link flex items-center gap-2 text-sm text-mint px-3 py-2.5 rounded-lg hover:bg-mint/5 transition-all"
       >
@@ -284,9 +280,9 @@
         id="dashboard-nav-btn-mob"
         onclick="
           navigate('admin');
-          if (mobileOpen) toggleMobile();
+          if (isMobileMenuOpen()) toggleMobile();
         "
-        class="mobile-nav-link hidden items-center gap-2 text-sm text-cyan px-3 py-2.5 rounded-lg hover:bg-cyan/5 transition-all"
+        class="mobile-nav-link flex items-center gap-2 text-sm text-cyan px-3 py-2.5 rounded-lg hover:bg-cyan/5 transition-all"
       >
         <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard Admin
       </button>
@@ -1121,16 +1117,38 @@
   PAGE: ADMIN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
       <section id="page-admin" class="page">
-        <div class="flex min-h-[calc(100vh-4rem)]">
+        <!-- Sidebar Overlay (Mobile Only) -->
+        <div
+          id="admin-sidebar-overlay"
+          class="md:hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[55] opacity-0 pointer-events-none transition-opacity duration-300"
+        ></div>
+
+        <div class="flex min-h-[calc(100vh-4rem)] relative">
+          <!-- Mobile Toggle Button - Di dalam container admin -->
+          <button
+            id="admin-sidebar-toggle"
+            class="md:hidden absolute top-4 left-4 z-[70] w-12 h-12 bg-cyan text-ink rounded-xl shadow-lg flex items-center justify-center hover:scale-105 transition-all"
+            aria-label="Toggle Admin Menu"
+          >
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
           <aside
             id="admin-sidebar"
-            class="w-56 bg-ink2 border-r border-white/5 pt-8 flex flex-col gap-1 flex-shrink-0"
+            class="fixed md:relative top-0 md:top-0 left-0 w-64 bg-ink2 border-r border-white/5 pt-2 pb-6 flex flex-col gap-1 flex-shrink-0 h-[calc(100vh-4rem)] md:h-auto z-[60] -translate-x-full md:translate-x-0 transition-transform duration-300 overflow-y-auto shadow-2xl"
           >
-            <p
-              class="font-mono text-xs text-dim px-5 mb-3 tracking-widest uppercase"
-            >
-              Panel
-            </p>
+            <div class="flex items-center justify-between px-5 pt-6 pb-3">
+              <p class="font-mono text-xs text-dim tracking-widest uppercase">
+                Panel
+              </p>
+              <button
+                id="admin-sidebar-close"
+                onclick="closeAdminSidebar()"
+                class="md:hidden w-7 h-7 flex items-center justify-center rounded-lg text-dim hover:text-cyan hover:bg-white/10 transition-all"
+                aria-label="Tutup Menu"
+              >
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
             <button
               onclick="adminTab('overview')"
               class="adm-tab active-adm flex items-center gap-2.5 px-5 py-2.5 text-sm font-medium text-muted hover:text-cyan hover:bg-white/4 transition-all border-l-2 border-transparent"
@@ -1208,7 +1226,7 @@
             >
               <i data-lucide="mail" class="w-4 h-4"></i> Pesan
             </button>
-            <div class="mt-auto pb-6 px-5 pt-6 border-t border-white/5">
+            <div class="mt-auto md:mt-1 pb-6 px-5 pt-6 border-t border-white/5">
               <button
                 onclick="navigate('dashboard')"
                 class="w-full flex items-center gap-2 text-xs text-dim hover:text-cyan transition-all"
@@ -1219,89 +1237,7 @@
             </div>
           </aside>
 
-          <!-- Mobile top tabs -->
-          <div
-            class="md:hidden fixed top-16 left-0 right-0 z-30 bg-ink2 border-b border-white/5 overflow-x-auto flex gap-1 px-4 py-2"
-            id="mobile-adm-tabs"
-          >
-            <button
-              onclick="adminTab('overview')"
-              class="mob-adm flex-shrink-0 text-xs px-3 py-1.5 rounded-full border border-white/10 text-muted"
-              data-adm="overview"
-            >
-              Overview
-            </button>
-            <button
-              onclick="adminTab('profile')"
-              class="mob-adm flex-shrink-0 text-xs px-3 py-1.5 rounded-full border border-white/10 text-muted"
-              data-adm="profile"
-            >
-              Profil
-            </button>
-            <button
-              onclick="adminTab('projects-a')"
-              class="mob-adm flex-shrink-0 text-xs px-3 py-1.5 rounded-full border border-white/10 text-muted"
-              data-adm="projects-a"
-            >
-              Proyek
-            </button>
-            <button
-              onclick="adminTab('skills-a')"
-              class="mob-adm flex-shrink-0 text-xs px-3 py-1.5 rounded-full border border-white/10 text-muted"
-              data-adm="skills-a"
-            >
-              Skill
-            </button>
-            <button
-              onclick="adminTab('exp-a')"
-              class="mob-adm flex-shrink-0 text-xs px-3 py-1.5 rounded-full border border-white/10 text-muted"
-              data-adm="exp-a"
-            >
-              Exp
-            </button>
-            <button
-              onclick="adminTab('films-a')"
-              class="mob-adm flex-shrink-0 text-xs px-3 py-1.5 rounded-full border border-white/10 text-muted"
-              data-adm="films-a"
-            >
-              Film
-            </button>
-            <button
-              onclick="adminTab('music-a')"
-              class="mob-adm flex-shrink-0 text-xs px-3 py-1.5 rounded-full border border-white/10 text-muted"
-              data-adm="music-a"
-            >
-              Musik
-            </button>
-            <button
-              onclick="adminTab('books-a')"
-              class="mob-adm flex-shrink-0 text-xs px-3 py-1.5 rounded-full border border-white/10 text-muted"
-              data-adm="books-a"
-            >
-              Buku
-            </button>
-            <button
-              onclick="adminTab('games-a')"
-              class="mob-adm flex-shrink-0 text-xs px-3 py-1.5 rounded-full border border-white/10 text-muted"
-              data-adm="games-a"
-            >
-              Games
-            </button>
-            <button
-              onclick="adminTab('blog-a')"
-              class="mob-adm flex-shrink-0 text-xs px-3 py-1.5 rounded-full border border-white/10 text-muted"
-              data-adm="blog-a"
-            >
-              Blog
-            </button>
-            <button
-              onclick="adminTab('messages-a')"
-              class="mob-adm flex-shrink-0 text-xs px-3 py-1.5 rounded-full border border-white/10 text-muted"
-              data-adm="messages-a"
-            >
-              Pesan
-            </button>
-          </div>
+          <!-- Main Content Area -->
 
           <!-- Admin content -->
           <div class="flex-1 p-6 md:p-8 mt-10 md:mt-0 min-w-0">
@@ -1363,9 +1299,7 @@
                 </div>
               </div>
               <div class="bg-ink2 rounded-2xl border border-white/5 p-6 mb-6">
-                <h3 class="font-bold text-sm mb-4">
-                  Komposisi Data (LocalStorage)
-                </h3>
+                <h3 class="font-bold text-sm mb-4">Komposisi Data</h3>
                 <div style="height: 220px">
                   <canvas id="storageChart"></canvas>
                 </div>
@@ -2761,6 +2695,6 @@
     <div id="toast-container"></div>
 
     <!-- ✅ Custom JS (dimuat paling akhir) -->
-    <script src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/app.js"></script>
   </body>
 </html>

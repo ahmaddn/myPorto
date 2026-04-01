@@ -183,26 +183,6 @@ body {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* ── Admin sidebar ── */
-#admin-sidebar {
-  width: 220px;
-  flex-shrink: 0;
-}
-@media (max-width: 768px) {
-  #admin-sidebar {
-    display: none;
-  }
-}
-
-/* ── Responsive table ── */
-@media (max-width: 640px) {
-  .resp-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-}
-
 /* ── Star rating ── */
 .star-filled {
   color: #f59e0b;
