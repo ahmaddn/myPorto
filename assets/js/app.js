@@ -25,7 +25,6 @@ let FIREBASE_CACHE = {
   music: [],
   books: [],
   games: [],
-  blogs: [],
 };
 
 let CACHE_LOADED = false;
@@ -181,17 +180,7 @@ const DEFAULTS = {
       github: "#",
       image: "🛒",
     },
-    {
-      id: 2,
-      title: "Blog CMS",
-      desc: "Sistem manajemen konten blog dengan editor WYSIWYG dan manajemen tag.",
-      tech: "Laravel, Vue.js, MySQL",
-      status: "Selesai",
-      featured: true,
-      link: "#",
-      github: "#",
-      image: "📝",
-    },
+
     {
       id: 3,
       title: "Task Manager App",
@@ -349,30 +338,6 @@ const DEFAULTS = {
       emoji: "⚔️",
     },
   ],
-  blogs: [
-    {
-      id: 1,
-      title: "Memulai dengan React Hooks",
-      category: "Tutorial",
-      emoji: "⚛️",
-      summary: "Panduan lengkap untuk memahami React Hooks dari dasar.",
-      content:
-        "React Hooks adalah cara baru untuk menggunakan state dan lifecycle di functional components...",
-      tags: "react, hooks, javascript",
-      date: "2024-01-15",
-    },
-    {
-      id: 2,
-      title: "Tips Produktivitas Developer",
-      category: "Tips",
-      emoji: "💡",
-      summary: "10 tips untuk meningkatkan produktivitas sebagai developer.",
-      content:
-        "Produktivitas adalah kunci kesuksesan developer. Berikut adalah tips yang saya gunakan...",
-      tags: "productivity, tips, developer",
-      date: "2024-01-10",
-    },
-  ],
 };
 
 // ─────────────────────────────────────────
@@ -399,7 +364,6 @@ async function initData() {
     FIREBASE_CACHE.music = await getFirebaseData("music");
     FIREBASE_CACHE.books = await getFirebaseData("books");
     FIREBASE_CACHE.games = await getFirebaseData("games");
-    FIREBASE_CACHE.blogs = await getFirebaseData("blogs");
     // NOTE: profile sudah diload via getDocumentById di atas, jangan fetch lagi sebagai collection
 
     // Jika data kosong, gunakan defaults
@@ -412,7 +376,6 @@ async function initData() {
     if (!FIREBASE_CACHE.music.length) FIREBASE_CACHE.music = DEFAULTS.music;
     if (!FIREBASE_CACHE.books.length) FIREBASE_CACHE.books = DEFAULTS.books;
     if (!FIREBASE_CACHE.games.length) FIREBASE_CACHE.games = DEFAULTS.games;
-    if (!FIREBASE_CACHE.blogs.length) FIREBASE_CACHE.blogs = DEFAULTS.blogs;
     // Profile adalah object, cek dengan !FIREBASE_CACHE.profile atau field yang wajib ada
     if (!FIREBASE_CACHE.profile || !FIREBASE_CACHE.profile.name)
       FIREBASE_CACHE.profile = DEFAULTS.profile;
@@ -471,6 +434,9 @@ async function setData(key, value) {
 //  NAVIGATION & UI
 // ─────────────────────────────────────────
 function navigate(pageName) {
+  // Close mobile menu immediately when navigating
+  closeMobileMenu();
+
   // Hide all pages
   document
     .querySelectorAll(".page")
@@ -485,6 +451,9 @@ function navigate(pageName) {
 
   // Update nav links
   document.querySelectorAll(".nav-link").forEach((link) => {
+    // Skip Dashboard Admin button - keep it always cyan
+    if (link.id === "dashboard-nav-btn") return;
+
     link.classList.remove("text-cyan");
     link.classList.add("text-muted");
   });
@@ -497,9 +466,36 @@ function navigate(pageName) {
     activeLink.classList.remove("text-muted");
   }
 
-  // Mobile nav close
-  const mobileNav = safeGet("mobile-nav");
-  if (mobileNav) mobileNav.classList.remove("open");
+  // Keep Desktop Dashboard Admin button always cyan
+  const dashBtn = safeGet("dashboard-nav-btn");
+  if (dashBtn) {
+    dashBtn.classList.add("text-cyan");
+    dashBtn.classList.remove("text-muted");
+  }
+
+  // Update mobile nav links
+  document.querySelectorAll(".mobile-nav-link").forEach((link) => {
+    // Skip Dashboard Admin button - keep it always cyan
+    if (link.id === "dashboard-nav-btn-mob") return;
+
+    link.classList.remove("text-cyan");
+    link.classList.add("text-muted");
+  });
+
+  const activeMobileLink = document.querySelector(
+    `.mobile-nav-link[data-page="${pageName}"]`,
+  );
+  if (activeMobileLink) {
+    activeMobileLink.classList.add("text-cyan");
+    activeMobileLink.classList.remove("text-muted");
+  }
+
+  // Keep Dashboard Admin button always cyan
+  const dashBtnMob = safeGet("dashboard-nav-btn-mob");
+  if (dashBtnMob) {
+    dashBtnMob.classList.add("text-cyan");
+    dashBtnMob.classList.remove("text-muted");
+  }
 
   // Render page-specific content
   if (pageName === "dashboard") {
@@ -514,8 +510,6 @@ function navigate(pageName) {
     renderMedia();
     renderGenreChart();
     renderMoodChart();
-  } else if (pageName === "blog") {
-    renderBlog();
   } else if (pageName === "contact") {
     renderContact();
   } else if (pageName === "admin") {
@@ -570,6 +564,22 @@ function isMobileMenuOpen() {
   return nav && !nav.classList.contains("hidden");
 }
 
+// Helper function untuk menutup mobile menu
+function closeMobileMenu() {
+  const nav = safeGet("mobile-nav");
+  if (nav && !nav.classList.contains("hidden")) {
+    nav.classList.add("hidden");
+
+    // Reset hamburger icon
+    const h1 = document.getElementById("h1");
+    const h2 = document.getElementById("h2");
+    const h3 = document.getElementById("h3");
+    if (h1) h1.style.transform = "";
+    if (h2) h2.style.opacity = "";
+    if (h3) h3.style.transform = "";
+  }
+}
+
 // ─────────────────────────────────────────
 //  ADMIN AUTH
 // ─────────────────────────────────────────
@@ -584,16 +594,19 @@ function isAdmin() {
 
 function updateAdminBtn() {
   const loginBtn = safeGet("admin-nav-btn");
+  const loginBtnMob = safeGet("admin-nav-btn-mob");
   const dashBtn = safeGet("dashboard-nav-btn");
   const dashBtnMob = safeGet("dashboard-nav-btn-mob");
 
   if (isAdmin()) {
     if (loginBtn) loginBtn.style.display = "none";
+    if (loginBtnMob) loginBtnMob.style.display = "none";
 
     if (dashBtn) dashBtn.classList.remove("hidden");
     if (dashBtnMob) dashBtnMob.classList.remove("hidden");
   } else {
     if (loginBtn) loginBtn.style.display = "";
+    if (loginBtnMob) loginBtnMob.style.display = "";
 
     if (dashBtn) dashBtn.classList.add("hidden");
     if (dashBtnMob) dashBtnMob.classList.add("hidden");
@@ -664,6 +677,81 @@ function closeModal(modalId) {
   if (modal) modal.classList.remove("open");
 }
 
+// Fungsi untuk reset form modal
+function resetProjectForm() {
+  safeSet("proj-id", "value", "");
+  safeSet("proj-title", "value", "");
+  safeSet("proj-desc", "value", "");
+  safeSet("proj-tech", "value", "");
+  safeSet("proj-status", "value", "Konsep");
+  safeSet("proj-link", "value", "");
+  safeSet("proj-github", "value", "");
+  safeSet("proj-image", "value", "");
+  const featuredCheckbox = safeGet("proj-featured");
+  if (featuredCheckbox) featuredCheckbox.checked = false;
+  safeSet("modal-project-title", "textContent", "Tambah Project");
+}
+
+function resetSkillForm() {
+  safeSet("skill-id", "value", "");
+  safeSet("skill-name", "value", "");
+  safeSet("skill-level", "value", "50");
+  safeSet("skill-category", "value", "Frontend");
+  safeSet("skill-icon", "value", "");
+  safeSet("modal-skill-title", "textContent", "Tambah Skill");
+}
+
+function resetExpForm() {
+  safeSet("exp-id", "value", "");
+  safeSet("exp-year", "value", "");
+  safeSet("exp-title", "value", "");
+  safeSet("exp-company", "value", "");
+  safeSet("exp-desc", "value", "");
+  safeSet("modal-exp-title", "textContent", "Tambah Pengalaman");
+}
+
+function resetFilmForm() {
+  safeSet("film-id", "value", "");
+  safeSet("film-title", "value", "");
+  safeSet("film-year", "value", "");
+  safeSet("film-genre", "value", "");
+  safeSet("film-rating", "value", "5");
+  safeSet("film-poster", "value", "");
+  safeSet("modal-film-title", "textContent", "Tambah Film");
+}
+
+function resetMusicForm() {
+  safeSet("music-id", "value", "");
+  safeSet("music-title", "value", "");
+  safeSet("music-artist", "value", "");
+  safeSet("music-genre", "value", "");
+  safeSet("music-year", "value", "");
+  safeSet("music-cover", "value", "");
+  safeSet("modal-music-title", "textContent", "Tambah Musik");
+}
+
+function resetBookForm() {
+  safeSet("book-id", "value", "");
+  safeSet("book-title", "value", "");
+  safeSet("book-author", "value", "");
+  safeSet("book-year", "value", "");
+  safeSet("book-genre", "value", "");
+  safeSet("book-rating", "value", "5");
+  safeSet("book-cover", "value", "");
+  safeSet("modal-book-title", "textContent", "Tambah Buku");
+}
+
+function resetGameForm() {
+  safeSet("game-id", "value", "");
+  safeSet("game-title", "value", "");
+  safeSet("game-platform", "value", "");
+  safeSet("game-genre", "value", "");
+  safeSet("game-year", "value", "");
+  safeSet("game-rating", "value", "5");
+  safeSet("game-cover", "value", "");
+  safeSet("modal-game-title", "textContent", "Tambah Game");
+}
+
 let _confirmCb = null;
 function showConfirm(callback) {
   _confirmCb = callback;
@@ -719,7 +807,6 @@ async function renderDashboard() {
   const skills = getData("skills") || [];
   const exp = getData("experience") || [];
   const projects = getData("projects") || [];
-  const blogs = getData("blogs") || [];
   console.log("profile:", profile.name);
   // Intro - with null checks
   safeSet("hero-avatar-display", "textContent", profile.avatar || "👨‍💻");
@@ -764,7 +851,6 @@ async function renderDashboard() {
   safeSet("stat-projects", "textContent", completedProjects);
   safeSet("stat-skills", "textContent", skills.length);
   safeSet("stat-exp", "textContent", exp.length + "+");
-  safeSet("stat-blogs", "textContent", blogs.length);
 
   // Skills Radar Chart
   renderSkillsRadarChart();
@@ -1340,14 +1426,76 @@ function renderSkillCategoryChart() {
 //  RENDER: MEDIA (Selera Saya)
 // ─────────────────────────────────────────
 function renderMedia() {
-  const films = getData("films") || [];
-  const music = getData("music") || [];
-  const books = getData("books") || [];
-  const games = getData("games") || [];
+  let films = getData("films") || [];
+  let music = getData("music") || [];
+  let books = getData("books") || [];
+  let games = getData("games") || [];
+
+  // Apply sorting untuk films
+  const filmSort = mediaSort.films;
+  films = [...films].sort((a, b) => {
+    let va = a[filmSort.sortKey] ?? "";
+    let vb = b[filmSort.sortKey] ?? "";
+    if (typeof va === "string") va = va.toLowerCase();
+    if (typeof vb === "string") vb = vb.toLowerCase();
+    if (va < vb) return filmSort.sortDir === "asc" ? -1 : 1;
+    if (va > vb) return filmSort.sortDir === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  // Apply sorting untuk music
+  const musicSort = mediaSort.music;
+  music = [...music].sort((a, b) => {
+    let va = a[musicSort.sortKey] ?? "";
+    let vb = b[musicSort.sortKey] ?? "";
+    if (typeof va === "string") va = va.toLowerCase();
+    if (typeof vb === "string") vb = vb.toLowerCase();
+    if (va < vb) return musicSort.sortDir === "asc" ? -1 : 1;
+    if (va > vb) return musicSort.sortDir === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  // Apply sorting untuk books
+  const bookSort = mediaSort.books;
+  books = [...books].sort((a, b) => {
+    let va = a[bookSort.sortKey] ?? "";
+    let vb = b[bookSort.sortKey] ?? "";
+    if (typeof va === "string") va = va.toLowerCase();
+    if (typeof vb === "string") vb = vb.toLowerCase();
+    if (va < vb) return bookSort.sortDir === "asc" ? -1 : 1;
+    if (va > vb) return bookSort.sortDir === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  // Apply sorting untuk games
+  const gameSort = mediaSort.games;
+  games = [...games].sort((a, b) => {
+    let va = a[gameSort.sortKey] ?? "";
+    let vb = b[gameSort.sortKey] ?? "";
+    if (typeof va === "string") va = va.toLowerCase();
+    if (typeof vb === "string") vb = vb.toLowerCase();
+    if (va < vb) return gameSort.sortDir === "asc" ? -1 : 1;
+    if (va > vb) return gameSort.sortDir === "asc" ? 1 : -1;
+    return 0;
+  });
 
   // Films Table
   const filmsTbodyEl = safeGet("films-tbody");
   const filmsEmptyEl = safeGet("films-empty");
+
+  // Update sort icons untuk films
+  const filmsSortTitle = document.getElementById("films-sort-title");
+  const filmsSortGenre = document.getElementById("films-sort-genre");
+  const filmsSortYear = document.getElementById("films-sort-year");
+  const filmsSortRating = document.getElementById("films-sort-rating");
+
+  if (filmsSortTitle)
+    filmsSortTitle.innerHTML = mediaSortIcon("films", "title");
+  if (filmsSortGenre)
+    filmsSortGenre.innerHTML = mediaSortIcon("films", "genre");
+  if (filmsSortYear) filmsSortYear.innerHTML = mediaSortIcon("films", "year");
+  if (filmsSortRating)
+    filmsSortRating.innerHTML = mediaSortIcon("films", "rating");
 
   if (films.length === 0) {
     if (filmsTbodyEl) filmsTbodyEl.innerHTML = "";
@@ -1675,65 +1823,10 @@ function renderMoodChart() {
       },
     },
   });
-}
 
-// ─────────────────────────────────────────
-//  RENDER: BLOG
-// ─────────────────────────────────────────
-function renderBlog() {
-  const blogs = getData("blogs") || [];
-
-  const blogGridEl = safeGet("blog-grid");
-  const blogEmptyEl = safeGet("blog-empty");
-
-  if (blogs.length === 0) {
-    if (blogGridEl) blogGridEl.innerHTML = "";
-    if (blogEmptyEl) blogEmptyEl.classList.remove("hidden");
-    return;
-  }
-
-  if (blogEmptyEl) blogEmptyEl.classList.add("hidden");
-
-  if (blogGridEl) {
-    blogGridEl.innerHTML = blogs
-      .map(
-        (b) => `
-      <div class="bg-ink2 rounded-2xl border border-white/5 p-6 hover:border-cyan/30 transition-all group" data-aos="fade-up">
-        <div class="flex items-start gap-4 mb-4">
-          <span class="text-3xl flex-shrink-0">${b.emoji}</span>
-          <div class="flex-1 min-w-0">
-            <p class="text-xs text-muted mb-1">${b.category} · ${b.date || "2024"}</p>
-            <h3 class="font-mono font-bold text-base mb-2 group-hover:text-cyan transition-colors">${b.title}</h3>
-            <p class="text-sm text-dim leading-relaxed">${b.summary}</p>
-          </div>
-        </div>
-        <div class="flex flex-wrap gap-1.5 mb-3">
-          ${b.tags
-            .split(",")
-            .map(
-              (tag) =>
-                `<span class="text-xs bg-ink3 px-2 py-1 rounded-lg text-muted">${tag.trim()}</span>`,
-            )
-            .join("")}
-        </div>
-        <button onclick="showBlogDetail(${b.id})" class="text-xs text-cyan hover:underline flex items-center gap-1">
-          Baca selengkapnya <i data-lucide="arrow-right" class="w-3 h-3"></i>
-        </button>
-      </div>`,
-      )
-      .join("");
-  }
-
+  // Re-render Lucide icons
   lucide.createIcons();
 }
-
-window.showBlogDetail = function (id) {
-  const blog = (getData("blogs") || []).find((b) => b.id === id);
-  if (!blog) return;
-
-  // Simple alert for now - bisa diganti dengan modal detail nanti
-  alert(`${blog.title}\n\n${blog.content}`);
-};
 
 // ─────────────────────────────────────────
 //  RENDER: CONTACT
@@ -1779,15 +1872,99 @@ function renderFooter() {
 
 const admState = {
   section: "overview",
-  projects: { page: 1, perPage: 5, search: "" },
-  skills: { page: 1, perPage: 10, search: "" },
-  experience: { page: 1, perPage: 5, search: "" },
-  films: { page: 1, perPage: 5, search: "" },
-  music: { page: 1, perPage: 5, search: "" },
-  books: { page: 1, perPage: 6, search: "" },
-  games: { page: 1, perPage: 6, search: "" },
-  blogs: { page: 1, perPage: 5, search: "" },
+  projects: {
+    page: 1,
+    perPage: 5,
+    search: "",
+    sortKey: "title",
+    sortDir: "asc",
+  },
+  skills: { page: 1, perPage: 10, search: "", sortKey: "name", sortDir: "asc" },
+  experience: {
+    page: 1,
+    perPage: 5,
+    search: "",
+    sortKey: "year",
+    sortDir: "desc",
+  },
+  films: { page: 1, perPage: 5, search: "", sortKey: "title", sortDir: "asc" },
+  music: { page: 1, perPage: 5, search: "", sortKey: "title", sortDir: "asc" },
+  books: { page: 1, perPage: 6, search: "", sortKey: "title", sortDir: "asc" },
+  games: { page: 1, perPage: 6, search: "", sortKey: "title", sortDir: "asc" },
 };
+
+// State untuk sorting di section biasa (non-admin)
+let mediaSort = {
+  films: { sortKey: "title", sortDir: "asc" },
+  music: { sortKey: "title", sortDir: "asc" },
+  books: { sortKey: "title", sortDir: "asc" },
+  games: { sortKey: "title", sortDir: "asc" },
+};
+
+// ─── Sort helper ───────────────────────────────────────────────────────────
+function admSort(key, stateKey, renderFn) {
+  const s = admState[stateKey];
+  if (s.sortKey === key) {
+    s.sortDir = s.sortDir === "asc" ? "desc" : "asc";
+  } else {
+    s.sortKey = key;
+    s.sortDir = "asc";
+  }
+  s.page = 1;
+  renderFn();
+}
+
+function applySortAndFilter(items, state, filterFn) {
+  const q = state.search.toLowerCase();
+  let filtered = q ? items.filter(filterFn) : [...items];
+  const { sortKey, sortDir } = state;
+  filtered.sort((a, b) => {
+    let va = a[sortKey] ?? "";
+    let vb = b[sortKey] ?? "";
+    if (typeof va === "string") va = va.toLowerCase();
+    if (typeof vb === "string") vb = vb.toLowerCase();
+    if (va < vb) return sortDir === "asc" ? -1 : 1;
+    if (va > vb) return sortDir === "asc" ? 1 : -1;
+    return 0;
+  });
+  return filtered;
+}
+
+function sortIcon(stateKey, col) {
+  const s = admState[stateKey];
+  if (s.sortKey !== col)
+    return `<i data-lucide="chevrons-up-down" class="w-3 h-3 inline ml-1 opacity-30"></i>`;
+  // ASC = naik (A-Z, 0-9) = arrow UP
+  // DESC = turun (Z-A, 9-0) = arrow DOWN
+  return s.sortDir === "asc"
+    ? `<i data-lucide="arrow-up" class="w-3 h-3 inline ml-1 text-cyan"></i>`
+    : `<i data-lucide="arrow-down" class="w-3 h-3 inline ml-1 text-cyan"></i>`;
+}
+
+// Fungsi sorting untuk tabel media section biasa
+function mediaSortIcon(mediaType, col) {
+  const s = mediaSort[mediaType];
+  if (!s || s.sortKey !== col)
+    return `<i data-lucide="chevrons-up-down" class="w-3 h-3 inline ml-1 opacity-30"></i>`;
+  return s.sortDir === "asc"
+    ? `<i data-lucide="arrow-up" class="w-3 h-3 inline ml-1 text-cyan"></i>`
+    : `<i data-lucide="arrow-down" class="w-3 h-3 inline ml-1 text-cyan"></i>`;
+}
+
+function sortMedia(mediaType, key) {
+  const s = mediaSort[mediaType];
+  if (s.sortKey === key) {
+    s.sortDir = s.sortDir === "asc" ? "desc" : "asc";
+  } else {
+    s.sortKey = key;
+    s.sortDir = "asc";
+  }
+  renderMedia();
+}
+
+function thSort(label, col, stateKey, renderFnName, align = "left") {
+  return `<th class="text-${align} px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors" onclick="admSort('${col}','${stateKey}',${renderFnName})">${label}${sortIcon(stateKey, col)}</th>`;
+}
 
 function showAdminSection(section) {
   admState.section = section;
@@ -1824,7 +2001,6 @@ function showAdminSection(section) {
   else if (section === "music") renderAdmMusic();
   else if (section === "books") renderAdmBooks();
   else if (section === "games") renderAdmGames();
-  else if (section === "blogs") renderAdmBlog();
 
   lucide.createIcons();
 }
@@ -1885,7 +2061,6 @@ function adminTab(tab) {
   else if (tab === "music-a") renderAdmMusic();
   else if (tab === "books-a") renderAdmBooks();
   else if (tab === "games-a") renderAdmGames();
-  else if (tab === "blog-a") renderAdmBlog();
   else if (tab === "messages-a") renderAdminMessages();
 
   // Reinitialize icons
@@ -1909,32 +2084,17 @@ async function renderAdminOverview() {
     FIREBASE_CACHE.films.length > 0
       ? FIREBASE_CACHE.films
       : await getData("films");
-  const blogs =
-    FIREBASE_CACHE.blogs.length > 0
-      ? FIREBASE_CACHE.blogs
-      : await getData("blogs");
 
   // Update stats
   safeSet("ov-projects", "textContent", projects.length);
   safeSet("ov-skills", "textContent", skills.length);
   safeSet("ov-films", "textContent", films.length);
-  safeSet("ov-blogs", "textContent", blogs.length);
 
   // Create storage chart
-  renderStorageChart(
-    projects.length,
-    skills.length,
-    films.length,
-    blogs.length,
-  );
+  renderStorageChart(projects.length, skills.length, films.length);
 }
 
-function renderStorageChart(
-  projectsCount,
-  skillsCount,
-  filmsCount,
-  blogsCount,
-) {
+function renderStorageChart(projectsCount, skillsCount, filmsCount) {
   const ctx = document.getElementById("storageChart");
   if (!ctx) return;
 
@@ -1946,21 +2106,19 @@ function renderStorageChart(
   chartInstances.storageChart = new Chart(ctx, {
     type: "doughnut",
     data: {
-      labels: ["Projects", "Skills", "Films", "Blogs"],
+      labels: ["Projects", "Skills", "Films"],
       datasets: [
         {
-          data: [projectsCount, skillsCount, filmsCount, blogsCount],
+          data: [projectsCount, skillsCount, filmsCount],
           backgroundColor: [
             "rgba(119, 202, 237, 0.7)",
             "rgba(120, 250, 185, 0.7)",
             "rgba(250, 204, 21, 0.7)",
-            "rgba(167, 139, 250, 0.7)",
           ],
           borderColor: [
             "rgba(119, 202, 237, 1)",
             "rgba(120, 250, 185, 1)",
             "rgba(250, 204, 21, 1)",
-            "rgba(167, 139, 250, 1)",
           ],
           borderWidth: 2,
         },
@@ -2110,31 +2268,74 @@ function admPaginator(total, state, renderFn, containerId) {
   const container = safeGet(containerId);
   if (!container) return;
 
-  if (totalPages <= 1) {
+  if (total === 0) {
     container.innerHTML = "";
     return;
   }
 
-  let html = "";
+  const cur = state.page;
+  const from = (cur - 1) * state.perPage + 1;
+  const to = Math.min(cur * state.perPage, total);
+
+  const range = 2;
+  let pageButtons = "";
   for (let i = 1; i <= totalPages; i++) {
-    const active = i === state.page;
-    html += `<button onclick="${renderFn.name}_goPage(${i})" class="px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${active ? "bg-cyan/10 text-cyan border border-cyan/30" : "text-muted border border-white/10 hover:border-cyan/30 hover:text-cyan"}">${i}</button>`;
+    if (i === 1 || i === totalPages || (i >= cur - range && i <= cur + range)) {
+      const active = i === cur;
+      pageButtons += `<button onclick="${renderFn.name}_goPage(${i})" class="px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${active ? "bg-cyan/10 text-cyan border border-cyan/30" : "text-muted border border-white/10 hover:border-cyan/30 hover:text-cyan"}">${i}</button>`;
+    } else if (i === cur - range - 1 || i === cur + range + 1) {
+      pageButtons += `<span class="px-1 text-muted text-xs">…</span>`;
+    }
   }
 
-  container.innerHTML = html;
+  const prevDisabled = cur <= 1;
+  const nextDisabled = cur >= totalPages;
+
+  container.innerHTML = `
+    <div class="flex items-center justify-between mt-4 flex-wrap gap-2">
+      <p class="text-xs text-muted font-mono">${from}–${to} dari ${total} data</p>
+      <div class="flex items-center gap-1.5 flex-wrap">
+        <button onclick="${renderFn.name}_goPage(${cur - 1})" ${prevDisabled ? "disabled" : ""} class="px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${prevDisabled ? "text-dim border-white/5 cursor-not-allowed opacity-40" : "text-muted border-white/10 hover:border-cyan/30 hover:text-cyan"}">
+          <i data-lucide="chevron-left" class="w-3 h-3"></i>
+        </button>
+        ${pageButtons}
+        <button onclick="${renderFn.name}_goPage(${cur + 1})" ${nextDisabled ? "disabled" : ""} class="px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${nextDisabled ? "text-dim border-white/5 cursor-not-allowed opacity-40" : "text-muted border-white/10 hover:border-cyan/30 hover:text-cyan"}">
+          <i data-lucide="chevron-right" class="w-3 h-3"></i>
+        </button>
+      </div>
+    </div>`;
+  lucide.createIcons();
 }
 
 // ─────────────────────────────────────────
 //  ADMIN: PROJECTS
 // ─────────────────────────────────────────
 function renderAdmProjects() {
-  const q = admState.projects.search.toLowerCase();
-  const all = (getData("projects") || []).filter(
-    (p) => !q || p.title.toLowerCase().includes(q),
+  const state = admState.projects;
+  const all = applySortAndFilter(
+    getData("projects") || [],
+    state,
+    (p) =>
+      p.title.toLowerCase().includes(state.search.toLowerCase()) ||
+      (p.tech || "").toLowerCase().includes(state.search.toLowerCase()),
   );
   const total = all.length;
-  const { page, perPage } = admState.projects;
+  const { page, perPage } = state;
   const slice = all.slice((page - 1) * perPage, page * perPage);
+
+  // Update sort headers
+  const thead = document
+    .querySelector("#adm-projects-tbody")
+    ?.closest("table")
+    ?.querySelector("thead tr");
+  if (thead) {
+    thead.innerHTML =
+      thSort("Proyek", "title", "projects", "renderAdmProjects") +
+      thSort("Tech", "tech", "projects", "renderAdmProjects") +
+      thSort("Status", "status", "projects", "renderAdmProjects") +
+      thSort("Featured", "featured", "projects", "renderAdmProjects") +
+      `<th class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase">Aksi</th>`;
+  }
 
   const listEl = safeGet("adm-projects-tbody");
   if (listEl) {
@@ -2154,7 +2355,7 @@ function renderAdmProjects() {
         </td>
         <td class="px-4 py-4">
           <div class="flex flex-wrap gap-1.5">
-            ${p.tech
+            ${(p.tech || "")
               .split(",")
               .map(
                 (t) =>
@@ -2180,13 +2381,7 @@ function renderAdmProjects() {
         .join("") ||
       '<tr><td colspan="5" class="text-center py-8 text-muted text-sm">Tidak ada hasil.</td></tr>';
   }
-
-  admPaginator(
-    total,
-    admState.projects,
-    renderAdmProjects,
-    "adm-projects-pages",
-  );
+  admPaginator(total, state, renderAdmProjects, "adm-projects-pages");
   lucide.createIcons();
 }
 
@@ -2206,33 +2401,33 @@ function editProject(id) {
   if (!p) return;
 
   safeSet("modal-project-title", "textContent", "Edit Project");
-  safeSet("project-id", "value", p.id);
-  safeSet("project-title", "value", p.title);
-  safeSet("project-desc", "value", p.desc);
-  safeSet("project-tech", "value", p.tech);
-  safeSet("project-status", "value", p.status);
-  safeSet("project-link", "value", p.link);
-  safeSet("project-github", "value", p.github);
-  safeSet("project-image", "value", p.image);
+  safeSet("proj-id", "value", p.id);
+  safeSet("proj-title", "value", p.title);
+  safeSet("proj-desc", "value", p.desc);
+  safeSet("proj-tech", "value", p.tech);
+  safeSet("proj-status", "value", p.status);
+  safeSet("proj-link", "value", p.link);
+  safeSet("proj-github", "value", p.github);
+  safeSet("proj-image", "value", p.image);
 
-  const featuredCheckbox = safeGet("project-featured");
+  const featuredCheckbox = safeGet("proj-featured");
   if (featuredCheckbox) featuredCheckbox.checked = p.featured;
 
   openModal("modal-project");
 }
 
 async function saveProject() {
-  const id = safeGet("project-id")?.value;
+  const id = safeGet("proj-id")?.value;
   const item = {
     id: id ? parseInt(id) : uid(),
-    title: safeGet("project-title")?.value || "",
-    desc: safeGet("project-desc")?.value || "",
-    tech: safeGet("project-tech")?.value || "",
-    status: safeGet("project-status")?.value || "Konsep",
-    featured: safeGet("project-featured")?.checked || false,
-    link: safeGet("project-link")?.value || "#",
-    github: safeGet("project-github")?.value || "#",
-    image: safeGet("project-image")?.value || "📁",
+    title: safeGet("proj-title")?.value || "",
+    desc: safeGet("proj-desc")?.value || "",
+    tech: safeGet("proj-tech")?.value || "",
+    status: safeGet("proj-status")?.value || "Konsep",
+    featured: safeGet("proj-featured")?.checked || false,
+    link: safeGet("proj-link")?.value || "#",
+    github: safeGet("proj-github")?.value || "#",
+    image: safeGet("proj-image")?.value || "📁",
   };
 
   let list = getData("projects") || [];
@@ -2251,7 +2446,7 @@ async function saveProject() {
   renderTechDonutChart();
 
   // Reset form
-  safeSet("project-id", "value", "");
+  safeSet("proj-id", "value", "");
   safeSet("modal-project-title", "textContent", "Tambah Project");
 }
 
@@ -2259,13 +2454,29 @@ async function saveProject() {
 //  ADMIN: SKILLS
 // ─────────────────────────────────────────
 function renderAdmSkills() {
-  const q = admState.skills.search.toLowerCase();
-  const all = (getData("skills") || []).filter(
-    (s) => !q || s.name.toLowerCase().includes(q),
+  const state = admState.skills;
+  const all = applySortAndFilter(
+    getData("skills") || [],
+    state,
+    (s) =>
+      s.name.toLowerCase().includes(state.search.toLowerCase()) ||
+      (s.category || "").toLowerCase().includes(state.search.toLowerCase()),
   );
   const total = all.length;
-  const { page, perPage } = admState.skills;
+  const { page, perPage } = state;
   const slice = all.slice((page - 1) * perPage, page * perPage);
+
+  const thead = document
+    .querySelector("#adm-skills-tbody")
+    ?.closest("table")
+    ?.querySelector("thead tr");
+  if (thead) {
+    thead.innerHTML =
+      thSort("Skill", "name", "skills", "renderAdmSkills") +
+      thSort("Kategori", "category", "skills", "renderAdmSkills") +
+      thSort("Level", "level", "skills", "renderAdmSkills") +
+      `<th class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase">Aksi</th>`;
+  }
 
   const listEl = safeGet("adm-skills-tbody");
   if (listEl) {
@@ -2274,12 +2485,8 @@ function renderAdmSkills() {
         .map(
           (s) => `
       <tr class="border-b border-white/5 hover:bg-white/5 transition-all">
-        <td class="px-4 py-4">
-          <p class="font-semibold text-sm">${s.name}</p>
-        </td>
-        <td class="px-4 py-4">
-          <span class="text-xs text-muted">${s.category}</span>
-        </td>
+        <td class="px-4 py-4"><p class="font-semibold text-sm">${s.name}</p></td>
+        <td class="px-4 py-4"><span class="text-xs text-muted">${s.category}</span></td>
         <td class="px-4 py-4">
           <div class="flex items-center gap-3">
             <div class="flex-1 bg-ink3 rounded-full h-2 overflow-hidden max-w-[200px]">
@@ -2299,8 +2506,7 @@ function renderAdmSkills() {
         .join("") ||
       '<tr><td colspan="4" class="text-center py-8 text-muted text-sm">Tidak ada hasil.</td></tr>';
   }
-
-  admPaginator(total, admState.skills, renderAdmSkills, "adm-skills-pages");
+  admPaginator(total, state, renderAdmSkills, "adm-skills-pages");
   lucide.createIcons();
 }
 
@@ -2363,41 +2569,65 @@ async function saveSkill() {
 //  ADMIN: EXPERIENCE
 // ─────────────────────────────────────────
 function renderAdmExp() {
-  const q = admState.experience.search.toLowerCase();
-  const all = (getData("experience") || []).filter(
+  const state = admState.experience;
+  const all = applySortAndFilter(
+    getData("experience") || [],
+    state,
     (e) =>
-      !q ||
-      e.title.toLowerCase().includes(q) ||
-      e.company.toLowerCase().includes(q),
+      e.title.toLowerCase().includes(state.search.toLowerCase()) ||
+      (e.company || "").toLowerCase().includes(state.search.toLowerCase()) ||
+      (e.year || "").toLowerCase().includes(state.search.toLowerCase()),
   );
   const total = all.length;
-  const { page, perPage } = admState.experience;
+  const { page, perPage } = state;
   const slice = all.slice((page - 1) * perPage, page * perPage);
 
-  const listEl = safeGet("adm-exp-list");
+  // Update sort headers
+  const thead = document
+    .querySelector("#adm-exp-tbody")
+    ?.closest("table")
+    ?.querySelector("thead tr");
+  if (thead) {
+    thead.innerHTML =
+      thSort("Periode", "year", "experience", "renderAdmExp") +
+      thSort("Jabatan", "title", "experience", "renderAdmExp") +
+      thSort("Perusahaan", "company", "experience", "renderAdmExp") +
+      thSort("Status", "active", "experience", "renderAdmExp") +
+      `<th class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase">Aksi</th>`;
+  }
+
+  const listEl = safeGet("adm-exp-tbody");
   if (listEl) {
     listEl.innerHTML =
       slice
         .map(
           (e) => `
-      <div class="bg-ink2 rounded-2xl border border-white/5 p-5 flex items-start gap-4">
-        ${e.active ? '<div class="w-3 h-3 bg-mint rounded-full mt-1 flex-shrink-0"></div>' : '<div class="w-3 h-3 bg-ink4 rounded-full mt-1 flex-shrink-0 border border-white/10"></div>'}
-        <div class="flex-1 min-w-0">
-          <p class="text-xs text-muted mb-1">${e.year}</p>
-          <p class="font-semibold text-sm mb-0.5">${e.title}</p>
-          <p class="text-xs text-cyan mb-2">${e.company}</p>
-          <p class="text-xs text-dim">${e.desc}</p>
-        </div>
-        <div class="flex gap-2 flex-shrink-0">
-          <button onclick="editExp(${e.id})" class="text-xs bg-cyan/10 text-cyan px-3 py-1.5 rounded-lg hover:bg-cyan/20 transition-all"><i data-lucide="pencil" class="w-3 h-3"></i></button>
-          <button onclick="deleteItem('experience',${e.id})" class="text-xs bg-red-500/10 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-all"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
-        </div>
-      </div>`,
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-all">
+        <td class="px-4 py-4"><span class="text-xs text-muted font-mono">${e.year}</span></td>
+        <td class="px-4 py-4">
+          <p class="font-semibold text-sm">${e.title}</p>
+          <p class="text-xs text-dim mt-0.5">${e.desc}</p>
+        </td>
+        <td class="px-4 py-4"><span class="text-xs text-cyan">${e.company}</span></td>
+        <td class="px-4 py-4">
+          ${
+            e.active
+              ? '<span class="text-xs px-2 py-1 bg-mint/10 text-mint rounded-lg">Aktif</span>'
+              : '<span class="text-xs px-2 py-1 bg-ink3 text-muted rounded-lg">Selesai</span>'
+          }
+        </td>
+        <td class="px-4 py-4 text-right">
+          <div class="flex gap-2 justify-end">
+            <button onclick="editExp(${e.id})" class="text-xs bg-cyan/10 text-cyan px-3 py-1.5 rounded-lg hover:bg-cyan/20 transition-all"><i data-lucide="pencil" class="w-3 h-3"></i></button>
+            <button onclick="deleteItem('experience',${e.id})" class="text-xs bg-red-500/10 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-all"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+          </div>
+        </td>
+      </tr>`,
         )
-        .join("") || '<p class="text-muted text-sm">Tidak ada hasil.</p>';
+        .join("") ||
+      '<tr><td colspan="5" class="text-center py-8 text-muted text-sm">Tidak ada hasil.</td></tr>';
   }
-
-  admPaginator(total, admState.experience, renderAdmExp, "adm-exp-pages");
+  admPaginator(total, state, renderAdmExp, "adm-exp-pages");
   lucide.createIcons();
 }
 
@@ -2463,13 +2693,31 @@ async function saveExp() {
 //  ADMIN: FILMS
 // ─────────────────────────────────────────
 function renderAdmFilms() {
-  const q = admState.films.search.toLowerCase();
-  const all = (getData("films") || []).filter(
-    (f) => !q || f.title.toLowerCase().includes(q),
+  const state = admState.films;
+  const all = applySortAndFilter(
+    getData("films") || [],
+    state,
+    (f) =>
+      f.title.toLowerCase().includes(state.search.toLowerCase()) ||
+      (f.genre || "").toLowerCase().includes(state.search.toLowerCase()),
   );
   const total = all.length;
-  const { page, perPage } = admState.films;
+  const { page, perPage } = state;
   const slice = all.slice((page - 1) * perPage, page * perPage);
+
+  const thead = document
+    .querySelector("#adm-films-tbody")
+    ?.closest("table")
+    ?.querySelector("thead tr");
+  if (thead) {
+    thead.innerHTML =
+      `<th class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase">#</th>` +
+      thSort("Judul", "title", "films", "renderAdmFilms") +
+      thSort("Genre", "genre", "films", "renderAdmFilms") +
+      thSort("Tahun", "year", "films", "renderAdmFilms") +
+      thSort("Rating", "rating", "films", "renderAdmFilms") +
+      `<th class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase">Aksi</th>`;
+  }
 
   const listEl = safeGet("adm-films-tbody");
   if (listEl) {
@@ -2483,9 +2731,8 @@ function renderAdmFilms() {
           <p class="font-semibold text-sm">${f.title}</p>
           <p class="text-xs text-dim mt-0.5">${f.comment || ""}</p>
         </td>
-        <td class="px-4 py-4">
-          <span class="text-xs text-muted">${f.genre} (${f.year})</span>
-        </td>
+        <td class="px-4 py-4"><span class="text-xs text-muted">${f.genre}</span></td>
+        <td class="px-4 py-4"><span class="text-xs text-muted">${f.year}</span></td>
         <td class="px-4 py-4">
           <div class="flex items-center gap-2">
             <div class="flex gap-0.5">
@@ -2509,10 +2756,9 @@ function renderAdmFilms() {
       </tr>`,
         )
         .join("") ||
-      '<tr><td colspan="5" class="text-center py-8 text-muted text-sm">Tidak ada hasil.</td></tr>';
+      '<tr><td colspan="6" class="text-center py-8 text-muted text-sm">Tidak ada hasil.</td></tr>';
   }
-
-  admPaginator(total, admState.films, renderAdmFilms, "adm-films-pages");
+  admPaginator(total, state, renderAdmFilms, "adm-films-pages");
   lucide.createIcons();
 }
 
@@ -2577,44 +2823,60 @@ async function saveFilm() {
 //  ADMIN: MUSIC
 // ─────────────────────────────────────────
 function renderAdmMusic() {
-  const q = admState.music.search.toLowerCase();
-  const all = (getData("music") || []).filter(
+  const state = admState.music;
+  const all = applySortAndFilter(
+    getData("music") || [],
+    state,
     (m) =>
-      !q ||
-      m.title.toLowerCase().includes(q) ||
-      m.artist.toLowerCase().includes(q),
+      m.title.toLowerCase().includes(state.search.toLowerCase()) ||
+      (m.artist || "").toLowerCase().includes(state.search.toLowerCase()) ||
+      (m.genre || "").toLowerCase().includes(state.search.toLowerCase()),
   );
   const total = all.length;
-  const { page, perPage } = admState.music;
+  const { page, perPage } = state;
   const slice = all.slice((page - 1) * perPage, page * perPage);
 
-  const listEl = safeGet("adm-music-list");
+  const thead = document
+    .querySelector("#adm-music-tbody")
+    ?.closest("table")
+    ?.querySelector("thead tr");
+  if (thead) {
+    thead.innerHTML =
+      thSort("Judul", "title", "music", "renderAdmMusic") +
+      thSort("Artis", "artist", "music", "renderAdmMusic") +
+      thSort("Genre", "genre", "music", "renderAdmMusic") +
+      thSort("Mood", "mood", "music", "renderAdmMusic") +
+      `<th class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase">Aksi</th>`;
+  }
+
+  const listEl = safeGet("adm-music-tbody");
   if (listEl) {
     listEl.innerHTML =
       slice
         .map(
           (m) => `
-      <div class="bg-ink2 rounded-2xl border border-white/5 p-5 flex items-center gap-4">
-        <span class="text-2xl flex-shrink-0">${m.emoji}</span>
-        <div class="flex-1 min-w-0">
-          <p class="font-semibold text-sm mb-0.5">${m.title}</p>
-          <p class="text-xs text-muted mb-1">${m.artist}</p>
-          <div class="flex gap-2 text-xs">
-            <span class="text-dim">${m.genre}</span>
-            <span>·</span>
-            <span class="text-cyan">${m.mood}</span>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-all">
+        <td class="px-4 py-4">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">${m.emoji}</span>
+            <p class="font-semibold text-sm">${m.title}</p>
           </div>
-        </div>
-        <div class="flex gap-2 flex-shrink-0">
-          <button onclick="editMusic(${m.id})" class="text-xs bg-cyan/10 text-cyan px-3 py-1.5 rounded-lg hover:bg-cyan/20 transition-all"><i data-lucide="pencil" class="w-3 h-3"></i></button>
-          <button onclick="deleteItem('music',${m.id})" class="text-xs bg-red-500/10 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-all"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
-        </div>
-      </div>`,
+        </td>
+        <td class="px-4 py-4"><span class="text-xs text-muted">${m.artist}</span></td>
+        <td class="px-4 py-4"><span class="text-xs text-muted">${m.genre}</span></td>
+        <td class="px-4 py-4"><span class="text-xs bg-cyan/10 text-cyan px-2 py-0.5 rounded-lg">${m.mood}</span></td>
+        <td class="px-4 py-4 text-right">
+          <div class="flex gap-2 justify-end">
+            <button onclick="editMusic(${m.id})" class="text-xs bg-cyan/10 text-cyan px-3 py-1.5 rounded-lg hover:bg-cyan/20 transition-all"><i data-lucide="pencil" class="w-3 h-3"></i></button>
+            <button onclick="deleteItem('music',${m.id})" class="text-xs bg-red-500/10 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-all"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+          </div>
+        </td>
+      </tr>`,
         )
-        .join("") || '<p class="text-muted text-sm">Tidak ada hasil.</p>';
+        .join("") ||
+      '<tr><td colspan="5" class="text-center py-8 text-muted text-sm">Tidak ada hasil.</td></tr>';
   }
-
-  admPaginator(total, admState.music, renderAdmMusic, "adm-music-pages");
+  admPaginator(total, state, renderAdmMusic, "adm-music-pages");
   lucide.createIcons();
 }
 
@@ -2678,46 +2940,70 @@ async function saveMusic() {
 //  ADMIN: BOOKS
 // ─────────────────────────────────────────
 function renderAdmBooks() {
-  const q = admState.books.search.toLowerCase();
-  const all = (getData("books") || []).filter(
-    (b) => !q || b.title.toLowerCase().includes(q),
+  const state = admState.books;
+  const all = applySortAndFilter(
+    getData("books") || [],
+    state,
+    (b) =>
+      b.title.toLowerCase().includes(state.search.toLowerCase()) ||
+      (b.author || "").toLowerCase().includes(state.search.toLowerCase()) ||
+      (b.genre || "").toLowerCase().includes(state.search.toLowerCase()),
   );
   const total = all.length;
-  const { page, perPage } = admState.books;
+  const { page, perPage } = state;
   const slice = all.slice((page - 1) * perPage, page * perPage);
 
-  const listEl = safeGet("adm-books-list");
+  const thead = document
+    .querySelector("#adm-books-tbody")
+    ?.closest("table")
+    ?.querySelector("thead tr");
+  if (thead) {
+    thead.innerHTML =
+      thSort("Judul", "title", "books", "renderAdmBooks") +
+      thSort("Penulis", "author", "books", "renderAdmBooks") +
+      thSort("Genre", "genre", "books", "renderAdmBooks") +
+      thSort("Status", "status", "books", "renderAdmBooks") +
+      thSort("Rating", "rating", "books", "renderAdmBooks") +
+      `<th class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase">Aksi</th>`;
+  }
+
+  const listEl = safeGet("adm-books-tbody");
   if (listEl) {
     listEl.innerHTML =
       slice
         .map(
           (b) => `
-      <div class="bg-ink2 rounded-2xl border border-white/5 p-5">
-        <p class="font-semibold text-sm mb-1">${b.title}</p>
-        <p class="text-xs text-muted mb-2">${b.author} · ${b.genre}</p>
-        <div class="flex items-center gap-2 mb-2">
-          <div class="flex gap-0.5">
-            ${Array(10)
-              .fill(0)
-              .map(
-                (_, i) =>
-                  `<span class="w-1.5 h-1.5 rounded-full ${i < b.rating ? "bg-mint" : "bg-ink4"}"></span>`,
-              )
-              .join("")}
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-all">
+        <td class="px-4 py-4"><p class="font-semibold text-sm">${b.title}</p></td>
+        <td class="px-4 py-4"><span class="text-xs text-muted">${b.author}</span></td>
+        <td class="px-4 py-4"><span class="text-xs text-muted">${b.genre}</span></td>
+        <td class="px-4 py-4"><span class="text-xs px-2 py-0.5 rounded-lg ${b.status === "Sudah Baca" ? "bg-mint/10 text-mint" : "bg-cyan/10 text-cyan"}">${b.status}</span></td>
+        <td class="px-4 py-4">
+          <div class="flex items-center gap-2">
+            <div class="flex gap-0.5">
+              ${Array(10)
+                .fill(0)
+                .map(
+                  (_, i) =>
+                    `<span class="w-1.5 h-1.5 rounded-full ${i < b.rating ? "bg-mint" : "bg-ink4"}"></span>`,
+                )
+                .join("")}
+            </div>
+            <span class="text-xs text-muted">${b.rating}/10</span>
           </div>
-          <span class="text-xs text-muted">${b.rating}/10</span>
-        </div>
-        <p class="text-xs text-dim italic mb-3">"${b.review}"</p>
-        <div class="flex gap-2">
-          <button onclick="editBook(${b.id})" class="text-xs bg-cyan/10 text-cyan px-3 py-1.5 rounded-lg hover:bg-cyan/20 transition-all"><i data-lucide="pencil" class="w-3 h-3"></i></button>
-          <button onclick="deleteItem('books',${b.id})" class="text-xs bg-red-500/10 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-all"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
-        </div>
-      </div>`,
+        </td>
+        <td class="px-4 py-4 text-right">
+          <div class="flex gap-2 justify-end">
+            <button onclick="editBook(${b.id})" class="text-xs bg-cyan/10 text-cyan px-3 py-1.5 rounded-lg hover:bg-cyan/20 transition-all"><i data-lucide="pencil" class="w-3 h-3"></i></button>
+            <button onclick="deleteItem('books',${b.id})" class="text-xs bg-red-500/10 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-all"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+          </div>
+        </td>
+      </tr>`,
         )
-        .join("") || '<p class="text-muted text-sm">Tidak ada hasil.</p>';
+        .join("") ||
+      '<tr><td colspan="6" class="text-center py-8 text-muted text-sm">Tidak ada hasil.</td></tr>';
   }
-
-  admPaginator(total, admState.books, renderAdmBooks, "adm-books-pages");
+  admPaginator(total, state, renderAdmBooks, "adm-books-pages");
   lucide.createIcons();
 }
 
@@ -2783,50 +3069,75 @@ async function saveBook() {
 //  ADMIN: GAMES
 // ─────────────────────────────────────────
 function renderAdmGames() {
-  const q = admState.games.search.toLowerCase();
-  const all = (getData("games") || []).filter(
-    (g) => !q || g.title.toLowerCase().includes(g),
+  const state = admState.games;
+  const all = applySortAndFilter(
+    getData("games") || [],
+    state,
+    (g) =>
+      g.title.toLowerCase().includes(state.search.toLowerCase()) ||
+      (g.platform || "").toLowerCase().includes(state.search.toLowerCase()) ||
+      (g.genre || "").toLowerCase().includes(state.search.toLowerCase()),
   );
   const total = all.length;
-  const { page, perPage } = admState.games;
+  const { page, perPage } = state;
   const slice = all.slice((page - 1) * perPage, page * perPage);
 
-  const listEl = safeGet("adm-games-list");
+  const thead = document
+    .querySelector("#adm-games-tbody")
+    ?.closest("table")
+    ?.querySelector("thead tr");
+  if (thead) {
+    thead.innerHTML =
+      thSort("Judul", "title", "games", "renderAdmGames") +
+      thSort("Platform", "platform", "games", "renderAdmGames") +
+      thSort("Genre", "genre", "games", "renderAdmGames") +
+      thSort("Status", "status", "games", "renderAdmGames") +
+      thSort("Rating", "rating", "games", "renderAdmGames") +
+      `<th class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase">Aksi</th>`;
+  }
+
+  const listEl = safeGet("adm-games-tbody");
   if (listEl) {
     listEl.innerHTML =
       slice
         .map(
           (g) => `
-      <div class="bg-ink2 rounded-2xl border border-white/5 p-5">
-        <div class="flex items-start gap-3 mb-3">
-          <span class="text-2xl flex-shrink-0">${g.emoji}</span>
-          <div class="flex-1">
-            <p class="font-semibold text-sm mb-0.5">${g.title}</p>
-            <p class="text-xs text-muted">${g.platform} · ${g.genre}</p>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-all">
+        <td class="px-4 py-4">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">${g.emoji}</span>
+            <p class="font-semibold text-sm">${g.title}</p>
           </div>
-        </div>
-        <div class="flex items-center gap-2 mb-3">
-          <div class="flex gap-0.5">
-            ${Array(10)
-              .fill(0)
-              .map(
-                (_, i) =>
-                  `<span class="w-1.5 h-1.5 rounded-full ${i < g.rating ? "bg-cyan" : "bg-ink4"}"></span>`,
-              )
-              .join("")}
+        </td>
+        <td class="px-4 py-4"><span class="text-xs text-muted">${g.platform}</span></td>
+        <td class="px-4 py-4"><span class="text-xs text-muted">${g.genre}</span></td>
+        <td class="px-4 py-4"><span class="text-xs px-2 py-0.5 rounded-lg ${g.status === "Sudah Tamat" ? "bg-mint/10 text-mint" : "bg-cyan/10 text-cyan"}">${g.status}</span></td>
+        <td class="px-4 py-4">
+          <div class="flex items-center gap-2">
+            <div class="flex gap-0.5">
+              ${Array(10)
+                .fill(0)
+                .map(
+                  (_, i) =>
+                    `<span class="w-1.5 h-1.5 rounded-full ${i < g.rating ? "bg-cyan" : "bg-ink4"}"></span>`,
+                )
+                .join("")}
+            </div>
+            <span class="text-xs text-muted">${g.rating}/10</span>
           </div>
-          <span class="text-xs text-muted">${g.rating}/10</span>
-        </div>
-        <div class="flex gap-2">
-          <button onclick="editGame(${g.id})" class="text-xs bg-cyan/10 text-cyan px-3 py-1.5 rounded-lg hover:bg-cyan/20 transition-all"><i data-lucide="pencil" class="w-3 h-3"></i></button>
-          <button onclick="deleteItem('games',${g.id})" class="text-xs bg-red-500/10 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-all"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
-        </div>
-      </div>`,
+        </td>
+        <td class="px-4 py-4 text-right">
+          <div class="flex gap-2 justify-end">
+            <button onclick="editGame(${g.id})" class="text-xs bg-cyan/10 text-cyan px-3 py-1.5 rounded-lg hover:bg-cyan/20 transition-all"><i data-lucide="pencil" class="w-3 h-3"></i></button>
+            <button onclick="deleteItem('games',${g.id})" class="text-xs bg-red-500/10 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-all"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+          </div>
+        </td>
+      </tr>`,
         )
-        .join("") || '<p class="text-muted text-sm">Tidak ada hasil.</p>';
+        .join("") ||
+      '<tr><td colspan="6" class="text-center py-8 text-muted text-sm">Tidak ada hasil.</td></tr>';
   }
-
-  admPaginator(total, admState.games, renderAdmGames, "adm-games-pages");
+  admPaginator(total, state, renderAdmGames, "adm-games-pages");
   lucide.createIcons();
 }
 
@@ -2889,107 +3200,6 @@ async function saveGame() {
 }
 
 // ─────────────────────────────────────────
-//  ADMIN: BLOG
-// ─────────────────────────────────────────
-function renderAdmBlog() {
-  const q = admState.blogs.search.toLowerCase();
-  const all = (getData("blogs") || []).filter(
-    (b) => !q || b.title.toLowerCase().includes(q),
-  );
-  const total = all.length;
-  const { page, perPage } = admState.blogs;
-  const slice = all.slice((page - 1) * perPage, page * perPage);
-
-  const listEl = safeGet("adm-blog-list");
-  if (listEl) {
-    listEl.innerHTML =
-      slice
-        .map(
-          (b) => `
-      <div class="bg-ink2 rounded-2xl border border-white/5 p-5">
-        <div class="flex items-start gap-4 mb-3">
-          <span class="text-2xl flex-shrink-0">${b.emoji}</span>
-          <div class="flex-1">
-            <p class="font-semibold text-sm mb-1">${b.title}</p>
-            <p class="text-xs text-muted mb-2">${b.category} · ${b.date || "2024"}</p>
-            <p class="text-xs text-dim">${b.summary}</p>
-          </div>
-        </div>
-        <div class="flex gap-2">
-          <button onclick="editBlog(${b.id})" class="text-xs bg-cyan/10 text-cyan px-3 py-1.5 rounded-lg hover:bg-cyan/20 transition-all"><i data-lucide="pencil" class="w-3 h-3"></i></button>
-          <button onclick="deleteItem('blogs',${b.id})" class="text-xs bg-red-500/10 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-all"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
-        </div>
-      </div>`,
-        )
-        .join("") || '<p class="text-muted text-sm">Tidak ada hasil.</p>';
-  }
-
-  admPaginator(total, admState.blogs, renderAdmBlog, "adm-blog-pages");
-  lucide.createIcons();
-}
-
-function renderAdmBlog_goPage(p) {
-  admState.blogs.page = p;
-  renderAdmBlog();
-}
-
-function admBlogSearch(v) {
-  admState.blogs.search = v;
-  admState.blogs.page = 1;
-  renderAdmBlog();
-}
-
-function editBlog(id) {
-  const b = (getData("blogs") || []).find((x) => x.id === id);
-  if (!b) return;
-
-  safeSet("modal-blog-title", "textContent", "Edit Blog");
-  safeSet("blog-id", "value", b.id);
-  safeSet("blog-title", "value", b.title);
-  safeSet("blog-cat", "value", b.category);
-  safeSet("blog-emoji", "value", b.emoji);
-  safeSet("blog-summary", "value", b.summary);
-  safeSet("blog-content", "value", b.content);
-  safeSet("blog-tags", "value", b.tags);
-
-  openModal("modal-blog");
-}
-
-async function saveBlog() {
-  const id = safeGet("blog-id")?.value;
-  const item = {
-    id: id ? parseInt(id) : uid(),
-    title: safeGet("blog-title")?.value || "",
-    category: safeGet("blog-cat")?.value || "",
-    emoji: safeGet("blog-emoji")?.value || "📝",
-    summary: safeGet("blog-summary")?.value || "",
-    content: safeGet("blog-content")?.value || "",
-    tags: safeGet("blog-tags")?.value || "",
-    date: id
-      ? (getData("blogs") || []).find((x) => x.id === parseInt(id))?.date
-      : new Date().toISOString().split("T")[0],
-  };
-
-  let list = getData("blogs") || [];
-  if (id) {
-    list = list.map((b) => (b.id === parseInt(id) ? item : b));
-  } else {
-    list.push(item);
-  }
-
-  await setData("blogs", list);
-  closeModal("modal-blog");
-  toast(id ? "Blog diperbarui!" : "Blog ditambahkan!", "success");
-  renderAdmBlog();
-  renderBlog();
-  renderDashboard();
-
-  // Reset form
-  safeSet("blog-id", "value", "");
-  safeSet("modal-blog-title", "textContent", "Tambah Blog");
-}
-
-// ─────────────────────────────────────────
 //  DELETE ITEM (UNIVERSAL)
 // ─────────────────────────────────────────
 async function deleteItem(collection, id) {
@@ -3037,11 +3247,6 @@ async function deleteItem(collection, id) {
         renderAdmGames();
         renderMedia();
       },
-      blogs: () => {
-        renderAdmBlog();
-        renderBlog();
-        renderDashboard();
-      },
     };
     if (renderMap[collection]) renderMap[collection]();
   });
@@ -3059,7 +3264,6 @@ async function resetAllData() {
     renderProjects();
     renderAbout();
     renderMedia();
-    renderBlog();
     renderContact();
   });
 }
@@ -3284,7 +3488,9 @@ function closeAdminSidebar() {
 // Export functions ke global scope untuk onclick handlers
 window.navigate = navigate;
 window.toggleMobile = toggleMobile;
+window.closeMobileMenu = closeMobileMenu;
 window.isMobileMenuOpen = isMobileMenuOpen;
+window.admSort = admSort;
 window.toggleAdminSidebar = toggleAdminSidebar;
 window.closeAdminSidebar = closeAdminSidebar;
 window.openAdminLogin = openAdminLogin;
@@ -3293,8 +3499,16 @@ window.doAdminLogin = doAdminLogin;
 window.doAdminLogout = doAdminLogout;
 window.openModal = openModal;
 window.closeModal = closeModal;
+window.resetProjectForm = resetProjectForm;
+window.resetSkillForm = resetSkillForm;
+window.resetExpForm = resetExpForm;
+window.resetFilmForm = resetFilmForm;
+window.resetMusicForm = resetMusicForm;
+window.resetBookForm = resetBookForm;
+window.resetGameForm = resetGameForm;
 window.showConfirm = showConfirm;
 window.closeConfirm = closeConfirm;
+window.sortMedia = sortMedia;
 window.showAdminSection = showAdminSection;
 window.adminTab = adminTab;
 window.saveProfile = saveProfile;
@@ -3326,15 +3540,18 @@ window.editGame = editGame;
 window.saveGame = saveGame;
 window.renderAdmGames_goPage = renderAdmGames_goPage;
 window.admGamesSearch = admGamesSearch;
-window.editBlog = editBlog;
-window.saveBlog = saveBlog;
-window.renderAdmBlog_goPage = renderAdmBlog_goPage;
-window.admBlogSearch = admBlogSearch;
 window.deleteItem = deleteItem;
 window.resetAllData = resetAllData;
 window.submitContact = submitContact;
 window.clearMessages = clearMessages;
 window.viewMessage = viewMessage;
+window.renderAdmProjects = renderAdmProjects;
+window.renderAdmSkills = renderAdmSkills;
+window.renderAdmExp = renderAdmExp;
+window.renderAdmFilms = renderAdmFilms;
+window.renderAdmMusic = renderAdmMusic;
+window.renderAdmBooks = renderAdmBooks;
+window.renderAdmGames = renderAdmGames;
 
 // ─────────────────────────────────────────
 //  EVENT LISTENERS SETUP
@@ -3358,4 +3575,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (adminOverlay) {
     adminOverlay.addEventListener("click", closeAdminSidebar);
   }
+
+  // Mobile menu links - close menu when clicked
+  const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+  mobileNavLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      // Close mobile menu immediately when any link is clicked
+      closeMobileMenu();
+    });
+  });
 });
