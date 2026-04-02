@@ -37,6 +37,8 @@ let chartInstances = {
   skillCategoryChart: null,
   genreChart: null,
   moodChart: null,
+  storageChart: null,
+  mediaChart: null,
 };
 
 // ─────────────────────────────────────────
@@ -686,7 +688,7 @@ function resetProjectForm() {
   safeSet("proj-status", "value", "Konsep");
   safeSet("proj-link", "value", "");
   safeSet("proj-github", "value", "");
-  safeSet("proj-image", "value", "");
+  safeSet("proj-icon", "value", "code-2");
   const featuredCheckbox = safeGet("proj-featured");
   if (featuredCheckbox) featuredCheckbox.checked = false;
   safeSet("modal-project-title", "textContent", "Tambah Project");
@@ -1017,7 +1019,9 @@ function renderFeaturedProjects() {
       <div class="group bg-ink2 rounded-2xl border border-white/5 overflow-hidden hover:border-cyan/30 transition-all duration-300 hover:shadow-glow-cyan" data-aos="fade-up">
         <div class="p-6">
           <div class="flex items-start justify-between mb-3">
-            <span class="text-3xl">${p.image || "📁"}</span>
+            <div class="w-12 h-12 bg-gradient-to-br from-cyan/20 to-mint/20 rounded-xl flex items-center justify-center">
+              <i data-lucide="${p.icon || "code-2"}" class="w-6 h-6 text-cyan"></i>
+            </div>
             <span class="text-xs px-2 py-1 rounded-lg ${p.status === "Selesai" ? "bg-mint/10 text-mint" : "bg-cyan/10 text-cyan"}">${p.status}</span>
           </div>
           <h3 class="font-mono font-bold text-base mb-2 group-hover:text-cyan transition-colors">${p.title}</h3>
@@ -1073,7 +1077,9 @@ function renderProjects() {
     <div class="project-card bg-ink2 rounded-2xl border border-white/5 overflow-hidden hover:border-cyan/30 transition-all duration-300 hover:shadow-glow-cyan" data-status="${p.status}" data-aos="fade-up">
       <div class="p-6">
         <div class="flex items-start justify-between mb-3">
-          <span class="text-3xl">${p.image || "📁"}</span>
+          <div class="w-12 h-12 bg-gradient-to-br from-cyan/20 to-mint/20 rounded-xl flex items-center justify-center">
+            <i data-lucide="${p.icon || "code-2"}" class="w-6 h-6 text-cyan"></i>
+          </div>
           <span class="text-xs px-2 py-1 rounded-lg ${p.status === "Selesai" ? "bg-mint/10 text-mint" : p.status === "Proses" ? "bg-cyan/10 text-cyan" : "bg-ink4 text-muted"}">${p.status}</span>
         </div>
         <h3 class="font-mono font-bold text-base mb-2">${p.title}</h3>
@@ -1547,8 +1553,8 @@ function renderMedia() {
           (m) => `
         <div class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-white/10 transition-all">
           <div class="flex items-start gap-4 mb-3">
-            <div class="w-12 h-12 bg-gradient-to-br from-cyan/20 to-mint/20 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
-              ${m.emoji}
+            <div class="w-12 h-12 bg-gradient-to-br from-cyan/20 to-mint/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i data-lucide="${m.icon || "music"}" class="w-6 h-6 text-cyan"></i>
             </div>
             <div class="flex-1 min-w-0">
               <p class="font-semibold text-sm mb-0.5 truncate">${m.title}</p>
@@ -1626,7 +1632,9 @@ function renderMedia() {
           (g) => `
         <div class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-white/10 transition-all">
           <div class="flex items-start gap-3 mb-3">
-            <div class="text-3xl flex-shrink-0">${g.emoji}</div>
+            <div class="w-10 h-10 bg-gradient-to-br from-mint/20 to-cyan/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i data-lucide="${g.icon || "gamepad-2"}" class="w-5 h-5 text-mint"></i>
+            </div>
             <div class="flex-1 min-w-0">
               <p class="font-semibold text-sm mb-0.5">${g.title}</p>
               <p class="text-xs text-muted">${g.platform} · ${g.genre}</p>
@@ -2084,17 +2092,38 @@ async function renderAdminOverview() {
     FIREBASE_CACHE.films.length > 0
       ? FIREBASE_CACHE.films
       : await getData("films");
+  const music =
+    FIREBASE_CACHE.music.length > 0
+      ? FIREBASE_CACHE.music
+      : await getData("music");
+  const books =
+    FIREBASE_CACHE.books.length > 0
+      ? FIREBASE_CACHE.books
+      : await getData("books");
+  const games =
+    FIREBASE_CACHE.games.length > 0
+      ? FIREBASE_CACHE.games
+      : await getData("games");
+  const experience =
+    FIREBASE_CACHE.experience.length > 0
+      ? FIREBASE_CACHE.experience
+      : await getData("experience");
 
   // Update stats
   safeSet("ov-projects", "textContent", projects.length);
   safeSet("ov-skills", "textContent", skills.length);
   safeSet("ov-films", "textContent", films.length);
+  safeSet("ov-music", "textContent", music.length);
+  safeSet("ov-books", "textContent", books.length);
+  safeSet("ov-games", "textContent", games.length);
+  safeSet("ov-experience", "textContent", experience.length);
 
-  // Create storage chart
-  renderStorageChart(projects.length, skills.length, films.length);
+  // Create charts
+  renderStorageChart(projects.length, skills.length, experience.length);
+  renderMediaChart(films.length, music.length, books.length, games.length);
 }
 
-function renderStorageChart(projectsCount, skillsCount, filmsCount) {
+function renderStorageChart(projectsCount, skillsCount, experienceCount) {
   const ctx = document.getElementById("storageChart");
   if (!ctx) return;
 
@@ -2106,19 +2135,19 @@ function renderStorageChart(projectsCount, skillsCount, filmsCount) {
   chartInstances.storageChart = new Chart(ctx, {
     type: "doughnut",
     data: {
-      labels: ["Projects", "Skills", "Films"],
+      labels: ["Projects", "Skills", "Experience"],
       datasets: [
         {
-          data: [projectsCount, skillsCount, filmsCount],
+          data: [projectsCount, skillsCount, experienceCount],
           backgroundColor: [
             "rgba(119, 202, 237, 0.7)",
             "rgba(120, 250, 185, 0.7)",
-            "rgba(250, 204, 21, 0.7)",
+            "rgba(192, 132, 252, 0.7)",
           ],
           borderColor: [
             "rgba(119, 202, 237, 1)",
             "rgba(120, 250, 185, 1)",
-            "rgba(250, 204, 21, 1)",
+            "rgba(192, 132, 252, 1)",
           ],
           borderWidth: 2,
         },
@@ -2136,6 +2165,72 @@ function renderStorageChart(projectsCount, skillsCount, filmsCount) {
             font: {
               size: 11,
             },
+          },
+        },
+      },
+    },
+  });
+}
+
+function renderMediaChart(filmsCount, musicCount, booksCount, gamesCount) {
+  const ctx = document.getElementById("mediaChart");
+  if (!ctx) return;
+
+  // Destroy existing chart if exists
+  if (chartInstances.mediaChart) {
+    chartInstances.mediaChart.destroy();
+  }
+
+  chartInstances.mediaChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Film", "Musik", "Buku", "Game"],
+      datasets: [
+        {
+          label: "Total Item",
+          data: [filmsCount, musicCount, booksCount, gamesCount],
+          backgroundColor: [
+            "rgba(250, 204, 21, 0.7)",
+            "rgba(244, 114, 182, 0.7)",
+            "rgba(251, 146, 60, 0.7)",
+            "rgba(74, 222, 128, 0.7)",
+          ],
+          borderColor: [
+            "rgba(250, 204, 21, 1)",
+            "rgba(244, 114, 182, 1)",
+            "rgba(251, 146, 60, 1)",
+            "rgba(74, 222, 128, 1)",
+          ],
+          borderWidth: 2,
+          borderRadius: 8,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: "#7a9e9a",
+            stepSize: 1,
+          },
+          grid: {
+            color: "rgba(255,255,255,0.05)",
+          },
+        },
+        x: {
+          ticks: {
+            color: "#7a9e9a",
+          },
+          grid: {
+            display: false,
           },
         },
       },
@@ -2346,7 +2441,9 @@ function renderAdmProjects() {
       <tr class="border-b border-white/5 hover:bg-white/5 transition-all">
         <td class="px-4 py-4">
           <div class="flex items-center gap-3">
-            <span class="text-2xl">${p.image || "📁"}</span>
+            <div class="w-10 h-10 bg-gradient-to-br from-cyan/20 to-mint/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i data-lucide="${p.icon || "code-2"}" class="w-5 h-5 text-cyan"></i>
+            </div>
             <div>
               <p class="font-semibold text-sm">${p.title}</p>
               <p class="text-xs text-dim mt-0.5">${p.desc}</p>
@@ -2408,7 +2505,7 @@ function editProject(id) {
   safeSet("proj-status", "value", p.status);
   safeSet("proj-link", "value", p.link);
   safeSet("proj-github", "value", p.github);
-  safeSet("proj-image", "value", p.image);
+  safeSet("proj-icon", "value", p.icon || "code-2");
 
   const featuredCheckbox = safeGet("proj-featured");
   if (featuredCheckbox) featuredCheckbox.checked = p.featured;
@@ -2427,7 +2524,7 @@ async function saveProject() {
     featured: safeGet("proj-featured")?.checked || false,
     link: safeGet("proj-link")?.value || "#",
     github: safeGet("proj-github")?.value || "#",
-    image: safeGet("proj-image")?.value || "📁",
+    icon: safeGet("proj-icon")?.value || "code-2",
   };
 
   let list = getData("projects") || [];
@@ -2858,7 +2955,9 @@ function renderAdmMusic() {
       <tr class="border-b border-white/5 hover:bg-white/5 transition-all">
         <td class="px-4 py-4">
           <div class="flex items-center gap-2">
-            <span class="text-xl">${m.emoji}</span>
+            <div class="w-8 h-8 bg-cyan/10 rounded-lg flex items-center justify-center">
+              <i data-lucide="${m.icon || "music"}" class="w-4 h-4 text-cyan"></i>
+            </div>
             <p class="font-semibold text-sm">${m.title}</p>
           </div>
         </td>
@@ -2901,7 +3000,7 @@ function editMusic(id) {
   safeSet("music-artist", "value", m.artist);
   safeSet("music-genre", "value", m.genre);
   safeSet("music-mood", "value", m.mood);
-  safeSet("music-emoji", "value", m.emoji);
+  safeSet("music-icon", "value", m.icon || "music");
 
   openModal("modal-music");
 }
@@ -2914,7 +3013,7 @@ async function saveMusic() {
     artist: safeGet("music-artist")?.value || "",
     genre: safeGet("music-genre")?.value || "",
     mood: safeGet("music-mood")?.value || "",
-    emoji: safeGet("music-emoji")?.value || "🎵",
+    icon: safeGet("music-icon")?.value || "music",
   };
 
   let list = getData("music") || [];
@@ -3105,7 +3204,9 @@ function renderAdmGames() {
       <tr class="border-b border-white/5 hover:bg-white/5 transition-all">
         <td class="px-4 py-4">
           <div class="flex items-center gap-2">
-            <span class="text-xl">${g.emoji}</span>
+            <div class="w-8 h-8 bg-mint/10 rounded-lg flex items-center justify-center">
+              <i data-lucide="${g.icon || "gamepad-2"}" class="w-4 h-4 text-mint"></i>
+            </div>
             <p class="font-semibold text-sm">${g.title}</p>
           </div>
         </td>
@@ -3164,7 +3265,7 @@ function editGame(id) {
   safeSet("game-status", "value", g.status);
   safeSet("game-rating", "value", g.rating);
   safeSet("game-rating-label", "textContent", g.rating);
-  safeSet("game-emoji", "value", g.emoji);
+  safeSet("game-icon", "value", g.icon || "gamepad-2");
 
   openModal("modal-game");
 }
@@ -3178,7 +3279,7 @@ async function saveGame() {
     genre: safeGet("game-genre")?.value || "",
     status: safeGet("game-status")?.value || "Sudah Tamat",
     rating: parseInt(safeGet("game-rating")?.value || "8"),
-    emoji: safeGet("game-emoji")?.value || "🎮",
+    icon: safeGet("game-icon")?.value || "gamepad-2",
   };
 
   let list = getData("games") || [];

@@ -1195,8 +1195,10 @@
               <p class="text-muted text-sm mb-8">
                 Kelola semua konten portfolio kamu dari sini.
               </p>
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="bg-ink2 rounded-2xl border border-white/5 p-5">
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-cyan/30 transition-all"
+                >
                   <div
                     class="w-9 h-9 bg-cyan/10 rounded-xl flex items-center justify-center mb-3"
                   >
@@ -1207,7 +1209,9 @@
                   </p>
                   <p class="text-xs text-muted mt-1">Total Proyek</p>
                 </div>
-                <div class="bg-ink2 rounded-2xl border border-white/5 p-5">
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-mint/30 transition-all"
+                >
                   <div
                     class="w-9 h-9 bg-mint/10 rounded-xl flex items-center justify-center mb-3"
                   >
@@ -1216,7 +1220,25 @@
                   <p class="text-2xl font-mono font-black" id="ov-skills">0</p>
                   <p class="text-xs text-muted mt-1">Total Skill</p>
                 </div>
-                <div class="bg-ink2 rounded-2xl border border-white/5 p-5">
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-purple-400/30 transition-all"
+                >
+                  <div
+                    class="w-9 h-9 bg-purple-400/10 rounded-xl flex items-center justify-center mb-3"
+                  >
+                    <i
+                      data-lucide="briefcase"
+                      class="w-4 h-4 text-purple-400"
+                    ></i>
+                  </div>
+                  <p class="text-2xl font-mono font-black" id="ov-experience">
+                    0
+                  </p>
+                  <p class="text-xs text-muted mt-1">Pengalaman</p>
+                </div>
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-yellow-400/30 transition-all"
+                >
                   <div
                     class="w-9 h-9 bg-yellow-400/10 rounded-xl flex items-center justify-center mb-3"
                   >
@@ -1226,10 +1248,121 @@
                   <p class="text-xs text-muted mt-1">Total Film</p>
                 </div>
               </div>
+
+              <!-- Second Row Stats -->
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-pink-400/30 transition-all"
+                >
+                  <div
+                    class="w-9 h-9 bg-pink-400/10 rounded-xl flex items-center justify-center mb-3"
+                  >
+                    <i data-lucide="music" class="w-4 h-4 text-pink-400"></i>
+                  </div>
+                  <p class="text-2xl font-mono font-black" id="ov-music">0</p>
+                  <p class="text-xs text-muted mt-1">Lagu Favorit</p>
+                </div>
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-orange-400/30 transition-all"
+                >
+                  <div
+                    class="w-9 h-9 bg-orange-400/10 rounded-xl flex items-center justify-center mb-3"
+                  >
+                    <i data-lucide="book" class="w-4 h-4 text-orange-400"></i>
+                  </div>
+                  <p class="text-2xl font-mono font-black" id="ov-books">0</p>
+                  <p class="text-xs text-muted mt-1">Koleksi Buku</p>
+                </div>
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-green-400/30 transition-all"
+                >
+                  <div
+                    class="w-9 h-9 bg-green-400/10 rounded-xl flex items-center justify-center mb-3"
+                  >
+                    <i
+                      data-lucide="gamepad-2"
+                      class="w-4 h-4 text-green-400"
+                    ></i>
+                  </div>
+                  <p class="text-2xl font-mono font-black" id="ov-games">0</p>
+                  <p class="text-xs text-muted mt-1">Game Library</p>
+                </div>
+              </div>
+
+              <!-- Charts Row -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                  <h3 class="font-bold text-sm mb-4">Komposisi Konten</h3>
+                  <div style="height: 220px">
+                    <canvas id="storageChart"></canvas>
+                  </div>
+                </div>
+                <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                  <h3 class="font-bold text-sm mb-4">Statistik Media</h3>
+                  <div style="height: 220px">
+                    <canvas id="mediaChart"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick Actions -->
               <div class="bg-ink2 rounded-2xl border border-white/5 p-6 mb-6">
-                <h3 class="font-bold text-sm mb-4">Komposisi Data</h3>
-                <div style="height: 220px">
-                  <canvas id="storageChart"></canvas>
+                <h3 class="font-bold text-sm mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <button
+                    onclick="adminTab('projects-a')"
+                    class="flex items-center gap-2 text-xs bg-ink3 hover:bg-cyan/10 border border-white/10 hover:border-cyan/30 px-4 py-3 rounded-xl transition-all"
+                  >
+                    <i data-lucide="plus-circle" class="w-4 h-4 text-cyan"></i>
+                    <span>Tambah Proyek</span>
+                  </button>
+                  <button
+                    onclick="adminTab('skills-a')"
+                    class="flex items-center gap-2 text-xs bg-ink3 hover:bg-mint/10 border border-white/10 hover:border-mint/30 px-4 py-3 rounded-xl transition-all"
+                  >
+                    <i data-lucide="plus-circle" class="w-4 h-4 text-mint"></i>
+                    <span>Tambah Skill</span>
+                  </button>
+                  <button
+                    onclick="adminTab('films-a')"
+                    class="flex items-center gap-2 text-xs bg-ink3 hover:bg-yellow-400/10 border border-white/10 hover:border-yellow-400/30 px-4 py-3 rounded-xl transition-all"
+                  >
+                    <i
+                      data-lucide="plus-circle"
+                      class="w-4 h-4 text-yellow-400"
+                    ></i>
+                    <span>Tambah Film</span>
+                  </button>
+                  <button
+                    onclick="adminTab('profile')"
+                    class="flex items-center gap-2 text-xs bg-ink3 hover:bg-purple-400/10 border border-white/10 hover:border-purple-400/30 px-4 py-3 rounded-xl transition-all"
+                  >
+                    <i data-lucide="edit-3" class="w-4 h-4 text-purple-400"></i>
+                    <span>Edit Profil</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Recent Activity -->
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6 mb-6">
+                <h3 class="font-bold text-sm mb-4">Aktivitas Terkini</h3>
+                <div class="space-y-3" id="recent-activity">
+                  <div class="flex items-start gap-3 text-xs">
+                    <div
+                      class="w-8 h-8 bg-cyan/10 rounded-lg flex items-center justify-center flex-shrink-0"
+                    >
+                      <i
+                        data-lucide="file-plus"
+                        class="w-3.5 h-3.5 text-cyan"
+                      ></i>
+                    </div>
+                    <div class="flex-1">
+                      <p class="text-[#e8f4f0]">Portfolio diinisialisasi</p>
+                      <p class="text-muted mt-0.5">
+                        Siap untuk ditambahkan konten
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="bg-ink2 rounded-2xl border border-white/5 p-5">
@@ -2123,8 +2256,30 @@
           <input type="hidden" id="proj-id" />
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="adm-label">Emoji/Ikon</label
-              ><input id="proj-image" class="adm-input" placeholder="🛒" />
+              <label class="adm-label">Icon</label>
+              <select id="proj-icon" class="adm-input">
+                <option value="code-2">Code (Default)</option>
+                <option value="laptop">Laptop</option>
+                <option value="smartphone">Smartphone</option>
+                <option value="monitor">Monitor</option>
+                <option value="cpu">CPU</option>
+                <option value="database">Database</option>
+                <option value="server">Server</option>
+                <option value="globe">Globe</option>
+                <option value="layers">Layers</option>
+                <option value="box">Box</option>
+                <option value="package">Package</option>
+                <option value="shopping-cart">Shopping Cart</option>
+                <option value="shopping-bag">Shopping Bag</option>
+                <option value="credit-card">Credit Card</option>
+                <option value="briefcase">Briefcase</option>
+                <option value="rocket">Rocket</option>
+                <option value="zap">Lightning</option>
+                <option value="activity">Activity</option>
+                <option value="bar-chart">Bar Chart</option>
+                <option value="pie-chart">Pie Chart</option>
+                <option value="trending-up">Trending Up</option>
+              </select>
             </div>
             <div>
               <label class="adm-label">Status</label>
@@ -2478,8 +2633,17 @@
             </div>
           </div>
           <div>
-            <label class="adm-label">Emoji Ikon</label
-            ><input id="music-emoji" class="adm-input" placeholder="🎵" />
+            <label class="adm-label">Icon</label>
+            <select id="music-icon" class="adm-input">
+              <option value="music">Music (Default)</option>
+              <option value="headphones">Headphones</option>
+              <option value="mic">Microphone</option>
+              <option value="radio">Radio</option>
+              <option value="disc">Disc</option>
+              <option value="music-2">Music 2</option>
+              <option value="music-3">Music 3</option>
+              <option value="music-4">Music 4</option>
+            </select>
           </div>
         </div>
         <div class="p-6 border-t border-white/5 flex gap-3 justify-end">
@@ -2653,8 +2817,17 @@
             />
           </div>
           <div>
-            <label class="adm-label">Emoji</label
-            ><input id="game-emoji" class="adm-input" placeholder="🎮" />
+            <label class="adm-label">Icon</label>
+            <select id="game-icon" class="adm-input">
+              <option value="gamepad-2">Gamepad (Default)</option>
+              <option value="trophy">Trophy</option>
+              <option value="target">Target</option>
+              <option value="sword">Sword</option>
+              <option value="shield">Shield</option>
+              <option value="flag">Flag</option>
+              <option value="zap">Lightning</option>
+              <option value="crown">Crown</option>
+            </select>
           </div>
         </div>
         <div class="p-6 border-t border-white/5 flex gap-3 justify-end">
@@ -2708,8 +2881,17 @@
                 />
               </div>
               <div>
-                <label class="adm-label">Emoji Cover</label
-                ><input id="blog-emoji" class="adm-input" placeholder="📝" />
+                <label class="adm-label">Icon Cover</label>
+                <select id="blog-icon" class="adm-input">
+                  <option value="file-text">Document (Default)</option>
+                  <option value="pen-tool">Pen</option>
+                  <option value="book-open">Book Open</option>
+                  <option value="newspaper">Newspaper</option>
+                  <option value="edit-3">Edit</option>
+                  <option value="feather">Feather</option>
+                  <option value="bookmark">Bookmark</option>
+                  <option value="file-code">Code File</option>
+                </select>
               </div>
             </div>
           </div>
@@ -2755,7 +2937,11 @@
       <div
         class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-sm p-8 text-center shadow-card"
       >
-        <div class="text-4xl mb-4">🗑️</div>
+        <div
+          class="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mb-4 mx-auto"
+        >
+          <i data-lucide="trash-2" class="w-6 h-6 text-red-400"></i>
+        </div>
         <h3 class="font-mono font-bold text-lg mb-2">Hapus Data?</h3>
         <p class="text-muted text-sm mb-6">
           Tindakan ini tidak dapat dibatalkan.
