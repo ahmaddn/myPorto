@@ -1882,7 +1882,7 @@ const admState = {
   section: "overview",
   projects: {
     page: 1,
-    perPage: 5,
+    perPage: 10,
     search: "",
     sortKey: "title",
     sortDir: "asc",
@@ -1890,15 +1890,15 @@ const admState = {
   skills: { page: 1, perPage: 10, search: "", sortKey: "name", sortDir: "asc" },
   experience: {
     page: 1,
-    perPage: 5,
+    perPage: 10,
     search: "",
     sortKey: "year",
     sortDir: "desc",
   },
-  films: { page: 1, perPage: 5, search: "", sortKey: "title", sortDir: "asc" },
-  music: { page: 1, perPage: 5, search: "", sortKey: "title", sortDir: "asc" },
-  books: { page: 1, perPage: 6, search: "", sortKey: "title", sortDir: "asc" },
-  games: { page: 1, perPage: 6, search: "", sortKey: "title", sortDir: "asc" },
+  films: { page: 1, perPage: 10, search: "", sortKey: "title", sortDir: "asc" },
+  music: { page: 1, perPage: 10, search: "", sortKey: "title", sortDir: "asc" },
+  books: { page: 1, perPage: 10, search: "", sortKey: "title", sortDir: "asc" },
+  games: { page: 1, perPage: 10, search: "", sortKey: "title", sortDir: "asc" },
 };
 
 // State untuk sorting di section biasa (non-admin)
