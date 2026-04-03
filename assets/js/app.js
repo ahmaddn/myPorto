@@ -383,7 +383,6 @@ async function initData() {
       FIREBASE_CACHE.profile = DEFAULTS.profile;
 
     CACHE_LOADED = true;
-    console.log("✅ Firebase data loaded successfully:", FIREBASE_CACHE);
   } catch (error) {
     console.error("❌ Error loading Firebase data:", error);
     // Fallback ke defaults jika error
@@ -809,7 +808,6 @@ async function renderDashboard() {
   const skills = getData("skills") || [];
   const exp = getData("experience") || [];
   const projects = getData("projects") || [];
-  console.log("profile:", profile.name);
   // Intro - with null checks
   safeSet("hero-avatar-display", "textContent", profile.avatar || "👨‍💻");
   safeSet("hero-name-display", "textContent", profile.name);
@@ -1842,7 +1840,6 @@ function renderMoodChart() {
 function renderContact() {
   const profile = getData("profile");
   if (!profile) return; // ← guard jika profile belum loaded
-  console.log("Rendering contact with profile:", profile);
 
   // textContent tetap pakai safeSet
   safeSet("contact-email", "textContent", profile.email);

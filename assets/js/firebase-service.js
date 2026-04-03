@@ -35,8 +35,6 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
-console.log("Firebase initialized", analytics);
-
 // ─────────────────────────────────────────
 //  FIRESTORE OPERATIONS
 // ─────────────────────────────────────────
