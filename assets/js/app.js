@@ -11,7 +11,13 @@ import {
   batchAddData,
   clearCollection,
   getDocumentById,
+  db,
 } from "./firebase-service.js";
+
+import {
+  doc,
+  updateDoc,
+} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
 // ─────────────────────────────────────────
 //  GLOBAL STATE & CACHE
@@ -384,7 +390,7 @@ async function initData() {
 
     CACHE_LOADED = true;
   } catch (error) {
-    console.error("❌ Error loading Firebase data:", error);
+    console.error("Error loading Firebase data:", error);
     // Fallback ke defaults jika error
     FIREBASE_CACHE = { ...DEFAULTS };
     CACHE_LOADED = true;
@@ -423,10 +429,10 @@ async function setData(key, value) {
       }
     }
 
-    console.log(`✅ Data '${key}' saved to Firebase`);
+    console.log(`Data '${key}' saved to Firebase`);
     return true;
   } catch (error) {
-    console.error(`❌ Error saving '${key}' to Firebase:`, error);
+    console.error(`Error saving '${key}' to Firebase:`, error);
     return false;
   }
 }
@@ -2297,18 +2303,25 @@ async function renderAdminMessages() {
         minute: "2-digit",
       });
 
+      const readBadge = msg.read
+        ? ""
+        : '<span class="inline-block w-2 h-2 bg-cyan rounded-full"></span>';
+
       return `
-      <div class="bg-ink3 rounded-xl border border-white/5 p-4 hover:border-cyan/30 transition-all">
+      <div class="bg-ink3 rounded-xl border border-white/5 p-4 hover:border-cyan/30 transition-all ${!msg.read ? "ring-1 ring-cyan/20" : ""}">
         <div class="flex items-start justify-between mb-2">
           <div class="flex-1">
-            <p class="font-medium text-sm mb-1">${msg.name}</p>
+            <div class="flex items-center gap-2">
+              <p class="font-medium text-sm mb-1">${msg.name}</p>
+              ${readBadge}
+            </div>
             <p class="text-xs text-cyan mb-2">${msg.email}</p>
           </div>
           <span class="text-xs text-muted">${formattedDate}</span>
         </div>
         <p class="text-sm text-muted mb-3 line-clamp-2">${msg.message}</p>
         <button 
-          onclick="viewMessage('${msg.id}')" 
+          onclick="viewMessage('${msg._docId}')" 
           class="text-xs text-cyan hover:text-mint transition-colors flex items-center gap-1"
         >
           <i data-lucide="eye" class="w-3.5 h-3.5"></i> Lihat Detail
@@ -2339,7 +2352,7 @@ async function saveProfile() {
   try {
     await setData("profile", profile);
     FIREBASE_CACHE.profile = profile;
-    toast("✅ Profil berhasil diperbarui!", "success");
+    toast("Profil berhasil diperbarui!", "success");
 
     // Re-render sections that use profile data
     renderDashboard();
@@ -2348,7 +2361,7 @@ async function saveProfile() {
     renderFooter();
   } catch (error) {
     console.error("Error saving profile:", error);
-    toast("❌ Gagal menyimpan profil", "error");
+    toast("Gagal menyimpan profil", "error");
   }
 }
 
@@ -3367,18 +3380,152 @@ async function resetAllData() {
 }
 
 // ─────────────────────────────────────────
-//  CONTACT FORM SUBMISSION
+//  CONTACT FORM SUBMISSION WITH SECURITY
 // ─────────────────────────────────────────
-async function submitContact() {
-  const name = safeGet("form-name")?.value || "";
-  const email = safeGet("form-email")?.value || "";
-  const message = safeGet("form-msg")?.value || "";
 
-  if (!name || !email || !message) {
-    toast("❌ Harap isi semua field!", "error");
+/**
+ * Check if device has sent message today
+ */
+function canSendMessage() {
+  const lastSent = localStorage.getItem("lastMessageSent");
+  if (!lastSent) return true;
+
+  const lastDate = new Date(lastSent);
+  const today = new Date();
+
+  // Reset jika hari berbeda
+  if (
+    lastDate.getDate() !== today.getDate() ||
+    lastDate.getMonth() !== today.getMonth() ||
+    lastDate.getFullYear() !== today.getFullYear()
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Get remaining time until can send again
+ */
+function getTimeUntilReset() {
+  const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+
+  const diff = tomorrow - now;
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+  return `${hours} jam ${minutes} menit`;
+}
+
+/**
+ * Sanitize input untuk mencegah XSS
+ */
+function sanitizeInput(input) {
+  const div = document.createElement("div");
+  div.textContent = input;
+  return div.innerHTML;
+}
+
+/**
+ * Validate email format
+ */
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+/**
+ * Detect spam patterns
+ */
+function containsSpam(text) {
+  const spamPatterns = [
+    /\b(viagra|cialis|casino|lottery|winner)\b/i,
+    /https?:\/\/[^\s]+/gi, // Multiple URLs
+    /(.)\1{10,}/, // Repeated characters
+  ];
+
+  return spamPatterns.some((pattern) => pattern.test(text));
+}
+
+async function submitContact() {
+  console.log("🚀 submitContact() called");
+
+  // 1. Check honeypot field (hidden field untuk menangkap bot)
+  const honeypot = safeGet("form-website")?.value || "";
+  if (honeypot) {
+    console.warn("Bot detected via honeypot");
+    toast("Pesan berhasil dikirim!", "success"); // Fake success untuk bot
     return;
   }
 
+  // 2. Get and validate inputs
+  const nameRaw = safeGet("form-name")?.value || "";
+  const emailRaw = safeGet("form-email")?.value || "";
+  const messageRaw = safeGet("form-msg")?.value || "";
+
+  console.log("📝 Input values:", {
+    name: nameRaw,
+    email: emailRaw,
+    messageLength: messageRaw.length,
+  });
+
+  if (!nameRaw || !emailRaw || !messageRaw) {
+    console.log("Empty fields detected");
+    toast("Harap isi semua field!", "error");
+    return;
+  }
+
+  // 3. Sanitize inputs
+  const name = sanitizeInput(nameRaw.trim());
+  const email = sanitizeInput(emailRaw.trim().toLowerCase());
+  const message = sanitizeInput(messageRaw.trim());
+
+  // 4. Validate email
+  if (!isValidEmail(email)) {
+    console.log("Invalid email format:", email);
+    toast("Format email tidak valid!", "error");
+    return;
+  }
+
+  // 5. Check length
+  if (name.length < 2 || name.length > 100) {
+    console.log("Invalid name length:", name.length);
+    toast("Nama harus 2-100 karakter!", "error");
+    return;
+  }
+
+  if (message.length < 10 || message.length > 1000) {
+    console.log("Invalid message length:", message.length);
+    toast("Pesan harus 10-1000 karakter!", "error");
+    return;
+  }
+
+  // 6. Spam detection
+  if (containsSpam(message) || containsSpam(name)) {
+    console.log("Spam detected");
+    toast("Pesan terdeteksi sebagai spam!", "error");
+    return;
+  }
+
+  // 7. Rate limiting check (setelah validasi)
+  const canSend = canSendMessage();
+  console.log("⏰ Rate limit check:", canSend);
+
+  if (!canSend) {
+    const timeLeft = getTimeUntilReset();
+    console.log("⏳ Rate limited. Time left:", timeLeft);
+    toast(
+      `⏳ Anda sudah mengirim pesan hari ini. Coba lagi dalam ${timeLeft}`,
+      "error",
+    );
+    return;
+  }
+
+  // 8. Prepare data
   const messageData = {
     id: uid(),
     name,
@@ -3386,21 +3533,75 @@ async function submitContact() {
     message,
     timestamp: new Date().toISOString(),
     read: false,
+    device: navigator.userAgent.substring(0, 100), // Track device
   };
 
-  try {
-    await addFirebaseData("messages", messageData);
+  console.log("📦 Message data prepared:", messageData);
 
-    // Clear form
+  try {
+    console.log("💾 Saving to Firebase...");
+
+    // Set rate limit SEBELUM mengirim data untuk mencegah double submission
+    localStorage.setItem("lastMessageSent", new Date().toISOString());
+    console.log("localStorage set");
+
+    const result = await addFirebaseData("messages", messageData);
+    console.log("📡 Firebase result:", result);
+
+    if (result.success) {
+      console.log("Message saved successfully with ID:", result.id);
+
+      // Clear form
+      safeSet("form-name", "value", "");
+      safeSet("form-email", "value", "");
+      safeSet("form-msg", "value", "");
+
+      toast("Pesan berhasil dikirim!", "success");
+    } else {
+      throw new Error(result.error || "Failed to save message");
+    }
+  } catch (error) {
+    console.error("Error submitting contact:", error);
+    // Hapus localStorage jika gagal kirim
+    localStorage.removeItem("lastMessageSent");
+    console.log("🔄 localStorage cleared due to error");
+    toast("Gagal mengirim pesan. Coba lagi!", "error");
+  }
+}
+
+/**
+ * Send message via WhatsApp
+ */
+function sendViaWhatsApp() {
+  // Get form values
+  const name = safeGet("form-name")?.value || "";
+  const email = safeGet("form-email")?.value || "";
+  const message = safeGet("form-msg")?.value || "";
+
+  if (!name || !email || !message) {
+    toast("Harap isi semua field!", "error");
+    return;
+  }
+
+  // Format WhatsApp message
+  const waMessage = `*Pesan dari Portfolio Website*\n\n*Nama:* ${name}\n*Email:* ${email}\n\n*Pesan:*\n${message}`;
+
+  // GANTI DENGAN NOMOR WHATSAPP ANDA (format: 62xxx tanpa +)
+  const phoneNumber = "6285700391890"; // ⚠️ UBAH INI!
+
+  // Encode message untuk URL
+  const encodedMessage = encodeURIComponent(waMessage);
+
+  // Buka WhatsApp
+  const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+  window.open(waUrl, "_blank");
+
+  // Optional: Clear form setelah redirect
+  setTimeout(() => {
     safeSet("form-name", "value", "");
     safeSet("form-email", "value", "");
     safeSet("form-msg", "value", "");
-
-    toast("✅ Pesan berhasil dikirim!", "success");
-  } catch (error) {
-    console.error("Error submitting contact:", error);
-    toast("❌ Gagal mengirim pesan", "error");
-  }
+  }, 500);
 }
 
 // ─────────────────────────────────────────
@@ -3410,20 +3611,20 @@ async function clearMessages() {
   showConfirm(async () => {
     try {
       await clearCollection("messages");
-      toast("✅ Semua pesan berhasil dihapus!", "success");
+      toast("Semua pesan berhasil dihapus!", "success");
       renderAdminMessages();
     } catch (error) {
       console.error("Error clearing messages:", error);
-      toast("❌ Gagal menghapus pesan", "error");
+      toast("Gagal menghapus pesan", "error");
     }
   });
 }
 
-async function viewMessage(id) {
+async function viewMessage(docId) {
   try {
-    const message = await getDocumentById("messages", id);
+    const message = await getDocumentById("messages", docId);
     if (!message) {
-      toast("❌ Pesan tidak ditemukan", "error");
+      toast("Pesan tidak ditemukan", "error");
       return;
     }
 
@@ -3475,14 +3676,20 @@ async function viewMessage(id) {
     document.body.appendChild(modal);
     lucide.createIcons();
 
-    // Mark as read
+    // Mark as read - update menggunakan docId langsung
     if (!message.read) {
-      await updateFirebaseData("messages", id, { read: true });
-      renderAdminMessages();
+      try {
+        // Update document langsung menggunakan docId
+        const docRef = doc(db, "messages", docId);
+        await updateDoc(docRef, { read: true });
+        renderAdminMessages();
+      } catch (updateError) {
+        console.error("Error marking message as read:", updateError);
+      }
     }
   } catch (error) {
     console.error("Error viewing message:", error);
-    toast("❌ Gagal membuka pesan", "error");
+    toast("Gagal membuka pesan", "error");
   }
 }
 
@@ -3641,6 +3848,7 @@ window.admGamesSearch = admGamesSearch;
 window.deleteItem = deleteItem;
 window.resetAllData = resetAllData;
 window.submitContact = submitContact;
+window.sendViaWhatsApp = sendViaWhatsApp;
 window.clearMessages = clearMessages;
 window.viewMessage = viewMessage;
 window.renderAdmProjects = renderAdmProjects;
