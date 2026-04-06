@@ -219,6 +219,8 @@ const DEFAULTS = {
       genre: "Sci-Fi",
       year: 2010,
       rating: 10,
+      review:
+        "Film yang sangat kompleks namun brilian dalam eksekusinya. Nolan berhasil membuat cerita yang berlapis-lapis namun tetap koheren.",
       comment: "Mind-bending masterpiece!",
     },
     {
@@ -227,6 +229,8 @@ const DEFAULTS = {
       genre: "Drama",
       year: 1994,
       rating: 10,
+      review:
+        "Sebuah kisah tentang harapan dan persahabatan yang sangat menyentuh. Akting Morgan Freeman dan Tim Robbins luar biasa.",
       comment: "Hope is a good thing.",
     },
     {
@@ -235,6 +239,8 @@ const DEFAULTS = {
       genre: "Sci-Fi",
       year: 2014,
       rating: 9,
+      review:
+        "Visual yang memukau dengan cerita yang emosional. Score musik Hans Zimmer menambah kedalaman emosi film ini.",
       comment: "Love transcends dimensions.",
     },
     {
@@ -243,6 +249,8 @@ const DEFAULTS = {
       genre: "Thriller",
       year: 2019,
       rating: 10,
+      review:
+        "Kritik sosial yang tajam dikemas dalam thriller yang mencekam. Bong Joon-ho membuktikan kehebatannya sebagai sutradara.",
       comment: "Brilliant social commentary.",
     },
   ],
@@ -723,7 +731,9 @@ function resetFilmForm() {
   safeSet("film-year", "value", "");
   safeSet("film-genre", "value", "");
   safeSet("film-rating", "value", "5");
-  safeSet("film-poster", "value", "");
+  safeSet("film-rating-label", "textContent", "5");
+  safeSet("film-review", "value", "");
+  safeSet("film-comment", "value", "");
   safeSet("modal-film-title", "textContent", "Tambah Film");
 }
 
@@ -1433,7 +1443,7 @@ function renderSkillCategoryChart() {
 }
 
 // ─────────────────────────────────────────
-//  RENDER: MEDIA (Selera Saya)
+//  RENDER: MEDIA (Favorit)
 // ─────────────────────────────────────────
 function renderMedia() {
   let films = getData("films") || [];
@@ -1513,7 +1523,9 @@ function renderMedia() {
   } else {
     if (filmsEmptyEl) filmsEmptyEl.classList.add("hidden");
     if (filmsTbodyEl) {
-      filmsTbodyEl.innerHTML = films
+      // Hanya tampilkan Top 10 untuk tab utama
+      const top10Films = films.slice(0, 10);
+      filmsTbodyEl.innerHTML = top10Films
         .map(
           (f, i) => `
         <tr class="border-b border-white/5 hover:bg-ink3/30 transition-colors">
@@ -1535,11 +1547,44 @@ function renderMedia() {
               <span class="text-xs text-muted">${f.rating}/10</span>
             </div>
           </td>
+          <td class="px-5 py-4 text-dim text-xs max-w-xs truncate">${f.review || "-"}</td>
           <td class="px-5 py-4 text-dim italic text-xs">"${f.comment}"</td>
         </tr>`,
         )
         .join("");
     }
+  }
+
+  // Render halaman detail films (semua data)
+  const filmsDetailTbody = safeGet("films-detail-tbody");
+  if (filmsDetailTbody) {
+    filmsDetailTbody.innerHTML = films
+      .map(
+        (f, i) => `
+      <tr class="border-b border-white/5 hover:bg-ink3/30 transition-colors">
+        <td class="px-5 py-4 text-muted">${i + 1}</td>
+        <td class="px-5 py-4 font-medium">${f.title}</td>
+        <td class="px-5 py-4 text-muted">${f.genre}</td>
+        <td class="px-5 py-4 text-muted">${f.year}</td>
+        <td class="px-5 py-4">
+          <div class="flex items-center gap-2">
+            <div class="flex gap-0.5">
+              ${Array(10)
+                .fill(0)
+                .map(
+                  (_, j) =>
+                    `<span class="w-1.5 h-1.5 rounded-full ${j < f.rating ? "bg-cyan" : "bg-ink4"}"></span>`,
+                )
+                .join("")}
+            </div>
+            <span class="text-xs text-muted">${f.rating}/10</span>
+          </div>
+        </td>
+        <td class="px-5 py-4 text-dim text-xs max-w-md">${f.review || "-"}</td>
+        <td class="px-5 py-4 text-dim italic text-xs">"${f.comment}"</td>
+      </tr>`,
+      )
+      .join("");
   }
 
   // Music Grid
@@ -1552,7 +1597,9 @@ function renderMedia() {
   } else {
     if (musicEmptyEl) musicEmptyEl.classList.add("hidden");
     if (musicGridEl) {
-      musicGridEl.innerHTML = music
+      // Hanya tampilkan Top 10 untuk tab utama
+      const top10Music = music.slice(0, 10);
+      musicGridEl.innerHTML = top10Music
         .map(
           (m) => `
         <div class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-white/10 transition-all">
@@ -1575,6 +1622,31 @@ function renderMedia() {
     }
   }
 
+  // Render halaman detail music (semua data)
+  const musicDetailGrid = safeGet("music-detail-grid");
+  if (musicDetailGrid) {
+    musicDetailGrid.innerHTML = music
+      .map(
+        (m) => `
+      <div class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-white/10 transition-all">
+        <div class="flex items-start gap-4 mb-3">
+          <div class="w-12 h-12 bg-gradient-to-br from-cyan/20 to-mint/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i data-lucide="${m.icon || "music"}" class="w-6 h-6 text-cyan"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-sm mb-0.5 truncate">${m.title}</p>
+            <p class="text-xs text-muted truncate">${m.artist}</p>
+          </div>
+        </div>
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-dim">${m.genre}</span>
+          <span class="px-2 py-1 bg-ink3 text-muted rounded-lg">${m.mood}</span>
+        </div>
+      </div>`,
+      )
+      .join("");
+  }
+
   // Books Grid
   const booksGridEl = safeGet("books-grid");
   const booksEmptyEl = safeGet("books-empty");
@@ -1585,7 +1657,9 @@ function renderMedia() {
   } else {
     if (booksEmptyEl) booksEmptyEl.classList.add("hidden");
     if (booksGridEl) {
-      booksGridEl.innerHTML = books
+      // Hanya tampilkan Top 10 untuk tab utama
+      const top10Books = books.slice(0, 10);
+      booksGridEl.innerHTML = top10Books
         .map(
           (b) => `
         <div class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-white/10 transition-all">
@@ -1621,6 +1695,44 @@ function renderMedia() {
     }
   }
 
+  // Render halaman detail books (semua data)
+  const booksDetailGrid = safeGet("books-detail-grid");
+  if (booksDetailGrid) {
+    booksDetailGrid.innerHTML = books
+      .map(
+        (b) => `
+      <div class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-white/10 transition-all">
+        <div class="flex items-start gap-3 mb-3">
+          <div class="w-10 h-14 bg-gradient-to-br from-cyan/20 to-mint/20 rounded-lg flex items-center justify-center text-xl flex-shrink-0">
+            📖
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-sm mb-0.5">${b.title}</p>
+            <p class="text-xs text-muted">${b.author}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 mb-2">
+          <div class="flex gap-0.5">
+            ${Array(10)
+              .fill(0)
+              .map(
+                (_, i) =>
+                  `<span class="w-2 h-2 rounded-full ${i < b.rating ? "bg-mint" : "bg-ink4"}"></span>`,
+              )
+              .join("")}
+          </div>
+          <span class="text-xs text-muted">${b.rating}/10</span>
+        </div>
+        <p class="text-xs text-dim italic mb-2">"${b.review}"</p>
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-dim">${b.genre}</span>
+          <span class="px-2 py-0.5 bg-ink3 text-muted rounded-lg">${b.status}</span>
+        </div>
+      </div>`,
+      )
+      .join("");
+  }
+
   // Games Grid
   const gamesGridEl = safeGet("games-grid");
   const gamesEmptyEl = safeGet("games-empty");
@@ -1631,7 +1743,9 @@ function renderMedia() {
   } else {
     if (gamesEmptyEl) gamesEmptyEl.classList.add("hidden");
     if (gamesGridEl) {
-      gamesGridEl.innerHTML = games
+      // Hanya tampilkan Top 10 untuk tab utama
+      const top10Games = games.slice(0, 10);
+      gamesGridEl.innerHTML = top10Games
         .map(
           (g) => `
         <div class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-white/10 transition-all">
@@ -1661,6 +1775,40 @@ function renderMedia() {
         )
         .join("");
     }
+  }
+
+  // Render halaman detail games (semua data)
+  const gamesDetailGrid = safeGet("games-detail-grid");
+  if (gamesDetailGrid) {
+    gamesDetailGrid.innerHTML = games
+      .map(
+        (g) => `
+      <div class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-white/10 transition-all">
+        <div class="flex items-start gap-3 mb-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-mint/20 to-cyan/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i data-lucide="${g.icon || "gamepad-2"}" class="w-5 h-5 text-mint"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-sm mb-0.5">${g.title}</p>
+            <p class="text-xs text-muted">${g.platform} · ${g.genre}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 mb-2">
+          <div class="flex gap-0.5">
+            ${Array(10)
+              .fill(0)
+              .map(
+                (_, i) =>
+                  `<span class="w-2 h-2 rounded-full ${i < g.rating ? "bg-cyan" : "bg-ink4"}"></span>`,
+              )
+              .join("")}
+          </div>
+          <span class="text-xs text-muted">${g.rating}/10</span>
+        </div>
+        <span class="text-xs px-2 py-1 bg-ink3 text-muted rounded-lg">${g.status}</span>
+      </div>`,
+      )
+      .join("");
   }
 
   lucide.createIcons();
@@ -2891,6 +3039,7 @@ function editFilm(id) {
   safeSet("film-year", "value", f.year);
   safeSet("film-rating", "value", f.rating);
   safeSet("film-rating-label", "textContent", f.rating);
+  safeSet("film-review", "value", f.review || "");
   safeSet("film-comment", "value", f.comment);
 
   openModal("modal-film");
@@ -2904,6 +3053,7 @@ async function saveFilm() {
     genre: safeGet("film-genre")?.value || "",
     year: parseInt(safeGet("film-year")?.value || "2024"),
     rating: parseInt(safeGet("film-rating")?.value || "8"),
+    review: safeGet("film-review")?.value || "",
     comment: safeGet("film-comment")?.value || "",
   };
 
@@ -3792,6 +3942,7 @@ function closeAdminSidebar() {
 
 // Export functions ke global scope untuk onclick handlers
 window.navigate = navigate;
+window.navigateTo = navigate; // Alias untuk kompatibilitas dengan onclick di HTML
 window.toggleMobile = toggleMobile;
 window.closeMobileMenu = closeMobileMenu;
 window.isMobileMenuOpen = isMobileMenuOpen;

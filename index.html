@@ -236,7 +236,7 @@
         "
         class="mobile-nav-link flex items-center gap-2 text-sm text-muted px-3 py-2.5 rounded-lg hover:bg-white/5 hover:text-cyan transition-all"
       >
-        <i data-lucide="star" class="w-4 h-4"></i> Selera Saya
+        <i data-lucide="star" class="w-4 h-4"></i> Favorit
       </button>
       <button
         onclick="
@@ -719,7 +719,7 @@
       </section>
 
       <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  PAGE: SELERA SAYA
+  PAGE: Favorit
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
       <section id="page-media" class="page">
         <div class="max-w-7xl mx-auto px-5 py-14">
@@ -770,7 +770,7 @@
           <!-- Tab: Films -->
           <div id="tab-films" class="hiburan-pane">
             <div
-              class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table mb-8"
+              class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table mb-4"
             >
               <table class="w-full text-sm">
                 <thead>
@@ -807,6 +807,11 @@
                     <th
                       class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
                     >
+                      Review
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                    >
                       Komentar
                     </th>
                   </tr>
@@ -820,6 +825,16 @@
                 ></i>
                 <p>Belum ada film. Tambahkan di Admin.</p>
               </div>
+            </div>
+            <!-- Tombol Selengkapnya -->
+            <div class="text-center mb-8">
+              <button
+                onclick="navigateTo('films-detail')"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-cyan/10 hover:bg-cyan/20 text-cyan border border-cyan/30 rounded-xl transition-all font-mono text-sm"
+              >
+                Lihat Semua Film
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
             </div>
             <div
               class="bg-ink2 rounded-2xl border border-white/5 p-6"
@@ -835,7 +850,7 @@
           <div id="tab-music" class="hiburan-pane hidden">
             <div
               id="music-grid"
-              class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"
+              class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
             ></div>
             <div id="music-empty" class="hidden text-center py-16 text-muted">
               <i
@@ -843,6 +858,16 @@
                 class="w-10 h-10 mx-auto mb-3 text-dim"
               ></i>
               <p>Belum ada musik. Tambahkan di Admin.</p>
+            </div>
+            <!-- Tombol Selengkapnya -->
+            <div class="text-center mb-8">
+              <button
+                onclick="navigateTo('music-detail')"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-cyan/10 hover:bg-cyan/20 text-cyan border border-cyan/30 rounded-xl transition-all font-mono text-sm"
+              >
+                Lihat Semua Musik
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
             </div>
             <div
               class="bg-ink2 rounded-2xl border border-white/5 p-6"
@@ -858,18 +883,28 @@
           <div id="tab-books" class="hiburan-pane hidden">
             <div
               id="books-grid"
-              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-4"
             ></div>
             <div id="books-empty" class="hidden text-center py-16 text-muted">
               <i data-lucide="book" class="w-10 h-10 mx-auto mb-3 text-dim"></i>
               <p>Belum ada buku. Tambahkan di Admin.</p>
+            </div>
+            <!-- Tombol Selengkapnya -->
+            <div class="text-center mb-8">
+              <button
+                onclick="navigateTo('books-detail')"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-cyan/10 hover:bg-cyan/20 text-cyan border border-cyan/30 rounded-xl transition-all font-mono text-sm"
+              >
+                Lihat Semua Buku
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
             </div>
           </div>
           <!-- Tab: Games -->
           <div id="tab-games" class="hiburan-pane hidden">
             <div
               id="games-grid"
-              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-4"
             ></div>
             <div id="games-empty" class="hidden text-center py-16 text-muted">
               <i
@@ -878,11 +913,175 @@
               ></i>
               <p>Belum ada game. Tambahkan di Admin.</p>
             </div>
+            <!-- Tombol Selengkapnya -->
+            <div class="text-center mb-8">
+              <button
+                onclick="navigateTo('games-detail')"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-cyan/10 hover:bg-cyan/20 text-cyan border border-cyan/30 rounded-xl transition-all font-mono text-sm"
+              >
+                Lihat Semua Game
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: DETAIL FILMS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-films-detail" class="page">
+        <div class="max-w-7xl mx-auto px-5 py-14">
+          <div class="mb-10" data-aos="fade-up">
+            <button
+              onclick="navigateTo('page-media')"
+              class="inline-flex items-center gap-2 text-sm text-muted hover:text-cyan transition-colors mb-4"
+            >
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+              Kembali ke Favorit
+            </button>
+            <h2 class="font-mono font-black text-5xl tracking-tight mb-3">
+              Semua <span class="text-cyan">Film</span> Favorit
+            </h2>
+            <p class="text-muted">
+              Daftar lengkap film yang pernah saya tonton dan rekomendasikan.
+            </p>
+          </div>
+          <div
+            class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table mb-8"
+          >
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="bg-ink3 border-b border-white/5">
+                  <th
+                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                  >
+                    #
+                  </th>
+                  <th
+                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                    onclick="sortMedia('films', 'title')"
+                  >
+                    Judul <span id="films-detail-sort-title"></span>
+                  </th>
+                  <th
+                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                    onclick="sortMedia('films', 'genre')"
+                  >
+                    Genre <span id="films-detail-sort-genre"></span>
+                  </th>
+                  <th
+                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                    onclick="sortMedia('films', 'year')"
+                  >
+                    Tahun <span id="films-detail-sort-year"></span>
+                  </th>
+                  <th
+                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                    onclick="sortMedia('films', 'rating')"
+                  >
+                    Rating <span id="films-detail-sort-rating"></span>
+                  </th>
+                  <th
+                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                  >
+                    Review
+                  </th>
+                  <th
+                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                  >
+                    Komentar
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="films-detail-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: DETAIL GAMES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-games-detail" class="page">
+        <div class="max-w-7xl mx-auto px-5 py-14">
+          <div class="mb-10" data-aos="fade-up">
+            <button
+              onclick="navigateTo('page-media')"
+              class="inline-flex items-center gap-2 text-sm text-muted hover:text-cyan transition-colors mb-4"
+            >
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+              Kembali ke Favorit
+            </button>
+            <h2 class="font-mono font-black text-5xl tracking-tight mb-3">
+              Semua <span class="text-cyan">Game</span> Favorit
+            </h2>
+            <p class="text-muted">
+              Koleksi lengkap game yang pernah saya mainkan.
+            </p>
+          </div>
+          <div
+            id="games-detail-grid"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+          ></div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: DETAIL MUSIC
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-music-detail" class="page">
+        <div class="max-w-7xl mx-auto px-5 py-14">
+          <div class="mb-10" data-aos="fade-up">
+            <button
+              onclick="navigateTo('page-media')"
+              class="inline-flex items-center gap-2 text-sm text-muted hover:text-cyan transition-colors mb-4"
+            >
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+              Kembali ke Favorit
+            </button>
+            <h2 class="font-mono font-black text-5xl tracking-tight mb-3">
+              Semua <span class="text-cyan">Musik</span> Favorit
+            </h2>
+            <p class="text-muted">
+              Playlist lengkap musik yang saya dengarkan.
+            </p>
+          </div>
+          <div
+            id="music-detail-grid"
+            class="grid grid-cols-1 md:grid-cols-2 gap-4"
+          ></div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: DETAIL BOOKS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-books-detail" class="page">
+        <div class="max-w-7xl mx-auto px-5 py-14">
+          <div class="mb-10" data-aos="fade-up">
+            <button
+              onclick="navigateTo('page-media')"
+              class="inline-flex items-center gap-2 text-sm text-muted hover:text-cyan transition-colors mb-4"
+            >
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+              Kembali ke Favorit
+            </button>
+            <h2 class="font-mono font-black text-5xl tracking-tight mb-3">
+              Semua <span class="text-cyan">Buku</span> Favorit
+            </h2>
+            <p class="text-muted">
+              Koleksi lengkap buku yang pernah saya baca.
+            </p>
+          </div>
+          <div
+            id="books-detail-grid"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+          ></div>
+        </div>
+      </section>
+
       <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   PAGE: CONTACT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
@@ -2136,7 +2335,7 @@
                   onclick="navigate('media')"
                   class="hover:text-cyan transition-all"
                 >
-                  Selera Saya
+                  Favorit
                 </button>
               </li>
               <li>
@@ -2593,11 +2792,20 @@
             />
           </div>
           <div>
-            <label class="adm-label">Komentar</label
+            <label class="adm-label">Review</label>
+            <textarea
+              id="film-review"
+              class="adm-input"
+              rows="3"
+              placeholder="Tulis review lengkap tentang film ini..."
+            ></textarea>
+          </div>
+          <div>
+            <label class="adm-label">Komentar Singkat</label
             ><input
               id="film-comment"
               class="adm-input"
-              placeholder="Kenapa suka?"
+              placeholder="Kenapa suka? (singkat)"
             />
           </div>
         </div>
