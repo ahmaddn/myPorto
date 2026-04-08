@@ -2,7 +2,10 @@
 <html lang="id" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+    />
     <title>Portofolio — Najmy Ahmad Maulana</title>
 
     <!-- Tailwind CDN -->
@@ -82,6 +85,182 @@
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6/dist/tippy.umd.min.js"></script>
+
+    <!-- 🆕 Quill Rich Text Editor (untuk blog editor yang lebih baik) -->
+    <link
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <!-- 🆕 SweetAlert2 (untuk notifikasi yang lebih menarik) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- 🆕 Sortable.js (untuk drag & drop tables - reorder items) -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+    <!-- 🆕 Particles.js (untuk background efek animasi - OPTIONAL) -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+      /* ═══════════════════════════════════════
+         RESPONSIVE TABLE WRAPPER - CRITICAL FIX
+         ═══════════════════════════════════════ */
+      .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* Smooth scroll di iOS */
+        position: relative;
+        margin: 1rem 0;
+      }
+
+      /* Scrollbar styling untuk mobile */
+      .table-responsive::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .table-responsive::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+      }
+
+      .table-responsive::-webkit-scrollbar-thumb {
+        background: rgba(119, 202, 237, 0.3);
+        border-radius: 4px;
+      }
+
+      .table-responsive::-webkit-scrollbar-thumb:hover {
+        background: rgba(119, 202, 237, 0.5);
+      }
+
+      /* Indicator scroll horizontal - visual cue */
+      .table-responsive::after {
+        content: "⟨ scroll ⟩";
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 0.5rem 0.75rem;
+        background: rgba(119, 202, 237, 0.1);
+        color: #77caed;
+        font-size: 0.7rem;
+        font-family: "JetBrains Mono", monospace;
+        border-radius: 0.5rem 0 0 0.5rem;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .table-responsive.has-scroll::after {
+        opacity: 1;
+      }
+
+      /* Table minimum width untuk prevent collapse */
+      .table-responsive table {
+        min-width: 650px; /* Disesuaikan dengan kebutuhan kolom */
+      }
+
+      /* Mobile table adjustments */
+      @media (max-width: 768px) {
+        .table-responsive table {
+          font-size: 0.75rem;
+        }
+
+        .table-responsive th,
+        .table-responsive td {
+          padding: 0.5rem !important;
+          white-space: nowrap;
+        }
+
+        .table-responsive::after {
+          font-size: 0.65rem;
+        }
+      }
+
+      /* Quill Editor Dark Theme */
+      .ql-toolbar.ql-snow {
+        background: #1e2626;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0.75rem 0.75rem 0 0;
+      }
+
+      .ql-container.ql-snow {
+        background: #232d2d;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0 0 0.75rem 0.75rem;
+        min-height: 200px;
+        color: #e8f4f0;
+      }
+
+      .ql-editor {
+        min-height: 200px;
+        color: #e8f4f0;
+      }
+
+      .ql-snow .ql-stroke {
+        stroke: #7a9e9a;
+      }
+
+      .ql-snow .ql-fill {
+        fill: #7a9e9a;
+      }
+
+      .ql-snow .ql-picker-label {
+        color: #7a9e9a;
+      }
+
+      /* SweetAlert2 Dark Theme */
+      .swal2-popup {
+        background: #1e2626 !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      }
+
+      .swal2-title {
+        color: #e8f4f0 !important;
+      }
+
+      .swal2-html-container {
+        color: #7a9e9a !important;
+      }
+
+      .swal2-confirm {
+        background: #77caed !important;
+      }
+
+      .swal2-cancel {
+        background: rgba(255, 255, 255, 0.1) !important;
+      }
+
+      /* Touch feedback untuk mobile */
+      @media (hover: none) {
+        button:active,
+        .adm-btn-primary:active,
+        .adm-btn-ghost:active {
+          transform: scale(0.97);
+        }
+      }
+
+      /* Responsive improvements */
+      @media (max-width: 640px) {
+        .modal-box {
+          max-height: 85vh !important;
+          width: 95% !important;
+        }
+
+        .grid.grid-cols-2 {
+          grid-template-columns: 1fr !important;
+        }
+
+        .md\:grid-cols-2 {
+          grid-template-columns: 1fr !important;
+        }
+      }
+
+      /* Smooth transitions */
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+    </style>
 
     <!-- ✅ Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css" />
@@ -772,52 +951,54 @@
             <div
               class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table mb-4"
             >
-              <table class="w-full text-sm">
-                <thead>
-                  <tr class="bg-ink3 border-b border-white/5">
-                    <th
-                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                    >
-                      #
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
-                      onclick="sortMedia('films', 'title')"
-                    >
-                      Judul <span id="films-sort-title"></span>
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
-                      onclick="sortMedia('films', 'genre')"
-                    >
-                      Genre <span id="films-sort-genre"></span>
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
-                      onclick="sortMedia('films', 'year')"
-                    >
-                      Tahun <span id="films-sort-year"></span>
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
-                      onclick="sortMedia('films', 'rating')"
-                    >
-                      Rating <span id="films-sort-rating"></span>
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                    >
-                      Review
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                    >
-                      Komentar
-                    </th>
-                  </tr>
-                </thead>
-                <tbody id="films-tbody"></tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="bg-ink3 border-b border-white/5">
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                      >
+                        #
+                      </th>
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                        onclick="sortMedia('films', 'title')"
+                      >
+                        Judul <span id="films-sort-title"></span>
+                      </th>
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                        onclick="sortMedia('films', 'genre')"
+                      >
+                        Genre <span id="films-sort-genre"></span>
+                      </th>
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                        onclick="sortMedia('films', 'year')"
+                      >
+                        Tahun <span id="films-sort-year"></span>
+                      </th>
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                        onclick="sortMedia('films', 'rating')"
+                      >
+                        Rating <span id="films-sort-rating"></span>
+                      </th>
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                      >
+                        Review
+                      </th>
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                      >
+                        Komentar
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="films-tbody"></tbody>
+                </table>
+              </div>
               <div id="films-empty" class="hidden text-center py-16 text-muted">
                 <i
                   data-lucide="film"
@@ -951,52 +1132,54 @@
           <div
             class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table mb-8"
           >
-            <table class="w-full text-sm">
-              <thead>
-                <tr class="bg-ink3 border-b border-white/5">
-                  <th
-                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                  >
-                    #
-                  </th>
-                  <th
-                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
-                    onclick="sortMedia('films', 'title')"
-                  >
-                    Judul <span id="films-detail-sort-title"></span>
-                  </th>
-                  <th
-                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
-                    onclick="sortMedia('films', 'genre')"
-                  >
-                    Genre <span id="films-detail-sort-genre"></span>
-                  </th>
-                  <th
-                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
-                    onclick="sortMedia('films', 'year')"
-                  >
-                    Tahun <span id="films-detail-sort-year"></span>
-                  </th>
-                  <th
-                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
-                    onclick="sortMedia('films', 'rating')"
-                  >
-                    Rating <span id="films-detail-sort-rating"></span>
-                  </th>
-                  <th
-                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                  >
-                    Review
-                  </th>
-                  <th
-                    class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                  >
-                    Komentar
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="films-detail-tbody"></tbody>
-            </table>
+            <div class="table-responsive">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="bg-ink3 border-b border-white/5">
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                    >
+                      #
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                      onclick="sortMedia('films', 'title')"
+                    >
+                      Judul <span id="films-detail-sort-title"></span>
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                      onclick="sortMedia('films', 'genre')"
+                    >
+                      Genre <span id="films-detail-sort-genre"></span>
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                      onclick="sortMedia('films', 'year')"
+                    >
+                      Tahun <span id="films-detail-sort-year"></span>
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                      onclick="sortMedia('films', 'rating')"
+                    >
+                      Rating <span id="films-detail-sort-rating"></span>
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                    >
+                      Review
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                    >
+                      Komentar
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="films-detail-tbody"></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
@@ -1763,38 +1946,40 @@
               <div
                 class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
               >
-                <table class="w-full text-sm">
-                  <thead>
-                    <tr class="bg-ink3 border-b border-white/5">
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Proyek
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Tech
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Status
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Featured
-                      </th>
-                      <th
-                        class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody id="adm-projects-tbody"></tbody>
-                </table>
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Proyek
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Tech
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Featured
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-projects-tbody"></tbody>
+                  </table>
+                </div>
               </div>
               <div id="adm-projects-pages"></div>
             </div>
@@ -1833,33 +2018,35 @@
               <div
                 class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
               >
-                <table class="w-full text-sm">
-                  <thead>
-                    <tr class="bg-ink3 border-b border-white/5">
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Skill
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Kategori
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Level
-                      </th>
-                      <th
-                        class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody id="adm-skills-tbody"></tbody>
-                </table>
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Skill
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Kategori
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Level
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-skills-tbody"></tbody>
+                  </table>
+                </div>
               </div>
               <div id="adm-skills-pages"></div>
             </div>
@@ -1898,38 +2085,40 @@
               <div
                 class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
               >
-                <table class="w-full text-sm">
-                  <thead>
-                    <tr class="bg-ink3 border-b border-white/5">
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Periode
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Jabatan
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Perusahaan
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Status
-                      </th>
-                      <th
-                        class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody id="adm-exp-tbody"></tbody>
-                </table>
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Periode
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Jabatan
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Perusahaan
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-exp-tbody"></tbody>
+                  </table>
+                </div>
               </div>
               <div id="adm-exp-pages"></div>
             </div>
@@ -1968,43 +2157,45 @@
               <div
                 class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
               >
-                <table class="w-full text-sm">
-                  <thead>
-                    <tr class="bg-ink3 border-b border-white/5">
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        #
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Judul
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Genre
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Tahun
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Rating
-                      </th>
-                      <th
-                        class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody id="adm-films-tbody"></tbody>
-                </table>
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          #
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Judul
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Genre
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Tahun
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Rating
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-films-tbody"></tbody>
+                  </table>
+                </div>
               </div>
               <div id="adm-films-pages"></div>
             </div>
@@ -2043,38 +2234,40 @@
               <div
                 class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
               >
-                <table class="w-full text-sm">
-                  <thead>
-                    <tr class="bg-ink3 border-b border-white/5">
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Judul
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Artis
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Genre
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Mood
-                      </th>
-                      <th
-                        class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody id="adm-music-tbody"></tbody>
-                </table>
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Judul
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Artis
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Genre
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Mood
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-music-tbody"></tbody>
+                  </table>
+                </div>
               </div>
               <div id="adm-music-pages"></div>
             </div>
@@ -2113,43 +2306,45 @@
               <div
                 class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
               >
-                <table class="w-full text-sm">
-                  <thead>
-                    <tr class="bg-ink3 border-b border-white/5">
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Judul
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Penulis
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Genre
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Status
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Rating
-                      </th>
-                      <th
-                        class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody id="adm-books-tbody"></tbody>
-                </table>
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Judul
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Penulis
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Genre
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Rating
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-books-tbody"></tbody>
+                  </table>
+                </div>
               </div>
               <div id="adm-books-pages"></div>
             </div>
@@ -2188,43 +2383,45 @@
               <div
                 class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
               >
-                <table class="w-full text-sm">
-                  <thead>
-                    <tr class="bg-ink3 border-b border-white/5">
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Judul
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Platform
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Genre
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Status
-                      </th>
-                      <th
-                        class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Rating
-                      </th>
-                      <th
-                        class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
-                      >
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody id="adm-games-tbody"></tbody>
-                </table>
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Judul
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Platform
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Genre
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Rating
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-games-tbody"></tbody>
+                  </table>
+                </div>
               </div>
               <div id="adm-games-pages"></div>
             </div>
@@ -3208,5 +3405,135 @@
 
     <!-- ✅ Custom JS (dimuat paling akhir) -->
     <script type="module" src="assets/js/app.js"></script>
+
+    <!-- 🆕 Enhanced Responsive Table Handler -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("🚀 Initializing responsive tables...");
+
+        // Deteksi semua table wrapper
+        const tableWrappers = document.querySelectorAll(".table-responsive");
+        console.log(`Found ${tableWrappers.length} tables`);
+
+        tableWrappers.forEach((wrapper, index) => {
+          function checkScroll() {
+            if (wrapper.scrollWidth > wrapper.clientWidth) {
+              wrapper.classList.add("has-scroll");
+              console.log(`Table ${index + 1} needs horizontal scroll`);
+            } else {
+              wrapper.classList.remove("has-scroll");
+            }
+          }
+
+          // Check on load dan resize
+          checkScroll();
+          window.addEventListener("resize", checkScroll);
+
+          // Smooth scroll dengan mouse wheel untuk desktop
+          wrapper.addEventListener("wheel", (e) => {
+            if (e.deltaY !== 0 && wrapper.scrollWidth > wrapper.clientWidth) {
+              e.preventDefault();
+              wrapper.scrollLeft += e.deltaY;
+            }
+          });
+
+          // Touch swipe untuk mobile
+          let isDown = false;
+          let startX;
+          let scrollLeft;
+
+          wrapper.addEventListener("mousedown", (e) => {
+            isDown = true;
+            wrapper.style.cursor = "grabbing";
+            startX = e.pageX - wrapper.offsetLeft;
+            scrollLeft = wrapper.scrollLeft;
+          });
+
+          wrapper.addEventListener("mouseleave", () => {
+            isDown = false;
+            wrapper.style.cursor = "grab";
+          });
+
+          wrapper.addEventListener("mouseup", () => {
+            isDown = false;
+            wrapper.style.cursor = "grab";
+          });
+
+          wrapper.addEventListener("mousemove", (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - wrapper.offsetLeft;
+            const walk = (x - startX) * 2;
+            wrapper.scrollLeft = scrollLeft - walk;
+          });
+        });
+
+        // 🆕 Initialize SweetAlert2 untuk notifikasi yang lebih cantik
+        window.showToast = function (message, type = "success") {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "bottom-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: type,
+            title: message,
+            background: "#1e2626",
+            color: "#e8f4f0",
+          });
+        };
+
+        // 🆕 Initialize Sortable.js untuk drag & drop (jika diperlukan)
+        const sortableTables = document.querySelectorAll(
+          ".sortable-table tbody",
+        );
+        sortableTables.forEach((tbody) => {
+          new Sortable(tbody, {
+            animation: 150,
+            handle: ".drag-handle",
+            ghostClass: "sortable-ghost",
+            onEnd: function (evt) {
+              console.log("Item reordered:", evt.oldIndex, "->", evt.newIndex);
+              showToast("Urutan berhasil diubah", "success");
+            },
+          });
+        });
+
+        console.log("✅ All enhancements initialized!");
+      });
+
+      // 🆕 Particles.js background (OPTIONAL - uncomment untuk aktifkan)
+      /*
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 80, density: { enable: true, value_area: 800 } },
+          color: { value: '#77caed' },
+          opacity: { value: 0.2, random: false },
+          size: { value: 3, random: true },
+          line_linked: { 
+            enable: true, 
+            distance: 150, 
+            color: '#77caed', 
+            opacity: 0.1, 
+            width: 1 
+          },
+          move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+        },
+        interactivity: {
+          detect_on: 'canvas',
+          events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+          modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+        },
+        retina_detect: true
+      });
+      */
+    </script>
   </body>
 </html>
