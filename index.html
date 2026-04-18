@@ -114,6 +114,63 @@
 
     <!-- ✅ Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+      /* ══ SweetAlert2 Toast Override ══ */
+      .swal2-container.swal2-bottom-end {
+        padding: 0 16px 16px 0;
+      }
+      .swal2-popup.swal2-toast {
+        background: #0a1a22 !important;
+        border: 1px solid rgba(119, 202, 237, 0.2) !important;
+        border-radius: 14px !important;
+        box-shadow:
+          0 8px 40px rgba(0, 0, 0, 0.55),
+          0 0 0 1px rgba(255, 255, 255, 0.04) !important;
+        padding: 12px 16px !important;
+        min-width: 260px !important;
+        max-width: 380px !important;
+        gap: 0 !important;
+        font-family: "DM Sans", sans-serif !important;
+      }
+      .swal2-popup.swal2-toast .swal2-html-container {
+        margin: 0 !important;
+        padding: 0 !important;
+        color: #e8f4f0 !important;
+        font-size: 0.875rem !important;
+      }
+      .swal2-popup.swal2-toast .swal2-timer-progress-bar {
+        background: rgba(119, 202, 237, 0.35) !important;
+        border-radius: 0 0 14px 14px !important;
+        height: 2px !important;
+      }
+      /* Animation */
+      @keyframes swalToastIn {
+        from {
+          opacity: 0;
+          transform: translateX(24px) scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0) scale(1);
+        }
+      }
+      @keyframes swalToastOut {
+        from {
+          opacity: 1;
+          transform: translateX(0) scale(1);
+        }
+        to {
+          opacity: 0;
+          transform: translateX(24px) scale(0.94);
+        }
+      }
+      .swal2-show.swal2-toast {
+        animation: swalToastIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+      }
+      .swal2-hide.swal2-toast {
+        animation: swalToastOut 0.22s ease both !important;
+      }
+    </style>
   </head>
 
   <body class="bg-ink text-[#e8f4f0]">

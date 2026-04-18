@@ -924,27 +924,77 @@ function closeConfirm() {
 //  TOAST NOTIFICATION
 // ─────────────────────────────────────────
 function toast(msg, type = "info") {
-  const container = safeGet("toast-container");
-  if (!container) return;
+  const iconMap = {
+    success: "&#10003;",
+    error: "&#10007;",
+    info: "&#9432;",
+    warning: "&#9888;",
+  };
 
-  const color =
-    type === "success"
-      ? "bg-mint/20 text-mint border-mint/30"
-      : type === "error"
-        ? "bg-red-500/20 text-red-400 border-red-400/30"
-        : "bg-cyan/20 text-cyan border-cyan/30";
+  const colorMap = {
+    success: {
+      bg: "#0a1f16",
+      border: "rgba(120,250,185,0.3)",
+      iconBg: "rgba(120,250,185,0.1)",
+      iconColor: "#78fab9",
+    },
+    error: {
+      bg: "#1f0a0a",
+      border: "rgba(248,113,113,0.3)",
+      iconBg: "rgba(248,113,113,0.1)",
+      iconColor: "#f87171",
+    },
+    info: {
+      bg: "#0a161f",
+      border: "rgba(119,202,237,0.3)",
+      iconBg: "rgba(119,202,237,0.1)",
+      iconColor: "#77caed",
+    },
+    warning: {
+      bg: "#1f180a",
+      border: "rgba(251,191,36,0.3)",
+      iconBg: "rgba(251,191,36,0.1)",
+      iconColor: "#fbbf24",
+    },
+  };
 
-  const t = document.createElement("div");
-  t.className = `${color} border px-4 py-3 rounded-xl text-sm font-medium shadow-card animate-scale-in`;
-  t.textContent = msg;
-  container.appendChild(t);
+  const c = colorMap[type] || colorMap.info;
+  const icon = iconMap[type] || iconMap.info;
 
-  setTimeout(() => {
-    t.style.transition = "all 0.3s ease";
-    t.style.opacity = "0";
-    t.style.transform = "scale(0.9)";
-    setTimeout(() => t.remove(), 300);
-  }, 3000);
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "bottom-end",
+    showConfirmButton: false,
+    timer: 3200,
+    timerProgressBar: true,
+    didOpen: (popup) => {
+      popup.style.background = c.bg;
+      popup.style.border = `1px solid ${c.border}`;
+      popup.style.borderRadius = "14px";
+      popup.style.boxShadow = "0 8px 32px rgba(0,0,0,0.5)";
+      popup.style.padding = "12px 16px";
+      popup.style.minWidth = "260px";
+      popup.style.maxWidth = "380px";
+      popup.addEventListener("mouseenter", Swal.stopTimer);
+      popup.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+    background: c.bg,
+    color: "#e8f4f0",
+    html: `
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="
+          width:34px;height:34px;border-radius:9px;flex-shrink:0;
+          background:${c.iconBg};border:1px solid ${c.border};
+          display:flex;align-items:center;justify-content:center;
+          font-size:15px;font-weight:800;color:${c.iconColor};
+          font-family:'JetBrains Mono',monospace;
+        ">${icon}</div>
+        <span style="font-size:0.85rem;font-family:'DM Sans',sans-serif;font-weight:500;color:#e8f4f0;line-height:1.45;">${msg}</span>
+      </div>
+    `,
+  });
+
+  Toast.fire({});
 }
 
 // ─────────────────────────────────────────
@@ -4939,17 +4989,10 @@ async function toggleModulVisibility(isVisible) {
     updateModulMenuVisibility(isVisible);
 
     // Show notification
-    if (window.showToast) {
-      showToast(
-        `Menu Modul Ajar ${isVisible ? "ditampilkan" : "disembunyikan"} di landing page`,
-        "success",
-      );
-    } else {
-      toast(
-        `Menu Modul Ajar ${isVisible ? "ditampilkan" : "disembunyikan"}`,
-        "success",
-      );
-    }
+    toast(
+      `Menu Modul Ajar ${isVisible ? "ditampilkan" : "disembunyikan"}`,
+      "success",
+    );
 
     console.log(`✅ Modul visibility updated: ${isVisible}`);
   } catch (error) {
