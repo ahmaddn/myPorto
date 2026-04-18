@@ -1,0 +1,4013 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+    />
+    <title>Portofolio — Najmy Ahmad Maulana</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              cyan: "#77caed",
+              mint: "#78fab9",
+              ink: "#171c1c",
+              ink2: "#1e2626",
+              ink3: "#232d2d",
+              ink4: "#2a3535",
+              ink5: "#334040",
+              muted: "#7a9e9a",
+              dim: "#4a6260",
+            },
+            fontFamily: {
+              display: ["Syne", "sans-serif"],
+              body: ["DM Sans", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+            keyframes: {
+              fadeUp: {
+                from: { opacity: "0", transform: "translateY(16px)" },
+                to: { opacity: "1", transform: "translateY(0)" },
+              },
+              floatY: {
+                "0%,100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-8px)" },
+              },
+              blink: { "0%,100%": { opacity: "1" }, "50%": { opacity: "0" } },
+              scaleIn: {
+                from: { opacity: "0", transform: "scale(.93)" },
+                to: { opacity: "1", transform: "scale(1)" },
+              },
+            },
+            animation: {
+              "fade-up": "fadeUp .45s cubic-bezier(.16,1,.3,1) both",
+              float: "floatY 4s ease-in-out infinite",
+              blink: "blink 1.2s step-end infinite",
+              "scale-in": "scaleIn .35s cubic-bezier(.34,1.56,.64,1) both",
+            },
+            boxShadow: {
+              "glow-cyan": "0 0 28px rgba(119,202,237,.2)",
+              "glow-mint": "0 0 28px rgba(120,250,185,.2)",
+              card: "0 4px 28px rgba(0,0,0,.45)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- AOS (Animate on Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- Tippy.js tooltips -->
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy.umd.min.js"></script>
+
+    <!-- 🆕 Quill Rich Text Editor (untuk blog editor yang lebih baik) -->
+    <link
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <!-- 🆕 SweetAlert2 (untuk notifikasi yang lebih menarik) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- 🆕 Sortable.js (untuk drag & drop tables - reorder items) -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+    <!-- 🆕 Particles.js (untuk background efek animasi - OPTIONAL) -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <!-- 🆕 Swiper.js (untuk carousel/slider yang smooth) -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- 🆕 Intersection Observer Polyfill untuk browser lama -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
+
+    <!-- ✅ Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+
+  <body class="bg-ink text-[#e8f4f0]">
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Cursor Glow (desktop only) -->
+    <div id="cursor-glow"></div>
+    <!-- ════════════════════════════════════════
+     HEADER / NAV
+════════════════════════════════════════ -->
+    <header
+      class="fixed top-0 left-0 right-0 z-50 bg-ink/90 backdrop-blur-xl border-b border-white/5 h-16"
+    >
+      <div
+        class="max-w-7xl mx-auto px-5 h-full flex items-center justify-between"
+      >
+        <!-- Logo -->
+        <a
+          href="#"
+          onclick="navigate('dashboard')"
+          class="flex items-center gap-2 font-mono font-black text-xl tracking-tight"
+        >
+          <span class="text-[#e8f4f0]">&lt;</span>
+          <span class="text-cyan">Amy</span>
+          <span class="text-[#e8f4f0]">/&gt;</span>
+          <span class="w-2 h-2 bg-mint rounded-full animate-pulse ml-1"></span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-1">
+          <button
+            onclick="navigate('dashboard')"
+            class="nav-link text-muted hover:text-cyan transition-all text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/5 flex flex-col items-center gap-0.5"
+            data-page="dashboard"
+          >
+            <span class="flex items-center gap-1.5"
+              ><i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+              Dashboard</span
+            >
+          </button>
+          <button
+            onclick="navigate('projects')"
+            class="nav-link text-muted hover:text-cyan transition-all text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/5 flex flex-col items-center gap-0.5"
+            data-page="projects"
+          >
+            <span class="flex items-center gap-1.5"
+              ><i data-lucide="folder-open" class="w-3.5 h-3.5"></i>
+              Proyek</span
+            >
+          </button>
+          <button
+            onclick="navigate('about')"
+            class="nav-link text-muted hover:text-cyan transition-all text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/5 flex flex-col items-center gap-0.5"
+            data-page="about"
+          >
+            <span class="flex items-center gap-1.5"
+              ><i data-lucide="user" class="w-3.5 h-3.5"></i> Tentang</span
+            >
+          </button>
+          <button
+            onclick="navigate('media')"
+            class="nav-link text-muted hover:text-cyan transition-all text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/5 flex flex-col items-center gap-0.5"
+            data-page="media"
+          >
+            <span class="flex items-center gap-1.5"
+              ><i data-lucide="star" class="w-3.5 h-3.5"></i> Favorit
+            </span>
+          </button>
+          <button
+            id="nav-modul-menu"
+            onclick="openModulUserModal()"
+            class="nav-link text-muted hover:text-cyan transition-all text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/5 flex flex-col items-center gap-0.5"
+            data-page="modul"
+          >
+            <span class="flex items-center gap-1.5"
+              ><i data-lucide="file-text" class="w-3.5 h-3.5"></i> Modul Ajar
+            </span>
+          </button>
+          <button
+            onclick="navigate('contact')"
+            class="nav-link text-muted hover:text-cyan transition-all text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/5 flex flex-col items-center gap-0.5"
+            data-page="contact"
+          >
+            <span class="flex items-center gap-1.5"
+              ><i data-lucide="mail" class="w-3.5 h-3.5"></i> Kontak</span
+            >
+          </button>
+          <button
+            id="admin-nav-btn"
+            onclick="openAdminLogin()"
+            class="ml-2 flex items-center gap-1.5 text-mint border border-mint/25 text-sm font-semibold px-3 py-2 rounded-lg hover:bg-mint/10 transition-all"
+          >
+            <i data-lucide="shield" class="w-3.5 h-3.5"></i> Admin
+          </button>
+          <a
+            id="dashboard-nav-btn"
+            href="#"
+            onclick="
+              navigate('admin');
+              return false;
+            "
+            class="ml-2 hidden flex items-center gap-1.5 text-cyan border border-cyan/25 text-sm font-semibold px-3 py-2 rounded-lg hover:bg-cyan/10 transition-all whitespace-nowrap"
+          >
+            <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+            Dashboard Admin
+          </a>
+        </nav>
+
+        <!-- Hamburger -->
+        <button id="ham-btn" class="md:hidden flex flex-col gap-1.5 p-2">
+          <span
+            class="block w-5 h-0.5 bg-[#e8f4f0] transition-all"
+            id="h1"
+          ></span>
+          <span
+            class="block w-5 h-0.5 bg-[#e8f4f0] transition-all"
+            id="h2"
+          ></span>
+          <span
+            class="block w-5 h-0.5 bg-[#e8f4f0] transition-all"
+            id="h3"
+          ></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Nav -->
+    <div
+      id="mobile-nav"
+      class="hidden fixed top-16 left-0 right-0 z-40 bg-ink2 border-b border-white/5 flex flex-col py-2 px-4 gap-1"
+    >
+      <button
+        onclick="
+          navigate('dashboard');
+          toggleMobile();
+        "
+        class="mobile-nav-link flex items-center gap-2 text-sm text-muted px-3 py-2.5 rounded-lg hover:bg-white/5 hover:text-cyan transition-all"
+      >
+        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+      </button>
+      <button
+        onclick="
+          navigate('projects');
+          toggleMobile();
+        "
+        class="mobile-nav-link flex items-center gap-2 text-sm text-muted px-3 py-2.5 rounded-lg hover:bg-white/5 hover:text-cyan transition-all"
+      >
+        <i data-lucide="folder-open" class="w-4 h-4"></i> Proyek
+      </button>
+      <button
+        onclick="
+          navigate('about');
+          toggleMobile();
+        "
+        class="mobile-nav-link flex items-center gap-2 text-sm text-muted px-3 py-2.5 rounded-lg hover:bg-white/5 hover:text-cyan transition-all"
+      >
+        <i data-lucide="user" class="w-4 h-4"></i> Tentang Saya
+      </button>
+      <button
+        onclick="
+          navigate('media');
+          toggleMobile();
+        "
+        class="mobile-nav-link flex items-center gap-2 text-sm text-muted px-3 py-2.5 rounded-lg hover:bg-white/5 hover:text-cyan transition-all"
+      >
+        <i data-lucide="star" class="w-4 h-4"></i> Favorit
+      </button>
+      <button
+        id="mobile-nav-modul-menu"
+        onclick="
+          openModulUserModal();
+          toggleMobile();
+        "
+        class="mobile-nav-link flex items-center gap-2 text-sm text-muted px-3 py-2.5 rounded-lg hover:bg-white/5 hover:text-cyan transition-all"
+      >
+        <i data-lucide="file-text" class="w-4 h-4"></i> Modul Ajar
+      </button>
+      <button
+        onclick="
+          navigate('contact');
+          toggleMobile();
+        "
+        class="mobile-nav-link flex items-center gap-2 text-sm text-muted px-3 py-2.5 rounded-lg hover:bg-white/5 hover:text-cyan transition-all"
+      >
+        <i data-lucide="mail" class="w-4 h-4"></i> Kontak
+      </button>
+      <button
+        id="admin-nav-btn-mob"
+        onclick="
+          openAdminLogin();
+          if (isMobileMenuOpen()) toggleMobile();
+        "
+        class="mobile-nav-link flex items-center gap-2 text-sm text-mint px-3 py-2.5 rounded-lg hover:bg-mint/5 transition-all"
+      >
+        <i data-lucide="shield" class="w-4 h-4"></i> Admin Panel
+      </button>
+      <!-- Tombol Dashboard Admin Mobile (hanya muncul saat sudah login) -->
+      <button
+        id="dashboard-nav-btn-mob"
+        onclick="
+          navigate('admin');
+          if (isMobileMenuOpen()) toggleMobile();
+        "
+        class="mobile-nav-link flex items-center gap-2 text-sm text-cyan px-3 py-2.5 rounded-lg hover:bg-cyan/5 transition-all"
+      >
+        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard Admin
+      </button>
+    </div>
+
+    <!-- ════════════════════════════════════════
+     MAIN
+════════════════════════════════════════ -->
+    <main class="pt-16 min-h-screen">
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: DASHBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-dashboard" class="page active">
+        <div class="max-w-7xl mx-auto px-5">
+          <div class="mesh-bg"></div>
+          <!-- Hero -->
+          <div
+            class="min-h-[90vh] flex flex-col md:flex-row items-center justify-between gap-12 py-20"
+          >
+            <!-- Left -->
+            <div class="flex-1 space-y-6 animate-fade-up">
+              <div
+                class="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan/10 border border-cyan/20 rounded-full font-mono text-xs text-cyan tracking-wider hover:bg-cyan/15 transition-all cursor-default"
+              >
+                <span
+                  class="w-1.5 h-1.5 bg-mint rounded-full animate-pulse"
+                ></span>
+                <span id="hero-available-badge"
+                  >Tersedia untuk Project Baru</span
+                >
+              </div>
+
+              <h1
+                class="font-mono font-black text-5xl md:text-7xl leading-none tracking-tight"
+              >
+                Halo, saya<br />
+                <span class="hero-name-gradient" id="hero-name-display"
+                  >Nama Kamu</span
+                ><span class="cursor-blink"></span>
+              </h1>
+
+              <p
+                class="text-2xl md:text-3xl font-mono font-bold text-muted"
+                id="hero-role-display"
+              >
+                Full Stack Web Developer
+              </p>
+
+              <p
+                class="text-muted leading-relaxed max-w-lg"
+                id="hero-tagline-display"
+              >
+                Membangun pengalaman digital yang indah dan fungsional, satu
+                baris kode setelah yang lain.
+              </p>
+
+              <div class="flex flex-wrap gap-3 pt-2">
+                <button
+                  onclick="navigate('projects')"
+                  class="btn-ripple flex items-center gap-2 bg-cyan text-ink font-semibold px-5 py-2.5 rounded-xl hover:bg-cyan/90 hover:shadow-glow-cyan transition-all text-sm"
+                >
+                  <i data-lucide="folder-open" class="w-4 h-4"></i> Lihat Proyek
+                </button>
+                <button
+                  onclick="navigate('contact')"
+                  class="btn-ripple flex items-center gap-2 border border-cyan/30 text-cyan px-5 py-2.5 rounded-xl hover:bg-cyan/5 transition-all text-sm font-medium"
+                >
+                  <i data-lucide="mail" class="w-4 h-4"></i> Hubungi Saya
+                </button>
+              </div>
+
+              <!-- Quick Stats -->
+              <div
+                class="flex flex-wrap gap-6 pt-4 border-t border-white/5 mt-4"
+              >
+                <div class="stat-card cursor-default">
+                  <p
+                    class="stat-number text-2xl font-mono font-black text-cyan"
+                    id="stat-projects"
+                  >
+                    0
+                  </p>
+                  <p class="text-xs text-muted font-mono">Proyek Selesai</p>
+                </div>
+                <div class="stat-card cursor-default">
+                  <p
+                    class="stat-number text-2xl font-mono font-black text-mint"
+                    id="stat-skills"
+                  >
+                    0
+                  </p>
+                  <p class="text-xs text-muted font-mono">Skill Dikuasai</p>
+                </div>
+                <div class="stat-card cursor-default">
+                  <p
+                    class="stat-number text-2xl font-mono font-black text-cyan"
+                    id="stat-exp"
+                  >
+                    2+
+                  </p>
+                  <p class="text-xs text-muted font-mono">Tahun Pengalaman</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right — Avatar card -->
+            <div class="relative animate-float">
+              <div
+                class="avatar-card w-64 h-64 md:w-80 md:h-80 bg-ink2 rounded-3xl border border-white/10 flex items-center justify-center relative overflow-hidden shadow-card"
+              >
+                <div
+                  class="absolute inset-0 opacity-5"
+                  style="
+                    background-image:
+                      repeating-linear-gradient(
+                        0deg,
+                        transparent,
+                        transparent 30px,
+                        #77caed 30px,
+                        #77caed 31px
+                      ),
+                      repeating-linear-gradient(
+                        90deg,
+                        transparent,
+                        transparent 30px,
+                        #77caed 30px,
+                        #77caed 31px
+                      );
+                  "
+                ></div>
+                <span class="text-9xl relative z-10" id="hero-avatar-display"
+                  >👨‍💻</span
+                >
+                <div
+                  class="absolute top-0 left-0 w-20 h-20 border-t-2 border-l-2 border-cyan/40 rounded-tl-3xl"
+                ></div>
+                <div
+                  class="absolute bottom-0 right-0 w-20 h-20 border-b-2 border-r-2 border-mint/40 rounded-br-3xl"
+                ></div>
+              </div>
+              <div
+                class="code-snippet absolute -top-4 -right-4 bg-ink2 border border-white/10 rounded-xl px-3 py-2 font-mono text-xs text-muted shadow-card hover:border-cyan/30 transition-all cursor-default"
+              >
+                <span class="text-mint">console</span>.log(<span
+                  class="text-cyan"
+                  >"hello!"</span
+                >)
+              </div>
+              <div
+                class="code-snippet absolute -bottom-4 -left-6 bg-ink2 border border-white/10 rounded-xl px-3 py-2 font-mono text-xs text-muted shadow-card hover:border-mint/30 transition-all cursor-default"
+                style="animation-delay: 0.5s"
+              >
+                <span class="text-cyan">git</span> push origin main ✓
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills Preview (Radar Chart) -->
+          <div class="py-16 border-t border-white/5">
+            <div class="flex flex-col md:flex-row gap-10 items-center">
+              <div class="flex-1" data-aos="fade-right">
+                <p
+                  class="font-mono text-xs text-mint tracking-widest uppercase mb-3"
+                >
+                  // kemampuan saya
+                </p>
+                <h2
+                  class="font-mono font-black text-4xl md:text-5xl leading-tight tracking-tight mb-4"
+                >
+                  Stack & <span class="text-cyan">Skill</span>
+                </h2>
+                <p class="text-muted leading-relaxed mb-6">
+                  Teknologi yang saya gunakan sehari-hari, dari frontend yang
+                  indah hingga backend yang tangguh.
+                </p>
+                <button
+                  onclick="navigate('about')"
+                  class="flex items-center gap-2 text-cyan text-sm font-semibold hover:underline underline-offset-4"
+                >
+                  Detail lengkap
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+              </div>
+              <div class="flex-1 w-full" data-aos="fade-left">
+                <div
+                  class="chart-wrap bg-ink2 rounded-2xl border border-white/5 p-4"
+                  style="height: 320px"
+                >
+                  <canvas id="radarChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Featured Projects Preview -->
+          <div class="py-16 border-t border-white/5">
+            <div class="flex items-center justify-between mb-8">
+              <div data-aos="fade-right">
+                <p
+                  class="font-mono text-xs text-mint tracking-widest uppercase mb-2"
+                >
+                  // proyek pilihan
+                </p>
+                <h2 class="font-mono font-black text-4xl tracking-tight">
+                  Karya <span class="text-cyan">Terbaik</span>
+                </h2>
+              </div>
+              <button
+                onclick="navigate('projects')"
+                class="hidden md:flex items-center gap-2 text-sm text-muted hover:text-cyan transition-all"
+                data-aos="fade-left"
+              >
+                Semua proyek <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div
+              id="featured-projects"
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+            ></div>
+          </div>
+
+          <!-- Activity Chart -->
+          <div class="py-16 border-t border-white/5">
+            <div class="mb-8" data-aos="fade-up">
+              <p
+                class="font-mono text-xs text-mint tracking-widest uppercase mb-2"
+              >
+                // aktivitas coding
+              </p>
+              <h2 class="font-mono font-black text-4xl tracking-tight">
+                Statistik <span class="text-cyan">Bulanan</span>
+              </h2>
+            </div>
+            <div
+              class="bg-ink2 rounded-2xl border border-white/5 p-6"
+              data-aos="fade-up"
+            >
+              <div class="chart-wrap" style="height: 240px">
+                <canvas id="activityChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: PROJECTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-projects" class="page">
+        <div class="max-w-7xl mx-auto px-5 py-14">
+          <div class="mb-10" data-aos="fade-up">
+            <p
+              class="font-mono text-xs text-mint tracking-widest uppercase mb-3"
+            >
+              // portofolio saya
+            </p>
+            <h2 class="font-mono font-black text-5xl tracking-tight mb-3">
+              Semua <span class="text-cyan">Proyek</span>
+            </h2>
+            <p class="text-muted max-w-lg">
+              Koleksi proyek yang pernah saya bangun — dari side project
+              personal hingga proyek profesional.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-8" data-aos="fade-up">
+            <button
+              onclick="filterProjects('all')"
+              class="project-filter-btn active-filter px-4 py-1.5 rounded-full text-sm font-medium border border-cyan/30 text-cyan bg-cyan/10 transition-all"
+              data-filter="all"
+            >
+              Semua
+            </button>
+            <button
+              onclick="filterProjects('Selesai')"
+              class="project-filter-btn px-4 py-1.5 rounded-full text-sm font-medium border border-white/10 text-muted hover:border-cyan/30 hover:text-cyan transition-all"
+              data-filter="Selesai"
+            >
+              Selesai
+            </button>
+            <button
+              onclick="filterProjects('Proses')"
+              class="project-filter-btn px-4 py-1.5 rounded-full text-sm font-medium border border-white/10 text-muted hover:border-cyan/30 hover:text-cyan transition-all"
+              data-filter="Proses"
+            >
+              Dalam Proses
+            </button>
+            <button
+              onclick="filterProjects('Konsep')"
+              class="project-filter-btn px-4 py-1.5 rounded-full text-sm font-medium border border-white/10 text-muted hover:border-cyan/30 hover:text-cyan transition-all"
+              data-filter="Konsep"
+            >
+              Konsep
+            </button>
+          </div>
+          <div
+            id="projects-grid"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+          ></div>
+          <div id="projects-empty" class="hidden text-center py-20 text-muted">
+            <i
+              data-lucide="folder-open"
+              class="w-12 h-12 mx-auto mb-4 text-dim"
+            ></i>
+            <p>Belum ada proyek. Tambahkan di Admin Panel.</p>
+          </div>
+          <div class="mt-16 pt-16 border-t border-white/5">
+            <div class="flex flex-col md:flex-row gap-10 items-center">
+              <div class="flex-1" data-aos="fade-right">
+                <p
+                  class="font-mono text-xs text-mint tracking-widest uppercase mb-3"
+                >
+                  // distribusi teknologi
+                </p>
+                <h3 class="font-mono font-black text-3xl tracking-tight mb-4">
+                  Tech Stack <span class="text-cyan">Usage</span>
+                </h3>
+                <p class="text-muted text-sm leading-relaxed">
+                  Teknologi yang paling sering saya pakai lintas semua proyek.
+                </p>
+              </div>
+              <div class="flex-1 w-full" data-aos="fade-left">
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-6"
+                  style="height: 280px"
+                >
+                  <canvas id="techDonutChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: ABOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-about" class="page">
+        <div class="max-w-7xl mx-auto px-5 py-14">
+          <div class="mb-12" data-aos="fade-up">
+            <p
+              class="font-mono text-xs text-mint tracking-widest uppercase mb-3"
+            >
+              // tentang saya
+            </p>
+            <h2 class="font-mono font-black text-5xl tracking-tight">
+              Siapa <span class="text-cyan">Saya?</span>
+            </h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-10 mb-16">
+            <div class="md:col-span-3 space-y-5" data-aos="fade-right">
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-7">
+                <p
+                  class="text-muted leading-relaxed text-base"
+                  id="about-bio-display"
+                >
+                  Saya adalah web developer yang passionate dalam menciptakan
+                  pengalaman digital yang indah dan fungsional.
+                </p>
+              </div>
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-7">
+                <h3 class="font-mono font-bold text-xl mb-6">
+                  Pengalaman Kerja
+                </h3>
+                <div id="timeline-list" class="space-y-0"></div>
+              </div>
+            </div>
+            <div class="md:col-span-2 space-y-4" data-aos="fade-left">
+              <div
+                class="bg-ink2 rounded-2xl border border-white/5 p-6 space-y-4"
+              >
+                <h3 class="font-mono font-bold text-lg">Info</h3>
+                <div class="space-y-3 text-sm">
+                  <div class="flex items-center gap-3 text-muted">
+                    <i
+                      data-lucide="map-pin"
+                      class="w-4 h-4 text-cyan flex-shrink-0"
+                    ></i>
+                    <span id="about-location">Indonesia 🇮🇩</span>
+                  </div>
+                  <div class="flex items-center gap-3 text-muted">
+                    <i
+                      data-lucide="mail"
+                      class="w-4 h-4 text-cyan flex-shrink-0"
+                    ></i>
+                    <span id="about-email"></span>
+                  </div>
+                  <div class="flex items-center gap-3 text-muted">
+                    <i
+                      data-lucide="circle-dot"
+                      class="w-4 h-4 flex-shrink-0"
+                      id="about-avail-icon"
+                    ></i>
+                    <span id="about-avail-text">Tersedia</span>
+                  </div>
+                </div>
+                <div class="flex gap-2 pt-2">
+                  <a
+                    id="about-github"
+                    href="#"
+                    target="_blank"
+                    class="flex items-center gap-1.5 text-xs text-muted border border-white/10 px-3 py-2 rounded-lg hover:border-cyan/40 hover:text-cyan transition-all"
+                  >
+                    <svg
+                      class="w-3.5 h-3.5"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"
+                      />
+                    </svg>
+                    GitHub
+                  </a>
+                  <a
+                    id="about-linkedin"
+                    href="#"
+                    target="_blank"
+                    class="flex items-center gap-1.5 text-xs text-muted border border-white/10 px-3 py-2 rounded-lg hover:border-cyan/40 hover:text-cyan transition-all"
+                  >
+                    <svg
+                      class="w-3.5 h-3.5"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                      />
+                    </svg>
+                    LinkedIn
+                  </a>
+                </div>
+              </div>
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-5">
+                <h3 class="font-mono font-bold text-base mb-4">
+                  Distribusi Skill
+                </h3>
+                <div style="height: 200px">
+                  <canvas id="skillCategoryChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-6" data-aos="fade-up">
+            <h3 class="font-mono font-bold text-2xl mb-2">
+              Skill <span class="text-cyan">Teknis</span>
+            </h3>
+            <div class="flex flex-wrap gap-2 mt-4" id="skill-cats"></div>
+          </div>
+          <div
+            id="skills-list"
+            class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16"
+            data-aos="fade-up"
+          ></div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: Favorit
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-media" class="page">
+        <div class="max-w-7xl mx-auto px-5 py-14">
+          <div class="mb-10" data-aos="fade-up">
+            <p
+              class="font-mono text-xs text-mint tracking-widest uppercase mb-3"
+            >
+              // taste & vibes
+            </p>
+            <h2 class="font-mono font-black text-5xl tracking-tight">
+              Favorit <span class="text-cyan">Saya</span>
+            </h2>
+            <p class="text-muted mt-3 max-w-lg">
+              Film, musik, buku, dan hal-hal lain yang membentuk sisi non-teknis
+              dari diri saya.
+            </p>
+          </div>
+          <div class="flex gap-2 mb-8 border-b border-white/5 pb-0">
+            <button
+              onclick="switchTab('tab-films')"
+              class="hiburan-tab active-tab font-mono text-sm px-5 py-3 border-b-2 border-cyan text-cyan transition-all"
+              data-tab="tab-films"
+            >
+              <i data-lucide="film" class="w-4 h-4"></i> Film
+            </button>
+            <button
+              onclick="switchTab('tab-music')"
+              class="hiburan-tab font-mono text-sm px-5 py-3 border-b-2 border-transparent text-muted hover:text-cyan transition-all"
+              data-tab="tab-music"
+            >
+              <i data-lucide="music" class="w-4 h-4"></i> Musik
+            </button>
+            <button
+              onclick="switchTab('tab-books')"
+              class="hiburan-tab font-mono text-sm px-5 py-3 border-b-2 border-transparent text-muted hover:text-cyan transition-all"
+              data-tab="tab-books"
+            >
+              <i data-lucide="book-open" class="w-4 h-4"></i> Buku
+            </button>
+            <button
+              onclick="switchTab('tab-games')"
+              class="hiburan-tab font-mono text-sm px-5 py-3 border-b-2 border-transparent text-muted hover:text-cyan transition-all"
+              data-tab="tab-games"
+            >
+              <i data-lucide="gamepad-2" class="w-4 h-4"></i> Games
+            </button>
+          </div>
+          <!-- Tab: Films -->
+          <div id="tab-films" class="hiburan-pane">
+            <!-- Films Stats Bar -->
+            <div
+              id="films-stats-row"
+              class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"
+            ></div>
+            <div
+              class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table mb-4"
+            >
+              <div class="table-responsive">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="bg-ink3 border-b border-white/5">
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                      >
+                        #
+                      </th>
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                        onclick="sortMedia('films', 'title')"
+                      >
+                        Judul <span id="films-sort-title"></span>
+                      </th>
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                        onclick="sortMedia('films', 'genre')"
+                      >
+                        Genre <span id="films-sort-genre"></span>
+                      </th>
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                        onclick="sortMedia('films', 'year')"
+                      >
+                        Tahun <span id="films-sort-year"></span>
+                      </th>
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                        onclick="sortMedia('films', 'rating')"
+                      >
+                        Rating <span id="films-sort-rating"></span>
+                      </th>
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                      >
+                        Review
+                      </th>
+                      <th
+                        class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                      >
+                        Komentar
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="films-tbody"></tbody>
+                </table>
+              </div>
+              <div id="films-empty" class="hidden text-center py-16 text-muted">
+                <i
+                  data-lucide="film"
+                  class="w-10 h-10 mx-auto mb-3 text-dim"
+                ></i>
+                <p>Belum ada film. Tambahkan di Admin.</p>
+              </div>
+            </div>
+            <!-- Tombol Selengkapnya -->
+            <div class="text-center mb-8">
+              <button
+                onclick="navigateTo('films-detail')"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-cyan/10 hover:bg-cyan/20 text-cyan border border-cyan/30 rounded-xl transition-all font-mono text-sm"
+              >
+                Lihat Semua Film
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 gap-5"
+              data-aos="fade-up"
+            >
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                <h3 class="font-mono font-bold text-lg mb-4">
+                  Distribusi Genre Favorit
+                </h3>
+                <div style="height: 240px">
+                  <canvas id="genreChart"></canvas>
+                </div>
+              </div>
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                <h3 class="font-mono font-bold text-lg mb-4">
+                  Distribusi Rating
+                </h3>
+                <div style="height: 240px">
+                  <canvas id="filmsRatingChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Tab: Music -->
+          <div id="tab-music" class="hiburan-pane hidden">
+            <!-- Music Stats Bar -->
+            <div
+              id="music-stats-row"
+              class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"
+            ></div>
+            <div
+              id="music-grid"
+              class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
+            ></div>
+            <div id="music-empty" class="hidden text-center py-16 text-muted">
+              <i
+                data-lucide="music"
+                class="w-10 h-10 mx-auto mb-3 text-dim"
+              ></i>
+              <p>Belum ada musik. Tambahkan di Admin.</p>
+            </div>
+            <!-- Tombol Selengkapnya -->
+            <div class="text-center mb-8">
+              <button
+                onclick="navigateTo('music-detail')"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-cyan/10 hover:bg-cyan/20 text-cyan border border-cyan/30 rounded-xl transition-all font-mono text-sm"
+              >
+                Lihat Semua Musik
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 gap-5"
+              data-aos="fade-up"
+            >
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                <h3 class="font-mono font-bold text-lg mb-4">
+                  Mood Musik Favorit
+                </h3>
+                <div style="height: 220px">
+                  <canvas id="moodChart"></canvas>
+                </div>
+              </div>
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                <h3 class="font-mono font-bold text-lg mb-4">Genre Musik</h3>
+                <div style="height: 220px">
+                  <canvas id="musicGenreChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Tab: Books -->
+          <div id="tab-books" class="hiburan-pane hidden">
+            <!-- Books Stats Bar -->
+            <div
+              id="books-stats-row"
+              class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"
+            ></div>
+            <div
+              id="books-grid"
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-4"
+            ></div>
+            <div id="books-empty" class="hidden text-center py-16 text-muted">
+              <i data-lucide="book" class="w-10 h-10 mx-auto mb-3 text-dim"></i>
+              <p>Belum ada buku. Tambahkan di Admin.</p>
+            </div>
+            <!-- Tombol Selengkapnya -->
+            <div class="text-center mb-8">
+              <button
+                onclick="navigateTo('books-detail')"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-cyan/10 hover:bg-cyan/20 text-cyan border border-cyan/30 rounded-xl transition-all font-mono text-sm"
+              >
+                Lihat Semua Buku
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <!-- Charts Row -->
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 gap-5"
+              data-aos="fade-up"
+            >
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                <h3 class="font-mono font-bold text-lg mb-4">Genre Favorit</h3>
+                <div style="height: 220px">
+                  <canvas id="booksGenreChart"></canvas>
+                </div>
+              </div>
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                <h3 class="font-mono font-bold text-lg mb-4">Status Bacaan</h3>
+                <div style="height: 220px">
+                  <canvas id="booksStatusChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Tab: Games -->
+          <div id="tab-games" class="hiburan-pane hidden">
+            <!-- Games Stats Bar -->
+            <div
+              id="games-stats-row"
+              class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"
+            ></div>
+            <div
+              id="games-grid"
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-4"
+            ></div>
+            <div id="games-empty" class="hidden text-center py-16 text-muted">
+              <i
+                data-lucide="gamepad-2"
+                class="w-10 h-10 mx-auto mb-3 text-dim"
+              ></i>
+              <p>Belum ada game. Tambahkan di Admin.</p>
+            </div>
+            <!-- Tombol Selengkapnya -->
+            <div class="text-center mb-8">
+              <button
+                onclick="navigateTo('games-detail')"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-cyan/10 hover:bg-cyan/20 text-cyan border border-cyan/30 rounded-xl transition-all font-mono text-sm"
+              >
+                Lihat Semua Game
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <!-- Charts Row -->
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 gap-5"
+              data-aos="fade-up"
+            >
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                <h3 class="font-mono font-bold text-lg mb-4">
+                  Genre Game Favorit
+                </h3>
+                <div style="height: 220px">
+                  <canvas id="gamesGenreChart"></canvas>
+                </div>
+              </div>
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                <h3 class="font-mono font-bold text-lg mb-4">
+                  Platform Distribution
+                </h3>
+                <div style="height: 220px">
+                  <canvas id="gamesPlatformChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: DETAIL FILMS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-films-detail" class="page">
+        <div class="max-w-7xl mx-auto px-5 py-14">
+          <div class="mb-10" data-aos="fade-up">
+            <button
+              onclick="navigateTo('page-media')"
+              class="inline-flex items-center gap-2 text-sm text-muted hover:text-cyan transition-colors mb-4"
+            >
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+              Kembali ke Favorit
+            </button>
+            <h2 class="font-mono font-black text-5xl tracking-tight mb-3">
+              Semua <span class="text-cyan">Film</span> Favorit
+            </h2>
+            <p class="text-muted">
+              Daftar lengkap film yang pernah saya tonton dan rekomendasikan.
+            </p>
+          </div>
+          <div
+            class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table mb-8"
+          >
+            <div class="table-responsive">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="bg-ink3 border-b border-white/5">
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                    >
+                      #
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                      onclick="sortMedia('films', 'title')"
+                    >
+                      Judul <span id="films-detail-sort-title"></span>
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                      onclick="sortMedia('films', 'genre')"
+                    >
+                      Genre <span id="films-detail-sort-genre"></span>
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                      onclick="sortMedia('films', 'year')"
+                    >
+                      Tahun <span id="films-detail-sort-year"></span>
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase cursor-pointer select-none hover:text-mint transition-colors"
+                      onclick="sortMedia('films', 'rating')"
+                    >
+                      Rating <span id="films-detail-sort-rating"></span>
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                    >
+                      Review
+                    </th>
+                    <th
+                      class="text-left px-5 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                    >
+                      Komentar
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="films-detail-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: DETAIL GAMES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-games-detail" class="page">
+        <div class="max-w-7xl mx-auto px-5 py-14">
+          <div class="mb-10" data-aos="fade-up">
+            <button
+              onclick="navigateTo('page-media')"
+              class="inline-flex items-center gap-2 text-sm text-muted hover:text-cyan transition-colors mb-4"
+            >
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+              Kembali ke Favorit
+            </button>
+            <h2 class="font-mono font-black text-5xl tracking-tight mb-3">
+              Semua <span class="text-cyan">Game</span> Favorit
+            </h2>
+            <p class="text-muted">
+              Koleksi lengkap game yang pernah saya mainkan.
+            </p>
+          </div>
+          <div
+            id="games-detail-grid"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+          ></div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: DETAIL MUSIC
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-music-detail" class="page">
+        <div class="max-w-7xl mx-auto px-5 py-14">
+          <div class="mb-10" data-aos="fade-up">
+            <button
+              onclick="navigateTo('page-media')"
+              class="inline-flex items-center gap-2 text-sm text-muted hover:text-cyan transition-colors mb-4"
+            >
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+              Kembali ke Favorit
+            </button>
+            <h2 class="font-mono font-black text-5xl tracking-tight mb-3">
+              Semua <span class="text-cyan">Musik</span> Favorit
+            </h2>
+            <p class="text-muted">
+              Playlist lengkap musik yang saya dengarkan.
+            </p>
+          </div>
+          <div
+            id="music-detail-grid"
+            class="grid grid-cols-1 md:grid-cols-2 gap-4"
+          ></div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: DETAIL BOOKS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-books-detail" class="page">
+        <div class="max-w-7xl mx-auto px-5 py-14">
+          <div class="mb-10" data-aos="fade-up">
+            <button
+              onclick="navigateTo('page-media')"
+              class="inline-flex items-center gap-2 text-sm text-muted hover:text-cyan transition-colors mb-4"
+            >
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+              Kembali ke Favorit
+            </button>
+            <h2 class="font-mono font-black text-5xl tracking-tight mb-3">
+              Semua <span class="text-cyan">Buku</span> Favorit
+            </h2>
+            <p class="text-muted">
+              Koleksi lengkap buku yang pernah saya baca.
+            </p>
+          </div>
+          <div
+            id="books-detail-grid"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+          ></div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: MODUL AJAR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-modul" class="page">
+        <div class="max-w-7xl mx-auto px-5 py-14">
+          <div class="mb-12" data-aos="fade-up">
+            <p
+              class="font-mono text-xs text-mint tracking-widest uppercase mb-3"
+            >
+              // sumber belajar
+            </p>
+            <h2 class="font-mono font-black text-5xl tracking-tight mb-3">
+              Modul <span class="text-cyan">Ajar</span>
+            </h2>
+            <p class="text-muted max-w-lg">
+              Koleksi modul pembelajaran yang bisa kamu download secara gratis
+              untuk menunjang belajarmu.
+            </p>
+          </div>
+          <div
+            id="modul-grid"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+          ></div>
+          <div id="modul-empty" class="hidden text-center py-20 text-muted">
+            <i
+              data-lucide="file-text"
+              class="w-12 h-12 mx-auto mb-4 text-dim"
+            ></i>
+            <p>Belum ada modul ajar tersedia saat ini.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: CONTACT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-contact" class="page">
+        <div class="max-w-5xl mx-auto px-5 py-14">
+          <div class="mb-12 text-center" data-aos="fade-up">
+            <p
+              class="font-mono text-xs text-mint tracking-widest uppercase mb-3"
+            >
+              // mari berkolaborasi
+            </p>
+            <h2 class="font-mono font-black text-5xl tracking-tight">
+              Hubungi <span class="text-cyan">Saya</span>
+            </h2>
+            <p class="text-muted mt-4 max-w-md mx-auto">
+              Ada proyek menarik atau sekadar ingin ngobrol? Saya selalu terbuka
+              untuk diskusi.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-4" data-aos="fade-right">
+              <div
+                class="bg-ink2 rounded-2xl border border-white/5 p-6 space-y-5"
+              >
+                <div class="flex items-start gap-4">
+                  <div
+                    class="w-10 h-10 bg-cyan/10 rounded-xl flex items-center justify-center flex-shrink-0"
+                  >
+                    <i data-lucide="mail" class="w-5 h-5 text-cyan"></i>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-sm mb-1">Email</p>
+                    <a
+                      id="contact-email"
+                      href="#"
+                      class="text-muted text-sm hover:text-cyan transition-colors"
+                    >
+                      <!-- email akan di-render oleh JS -->
+                    </a>
+                  </div>
+                </div>
+                <div class="flex items-start gap-4">
+                  <div
+                    class="w-10 h-10 bg-mint/10 rounded-xl flex items-center justify-center flex-shrink-0"
+                  >
+                    <i data-lucide="map-pin" class="w-5 h-5 text-mint"></i>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-sm mb-1">Lokasi</p>
+                    <p class="text-muted text-sm" id="contact-location">
+                      Indonesia 🇮🇩
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-4">
+                  <div
+                    class="w-10 h-10 bg-cyan/10 rounded-xl flex items-center justify-center flex-shrink-0"
+                  >
+                    <i data-lucide="clock" class="w-5 h-5 text-cyan"></i>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-sm mb-1">Response Time</p>
+                    <p class="text-muted text-sm">Biasanya dalam 24 jam</p>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                <p class="font-semibold text-sm mb-4">Temukan Saya Di</p>
+                <div class="flex gap-3">
+                  <a
+                    id="contact-github"
+                    href="#"
+                    target="_blank"
+                    class="flex items-center gap-2 text-xs text-muted border border-white/10 px-4 py-2.5 rounded-xl hover:border-cyan/40 hover:text-cyan transition-all"
+                  >
+                    <svg
+                      class="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"
+                      />
+                    </svg>
+                    GitHub
+                  </a>
+                  <a
+                    id="contact-linkedin"
+                    href="#"
+                    target="_blank"
+                    class="flex items-center gap-2 text-xs text-muted border border-white/10 px-4 py-2.5 rounded-xl hover:border-cyan/40 hover:text-cyan transition-all"
+                  >
+                    <svg
+                      class="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                      />
+                    </svg>
+                    LinkedIn
+                  </a>
+                  <a
+                    id="contact-instagram"
+                    href="#"
+                    target="_blank"
+                    class="flex items-center gap-2 text-xs text-muted border border-white/10 px-4 py-2.5 rounded-xl hover:border-cyan/40 hover:text-cyan transition-all"
+                  >
+                    <svg
+                      class="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                      />
+                    </svg>
+                    Instagram
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-ink2 rounded-2xl border border-white/5 p-7"
+              data-aos="fade-left"
+            >
+              <h3 class="font-mono font-bold text-lg mb-6">Kirim Pesan</h3>
+              <div class="space-y-4">
+                <!-- Honeypot field (hidden) untuk menangkap bot -->
+                <input
+                  id="form-website"
+                  type="text"
+                  name="website"
+                  style="
+                    position: absolute;
+                    left: -9999px;
+                    opacity: 0;
+                    pointer-events: none;
+                  "
+                  tabindex="-1"
+                  autocomplete="off"
+                />
+
+                <div>
+                  <label
+                    class="block font-mono text-xs text-muted mb-2 tracking-wider"
+                    >NAMA</label
+                  >
+                  <input
+                    id="form-name"
+                    type="text"
+                    placeholder="Nama kamu"
+                    maxlength="100"
+                    class="w-full bg-ink3 border border-white/10 rounded-xl px-4 py-3 text-sm text-[#e8f4f0] placeholder-dim focus:outline-none focus:border-cyan/50 focus:ring-2 focus:ring-cyan/10 transition-all"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block font-mono text-xs text-muted mb-2 tracking-wider"
+                    >EMAIL</label
+                  >
+                  <input
+                    id="form-email"
+                    type="email"
+                    placeholder="email@kamu.com"
+                    class="w-full bg-ink3 border border-white/10 rounded-xl px-4 py-3 text-sm text-[#e8f4f0] placeholder-dim focus:outline-none focus:border-cyan/50 focus:ring-2 focus:ring-cyan/10 transition-all"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block font-mono text-xs text-muted mb-2 tracking-wider"
+                    >PESAN</label
+                  >
+                  <textarea
+                    id="form-msg"
+                    rows="4"
+                    placeholder="Ceritakan proyek atau idemu..."
+                    maxlength="1000"
+                    class="w-full bg-ink3 border border-white/10 rounded-xl px-4 py-3 text-sm text-[#e8f4f0] placeholder-dim focus:outline-none focus:border-cyan/50 focus:ring-2 focus:ring-cyan/10 transition-all resize-none"
+                  ></textarea>
+                </div>
+
+                <!-- Tombol Kirim via Firebase -->
+                <button
+                  onclick="submitContact()"
+                  class="w-full flex items-center justify-center gap-2 bg-cyan text-ink font-semibold py-3 rounded-xl hover:bg-cyan/90 hover:shadow-glow-cyan transition-all text-sm"
+                >
+                  <i data-lucide="send" class="w-4 h-4"></i> Kirim Pesan
+                </button>
+
+                <!-- Tombol WhatsApp -->
+                <button
+                  onclick="sendViaWhatsApp()"
+                  type="button"
+                  class="w-full flex items-center justify-center gap-2 bg-green-600 text-white font-semibold py-3 rounded-xl hover:bg-green-700 transition-all text-sm"
+                >
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
+                    />
+                  </svg>
+                  Kirim via WhatsApp
+                </button>
+
+                <p class="text-xs text-muted text-center">
+                  Anda hanya dapat mengirim 1 pesan per hari melalui form ini
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PAGE: ADMIN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <section id="page-admin" class="page">
+        <!-- Sidebar Overlay (Mobile Only) -->
+        <div
+          id="admin-sidebar-overlay"
+          class="md:hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[55] opacity-0 pointer-events-none transition-opacity duration-300"
+        ></div>
+
+        <div class="flex min-h-[calc(100vh-4rem)] relative">
+          <!-- Mobile Toggle Button - Di dalam container admin -->
+          <button
+            id="admin-sidebar-toggle"
+            class="md:hidden absolute top-4 left-4 z-[70] w-12 h-12 bg-cyan text-ink rounded-xl shadow-lg flex items-center justify-center hover:scale-105 transition-all"
+            aria-label="Toggle Admin Menu"
+          >
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+          <aside
+            id="admin-sidebar"
+            class="fixed md:relative top-0 md:top-0 left-0 w-64 bg-ink2 border-r border-white/5 pt-2 pb-6 flex flex-col gap-1 flex-shrink-0 h-[calc(100vh-4rem)] md:h-auto z-[60] -translate-x-full md:translate-x-0 transition-transform duration-300 overflow-y-auto shadow-2xl"
+          >
+            <div class="flex items-center justify-between px-5 pt-6 pb-3">
+              <p class="font-mono text-xs text-dim tracking-widest uppercase">
+                Panel
+              </p>
+              <button
+                id="admin-sidebar-close"
+                onclick="closeAdminSidebar()"
+                class="md:hidden w-7 h-7 flex items-center justify-center rounded-lg text-dim hover:text-cyan hover:bg-white/10 transition-all"
+                aria-label="Tutup Menu"
+              >
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <button
+              onclick="adminTab('overview')"
+              class="adm-tab active-adm flex items-center gap-2.5 px-5 py-2.5 text-sm font-medium text-muted hover:text-cyan hover:bg-white/4 transition-all border-l-2 border-transparent"
+              data-adm="overview"
+            >
+              <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Overview
+            </button>
+            <button
+              onclick="adminTab('profile')"
+              class="adm-tab flex items-center gap-2.5 px-5 py-2.5 text-sm font-medium text-muted hover:text-cyan hover:bg-white/4 transition-all border-l-2 border-transparent"
+              data-adm="profile"
+            >
+              <i data-lucide="user-circle" class="w-4 h-4"></i> Profil
+            </button>
+            <button
+              onclick="adminTab('projects-a')"
+              class="adm-tab flex items-center gap-2.5 px-5 py-2.5 text-sm font-medium text-muted hover:text-cyan hover:bg-white/4 transition-all border-l-2 border-transparent"
+              data-adm="projects-a"
+            >
+              <i data-lucide="folder" class="w-4 h-4"></i> Proyek
+            </button>
+            <button
+              onclick="adminTab('skills-a')"
+              class="adm-tab flex items-center gap-2.5 px-5 py-2.5 text-sm font-medium text-muted hover:text-cyan hover:bg-white/4 transition-all border-l-2 border-transparent"
+              data-adm="skills-a"
+            >
+              <i data-lucide="zap" class="w-4 h-4"></i> Skill
+            </button>
+            <button
+              onclick="adminTab('exp-a')"
+              class="adm-tab flex items-center gap-2.5 px-5 py-2.5 text-sm font-medium text-muted hover:text-cyan hover:bg-white/4 transition-all border-l-2 border-transparent"
+              data-adm="exp-a"
+            >
+              <i data-lucide="briefcase" class="w-4 h-4"></i> Pengalaman
+            </button>
+            <button
+              onclick="adminTab('films-a')"
+              class="adm-tab flex items-center gap-2.5 px-5 py-2.5 text-sm font-medium text-muted hover:text-cyan hover:bg-white/4 transition-all border-l-2 border-transparent"
+              data-adm="films-a"
+            >
+              <i data-lucide="film" class="w-4 h-4"></i> Film
+            </button>
+            <button
+              onclick="adminTab('music-a')"
+              class="adm-tab flex items-center gap-2.5 px-5 py-2.5 text-sm font-medium text-muted hover:text-cyan hover:bg-white/4 transition-all border-l-2 border-transparent"
+              data-adm="music-a"
+            >
+              <i data-lucide="music" class="w-4 h-4"></i> Musik
+            </button>
+            <button
+              onclick="adminTab('books-a')"
+              class="adm-tab flex items-center gap-2.5 px-5 py-2.5 text-sm font-medium text-muted hover:text-cyan hover:bg-white/4 transition-all border-l-2 border-transparent"
+              data-adm="books-a"
+            >
+              <i data-lucide="book" class="w-4 h-4"></i> Buku
+            </button>
+            <button
+              onclick="adminTab('games-a')"
+              class="adm-tab flex items-center gap-2.5 px-5 py-2.5 text-sm font-medium text-muted hover:text-cyan hover:bg-white/4 transition-all border-l-2 border-transparent"
+              data-adm="games-a"
+            >
+              <i data-lucide="gamepad-2" class="w-4 h-4"></i> Games
+            </button>
+            <button
+              onclick="adminTab('modul-a')"
+              class="adm-tab flex items-center gap-2.5 px-5 py-2.5 text-sm font-medium text-muted hover:text-cyan hover:bg-white/4 transition-all border-l-2 border-transparent"
+              data-adm="modul-a"
+            >
+              <i data-lucide="file-text" class="w-4 h-4"></i> Modul Ajar
+            </button>
+            <button
+              onclick="adminTab('messages-a')"
+              class="adm-tab flex items-center gap-2.5 px-5 py-2.5 text-sm font-medium text-muted hover:text-cyan hover:bg-white/4 transition-all border-l-2 border-transparent"
+              data-adm="messages-a"
+            >
+              <i data-lucide="mail" class="w-4 h-4"></i> Pesan
+            </button>
+            <div class="mt-auto md:mt-1 pb-6 px-5 pt-6 border-t border-white/5">
+              <button
+                onclick="doAdminLogout()"
+                class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 hover:border-red-500/50 rounded-lg transition-all text-sm font-medium mb-3"
+              >
+                <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+              </button>
+              <button
+                onclick="navigate('dashboard')"
+                class="w-full flex items-center gap-2 text-xs text-dim hover:text-cyan transition-all"
+              >
+                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Kembali ke
+                Site
+              </button>
+            </div>
+          </aside>
+
+          <!-- Main Content Area -->
+
+          <!-- Admin content -->
+          <div class="flex-1 p-6 md:p-8 mt-10 md:mt-0 min-w-0">
+            <!-- OVERVIEW -->
+            <div id="adm-overview" class="adm-panel">
+              <h2 class="font-mono font-black text-3xl tracking-tight mb-1">
+                Admin <span class="text-cyan">Dashboard</span>
+              </h2>
+              <p class="text-muted text-sm mb-8">
+                Kelola semua konten portfolio kamu dari sini.
+              </p>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-cyan/30 transition-all"
+                >
+                  <div
+                    class="w-9 h-9 bg-cyan/10 rounded-xl flex items-center justify-center mb-3"
+                  >
+                    <i data-lucide="folder" class="w-4 h-4 text-cyan"></i>
+                  </div>
+                  <p class="text-2xl font-mono font-black" id="ov-projects">
+                    0
+                  </p>
+                  <p class="text-xs text-muted mt-1">Total Proyek</p>
+                </div>
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-mint/30 transition-all"
+                >
+                  <div
+                    class="w-9 h-9 bg-mint/10 rounded-xl flex items-center justify-center mb-3"
+                  >
+                    <i data-lucide="zap" class="w-4 h-4 text-mint"></i>
+                  </div>
+                  <p class="text-2xl font-mono font-black" id="ov-skills">0</p>
+                  <p class="text-xs text-muted mt-1">Total Skill</p>
+                </div>
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-purple-400/30 transition-all"
+                >
+                  <div
+                    class="w-9 h-9 bg-purple-400/10 rounded-xl flex items-center justify-center mb-3"
+                  >
+                    <i
+                      data-lucide="briefcase"
+                      class="w-4 h-4 text-purple-400"
+                    ></i>
+                  </div>
+                  <p class="text-2xl font-mono font-black" id="ov-experience">
+                    0
+                  </p>
+                  <p class="text-xs text-muted mt-1">Pengalaman</p>
+                </div>
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-yellow-400/30 transition-all"
+                >
+                  <div
+                    class="w-9 h-9 bg-yellow-400/10 rounded-xl flex items-center justify-center mb-3"
+                  >
+                    <i data-lucide="film" class="w-4 h-4 text-yellow-400"></i>
+                  </div>
+                  <p class="text-2xl font-mono font-black" id="ov-films">0</p>
+                  <p class="text-xs text-muted mt-1">Total Film</p>
+                </div>
+              </div>
+
+              <!-- Second Row Stats -->
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-pink-400/30 transition-all"
+                >
+                  <div
+                    class="w-9 h-9 bg-pink-400/10 rounded-xl flex items-center justify-center mb-3"
+                  >
+                    <i data-lucide="music" class="w-4 h-4 text-pink-400"></i>
+                  </div>
+                  <p class="text-2xl font-mono font-black" id="ov-music">0</p>
+                  <p class="text-xs text-muted mt-1">Lagu Favorit</p>
+                </div>
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-orange-400/30 transition-all"
+                >
+                  <div
+                    class="w-9 h-9 bg-orange-400/10 rounded-xl flex items-center justify-center mb-3"
+                  >
+                    <i data-lucide="book" class="w-4 h-4 text-orange-400"></i>
+                  </div>
+                  <p class="text-2xl font-mono font-black" id="ov-books">0</p>
+                  <p class="text-xs text-muted mt-1">Koleksi Buku</p>
+                </div>
+                <div
+                  class="bg-ink2 rounded-2xl border border-white/5 p-5 hover:border-green-400/30 transition-all"
+                >
+                  <div
+                    class="w-9 h-9 bg-green-400/10 rounded-xl flex items-center justify-center mb-3"
+                  >
+                    <i
+                      data-lucide="gamepad-2"
+                      class="w-4 h-4 text-green-400"
+                    ></i>
+                  </div>
+                  <p class="text-2xl font-mono font-black" id="ov-games">0</p>
+                  <p class="text-xs text-muted mt-1">Game Library</p>
+                </div>
+              </div>
+
+              <!-- Charts Row -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                  <h3 class="font-bold text-sm mb-4">Komposisi Konten</h3>
+                  <div style="height: 220px">
+                    <canvas id="storageChart"></canvas>
+                  </div>
+                </div>
+                <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                  <h3 class="font-bold text-sm mb-4">Statistik Media</h3>
+                  <div style="height: 220px">
+                    <canvas id="mediaChart"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick Actions -->
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6 mb-6">
+                <h3 class="font-bold text-sm mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <button
+                    onclick="adminTab('projects-a')"
+                    class="flex items-center gap-2 text-xs bg-ink3 hover:bg-cyan/10 border border-white/10 hover:border-cyan/30 px-4 py-3 rounded-xl transition-all"
+                  >
+                    <i data-lucide="plus-circle" class="w-4 h-4 text-cyan"></i>
+                    <span>Tambah Proyek</span>
+                  </button>
+                  <button
+                    onclick="adminTab('skills-a')"
+                    class="flex items-center gap-2 text-xs bg-ink3 hover:bg-mint/10 border border-white/10 hover:border-mint/30 px-4 py-3 rounded-xl transition-all"
+                  >
+                    <i data-lucide="plus-circle" class="w-4 h-4 text-mint"></i>
+                    <span>Tambah Skill</span>
+                  </button>
+                  <button
+                    onclick="adminTab('films-a')"
+                    class="flex items-center gap-2 text-xs bg-ink3 hover:bg-yellow-400/10 border border-white/10 hover:border-yellow-400/30 px-4 py-3 rounded-xl transition-all"
+                  >
+                    <i
+                      data-lucide="plus-circle"
+                      class="w-4 h-4 text-yellow-400"
+                    ></i>
+                    <span>Tambah Film</span>
+                  </button>
+                  <button
+                    onclick="adminTab('profile')"
+                    class="flex items-center gap-2 text-xs bg-ink3 hover:bg-purple-400/10 border border-white/10 hover:border-purple-400/30 px-4 py-3 rounded-xl transition-all"
+                  >
+                    <i data-lucide="edit-3" class="w-4 h-4 text-purple-400"></i>
+                    <span>Edit Profil</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Recent Activity -->
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6 mb-6">
+                <h3 class="font-bold text-sm mb-4">Aktivitas Terkini</h3>
+                <div class="space-y-3" id="recent-activity">
+                  <div class="flex items-start gap-3 text-xs">
+                    <div
+                      class="w-8 h-8 bg-cyan/10 rounded-lg flex items-center justify-center flex-shrink-0"
+                    >
+                      <i
+                        data-lucide="file-plus"
+                        class="w-3.5 h-3.5 text-cyan"
+                      ></i>
+                    </div>
+                    <div class="flex-1">
+                      <p class="text-[#e8f4f0]">Portfolio diinisialisasi</p>
+                      <p class="text-muted mt-0.5">
+                        Siap untuk ditambahkan konten
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-5">
+                <h3 class="font-bold text-sm mb-3 text-red-400">
+                  ⚠️ Danger Zone
+                </h3>
+                <p class="text-xs text-muted mb-4">
+                  Reset semua data kembali ke default. Tindakan ini tidak dapat
+                  dibatalkan.
+                </p>
+                <button
+                  onclick="resetAllData()"
+                  class="flex items-center gap-2 text-xs text-red-400 border border-red-400/30 px-4 py-2 rounded-xl hover:bg-red-400/10 transition-all"
+                >
+                  <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
+                  Data
+                </button>
+              </div>
+            </div>
+
+            <!-- PROFILE -->
+            <div id="adm-profile" class="adm-panel hidden">
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <h2 class="font-mono font-black text-2xl">
+                    Edit <span class="text-cyan">Profil</span>
+                  </h2>
+                  <p class="text-muted text-xs mt-1">
+                    Data ini tampil di Hero dan halaman Tentang Saya
+                  </p>
+                </div>
+              </div>
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label class="adm-label">Nama Lengkap</label
+                    ><input
+                      id="p-name"
+                      class="adm-input"
+                      placeholder="Nama Kamu"
+                    />
+                  </div>
+                  <div>
+                    <label class="adm-label">Role / Jabatan</label
+                    ><input
+                      id="p-role"
+                      class="adm-input"
+                      placeholder="Full Stack Developer"
+                    />
+                  </div>
+                  <div>
+                    <label class="adm-label">Lokasi</label
+                    ><input
+                      id="p-loc"
+                      class="adm-input"
+                      placeholder="Kota, Provinsi 🇮🇩"
+                    />
+                  </div>
+                  <div>
+                    <label class="adm-label">Email</label
+                    ><input
+                      id="p-email"
+                      class="adm-input"
+                      type="email"
+                      placeholder="hello@kamu.com"
+                    />
+                  </div>
+                  <div>
+                    <label class="adm-label">GitHub URL</label
+                    ><input
+                      id="p-github"
+                      class="adm-input"
+                      placeholder="https://github.com/username"
+                    />
+                  </div>
+                  <div>
+                    <label class="adm-label">LinkedIn URL</label
+                    ><input
+                      id="p-linkedin"
+                      class="adm-input"
+                      placeholder="https://linkedin.com/in/username"
+                    />
+                  </div>
+                  <div>
+                    <label class="adm-label">Instagram URL</label
+                    ><input
+                      id="p-Instagram"
+                      class="adm-input"
+                      placeholder="https://Instagram.com/username"
+                    />
+                  </div>
+                  <div>
+                    <label class="adm-label">Avatar (Emoji)</label
+                    ><input id="p-avatar" class="adm-input" placeholder="👨‍💻" />
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <label class="adm-label">Tagline / Slogan</label
+                  ><input
+                    id="p-tagline"
+                    class="adm-input"
+                    placeholder="Satu kalimat yang menggambarkan kamu"
+                  />
+                </div>
+                <div class="mb-5">
+                  <label class="adm-label">Bio</label
+                  ><textarea
+                    id="p-bio"
+                    class="adm-input resize-none"
+                    rows="4"
+                    placeholder="Ceritakan tentang dirimu..."
+                  ></textarea>
+                </div>
+                <div class="flex items-center gap-3 mb-5">
+                  <label class="adm-label mb-0">Tersedia untuk Hire?</label>
+                  <label
+                    class="relative inline-flex items-center cursor-pointer"
+                  >
+                    <input type="checkbox" id="p-avail" class="sr-only peer" />
+                    <div
+                      class="w-10 h-5 bg-ink4 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-cyan"
+                    ></div>
+                  </label>
+                </div>
+                <button onclick="saveProfile()" class="adm-btn-primary">
+                  <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan Profil
+                </button>
+              </div>
+            </div>
+
+            <!-- PROJECTS ADMIN -->
+            <div id="adm-projects-a" class="adm-panel hidden">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h2 class="font-mono font-black text-2xl">
+                    Manajemen <span class="text-cyan">Proyek</span>
+                  </h2>
+                </div>
+                <button
+                  onclick="
+                    resetProjectForm();
+                    openModal('modal-project');
+                  "
+                  class="adm-btn-primary"
+                >
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
+                </button>
+              </div>
+              <div class="mb-4">
+                <div class="relative">
+                  <i
+                    data-lucide="search"
+                    class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+                  ></i>
+                  <input
+                    oninput="admProjectsSearch(this.value)"
+                    placeholder="Cari proyek atau teknologi..."
+                    class="adm-input pl-9 text-sm"
+                  />
+                </div>
+              </div>
+              <div
+                class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
+              >
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Proyek
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Tech
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Featured
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-projects-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div id="adm-projects-pages"></div>
+            </div>
+
+            <!-- SKILLS ADMIN -->
+            <div id="adm-skills-a" class="adm-panel hidden">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h2 class="font-mono font-black text-2xl">
+                    Manajemen <span class="text-cyan">Skill</span>
+                  </h2>
+                </div>
+                <button
+                  onclick="
+                    resetSkillForm();
+                    openModal('modal-skill');
+                  "
+                  class="adm-btn-primary"
+                >
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
+                </button>
+              </div>
+              <div class="mb-4">
+                <div class="relative">
+                  <i
+                    data-lucide="search"
+                    class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+                  ></i>
+                  <input
+                    oninput="admSkillsSearch(this.value)"
+                    placeholder="Cari skill atau kategori..."
+                    class="adm-input pl-9 text-sm"
+                  />
+                </div>
+              </div>
+              <div
+                class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
+              >
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Skill
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Kategori
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Level
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-skills-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div id="adm-skills-pages"></div>
+            </div>
+
+            <!-- EXPERIENCE ADMIN -->
+            <div id="adm-exp-a" class="adm-panel hidden">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h2 class="font-mono font-black text-2xl">
+                    Manajemen <span class="text-cyan">Pengalaman</span>
+                  </h2>
+                </div>
+                <button
+                  onclick="
+                    resetExpForm();
+                    openModal('modal-exp');
+                  "
+                  class="adm-btn-primary"
+                >
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
+                </button>
+              </div>
+              <div class="mb-4">
+                <div class="relative">
+                  <i
+                    data-lucide="search"
+                    class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+                  ></i>
+                  <input
+                    oninput="admExpSearch(this.value)"
+                    placeholder="Cari jabatan, perusahaan..."
+                    class="adm-input pl-9 text-sm"
+                  />
+                </div>
+              </div>
+              <div
+                class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
+              >
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Periode
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Jabatan
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Perusahaan
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-exp-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div id="adm-exp-pages"></div>
+            </div>
+
+            <!-- FILMS ADMIN -->
+            <div id="adm-films-a" class="adm-panel hidden">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h2 class="font-mono font-black text-2xl">
+                    Manajemen <span class="text-cyan">Film</span>
+                  </h2>
+                </div>
+                <button
+                  onclick="
+                    resetFilmForm();
+                    openModal('modal-film');
+                  "
+                  class="adm-btn-primary"
+                >
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
+                </button>
+              </div>
+              <div class="mb-4">
+                <div class="relative">
+                  <i
+                    data-lucide="search"
+                    class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+                  ></i>
+                  <input
+                    oninput="admFilmsSearch(this.value)"
+                    placeholder="Cari judul atau genre..."
+                    class="adm-input pl-9 text-sm"
+                  />
+                </div>
+              </div>
+              <div
+                class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
+              >
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          #
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Judul
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Genre
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Tahun
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Rating
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-films-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div id="adm-films-pages"></div>
+            </div>
+
+            <!-- MUSIC ADMIN -->
+            <div id="adm-music-a" class="adm-panel hidden">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h2 class="font-mono font-black text-2xl">
+                    Manajemen <span class="text-cyan">Musik</span>
+                  </h2>
+                </div>
+                <button
+                  onclick="
+                    resetMusicForm();
+                    openModal('modal-music');
+                  "
+                  class="adm-btn-primary"
+                >
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
+                </button>
+              </div>
+              <div class="mb-4">
+                <div class="relative">
+                  <i
+                    data-lucide="search"
+                    class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+                  ></i>
+                  <input
+                    oninput="admMusicSearch(this.value)"
+                    placeholder="Cari judul atau artis..."
+                    class="adm-input pl-9 text-sm"
+                  />
+                </div>
+              </div>
+              <div
+                class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
+              >
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Judul
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Artis
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Genre
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Mood
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-music-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div id="adm-music-pages"></div>
+            </div>
+
+            <!-- BOOKS ADMIN -->
+            <div id="adm-books-a" class="adm-panel hidden">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h2 class="font-mono font-black text-2xl">
+                    Manajemen <span class="text-cyan">Buku</span>
+                  </h2>
+                </div>
+                <button
+                  onclick="
+                    resetBookForm();
+                    openModal('modal-book');
+                  "
+                  class="adm-btn-primary"
+                >
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
+                </button>
+              </div>
+              <div class="mb-4">
+                <div class="relative">
+                  <i
+                    data-lucide="search"
+                    class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+                  ></i>
+                  <input
+                    oninput="admBooksSearch(this.value)"
+                    placeholder="Cari judul atau penulis..."
+                    class="adm-input pl-9 text-sm"
+                  />
+                </div>
+              </div>
+              <div
+                class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
+              >
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Judul
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Penulis
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Genre
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Rating
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-books-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div id="adm-books-pages"></div>
+            </div>
+
+            <!-- GAMES ADMIN -->
+            <div id="adm-games-a" class="adm-panel hidden">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h2 class="font-mono font-black text-2xl">
+                    Manajemen <span class="text-cyan">Games</span>
+                  </h2>
+                </div>
+                <button
+                  onclick="
+                    resetGameForm();
+                    openModal('modal-game');
+                  "
+                  class="adm-btn-primary"
+                >
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
+                </button>
+              </div>
+              <div class="mb-4">
+                <div class="relative">
+                  <i
+                    data-lucide="search"
+                    class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+                  ></i>
+                  <input
+                    oninput="admGamesSearch(this.value)"
+                    placeholder="Cari judul atau platform..."
+                    class="adm-input pl-9 text-sm"
+                  />
+                </div>
+              </div>
+              <div
+                class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden resp-table"
+              >
+                <div class="table-responsive">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-ink3 border-b border-white/5">
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Judul
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Platform
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Genre
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Rating
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-games-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div id="adm-games-pages"></div>
+            </div>
+
+            <!-- MODUL AJAR ADMIN -->
+            <div id="adm-modul-a" class="adm-panel hidden">
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <h2 class="font-mono font-black text-2xl">
+                    Modul <span class="text-cyan">Ajar</span>
+                  </h2>
+                  <p class="text-muted text-xs mt-1">
+                    Kelola file PDF modul ajar Anda
+                  </p>
+                </div>
+                <button
+                  onclick="refreshModulList()"
+                  class="flex items-center gap-2 text-xs bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 rounded-xl hover:bg-cyan/20 transition-all"
+                >
+                  <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh
+                </button>
+              </div>
+
+              <!-- Toggle Enable/Disable Menu Modul Ajar -->
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-5 mb-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex-1">
+                    <h3
+                      class="font-mono font-bold text-sm mb-1 flex items-center gap-2"
+                    >
+                      <i data-lucide="eye" class="w-4 h-4 text-mint"></i>
+                      Visibilitas Menu Modul Ajar
+                    </h3>
+                    <p class="text-muted text-xs">
+                      Atur apakah menu Modul Ajar ditampilkan di landing page
+                      atau tidak
+                    </p>
+                  </div>
+                  <label
+                    class="relative inline-flex items-center cursor-pointer ml-4"
+                  >
+                    <input
+                      type="checkbox"
+                      id="modul-visibility-toggle"
+                      class="sr-only peer"
+                      onchange="toggleModulVisibility(this.checked)"
+                    />
+                    <div
+                      class="w-14 h-7 bg-ink4 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-cyan/50 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-mint"
+                    ></div>
+                    <span
+                      class="ms-3 text-sm font-medium"
+                      id="modul-visibility-label"
+                    >
+                      <span class="text-muted">Nonaktif</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Search & Filter untuk Modul -->
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-4 mb-6">
+                <div class="flex flex-col md:flex-row gap-3">
+                  <div class="flex-1">
+                    <div class="relative">
+                      <i
+                        data-lucide="search"
+                        class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted"
+                      ></i>
+                      <input
+                        type="text"
+                        id="modul-search-input"
+                        placeholder="Cari modul ajar..."
+                        class="adm-input pl-10"
+                        oninput="searchModulFiles(this.value)"
+                      />
+                    </div>
+                  </div>
+                  <div class="flex gap-2">
+                    <button
+                      onclick="sortModulFiles('name')"
+                      class="flex items-center gap-2 text-xs bg-ink3 text-muted border border-white/10 px-4 py-2 rounded-xl hover:bg-white/5 transition-all"
+                      title="Urutkan berdasarkan nama"
+                    >
+                      <i data-lucide="sort-asc" class="w-3.5 h-3.5"></i>
+                      <span class="hidden sm:inline">Nama</span>
+                    </button>
+                    <button
+                      onclick="sortModulFiles('size')"
+                      class="flex items-center gap-2 text-xs bg-ink3 text-muted border border-white/10 px-4 py-2 rounded-xl hover:bg-white/5 transition-all"
+                      title="Urutkan berdasarkan ukuran"
+                    >
+                      <i data-lucide="bar-chart-2" class="w-3.5 h-3.5"></i>
+                      <span class="hidden sm:inline">Ukuran</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-ink2 rounded-2xl border border-white/5 overflow-hidden"
+              >
+                <div class="table-responsive">
+                  <table class="w-full">
+                    <thead class="bg-ink3">
+                      <tr>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Nama File
+                        </th>
+                        <th
+                          class="text-left px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase hidden md:table-cell"
+                        >
+                          Ukuran
+                        </th>
+                        <th
+                          class="text-right px-4 py-3 font-mono text-xs text-cyan tracking-widest uppercase"
+                        >
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="adm-modul-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div id="modul-empty" class="text-center py-10 text-muted hidden">
+                <i
+                  data-lucide="file-text"
+                  class="w-10 h-10 mx-auto mb-3 text-dim"
+                ></i>
+                <p class="text-sm">Belum ada file modul ajar.</p>
+                <p class="text-xs mt-1">
+                  Letakkan file PDF di folder assets/file/
+                </p>
+              </div>
+            </div>
+
+            <!-- MESSAGES ADMIN -->
+            <div id="adm-messages-a" class="adm-panel hidden">
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <h2 class="font-mono font-black text-2xl">
+                    Pesan <span class="text-cyan">Masuk</span>
+                  </h2>
+                  <p class="text-muted text-xs mt-1">
+                    Pesan dari pengunjung melalui form kontak
+                  </p>
+                </div>
+                <button
+                  onclick="clearMessages()"
+                  class="flex items-center gap-2 text-xs text-red-400 border border-red-400/30 px-4 py-2 rounded-xl hover:bg-red-400/10 transition-all"
+                >
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus Semua
+                </button>
+              </div>
+
+              <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
+                <div class="flex items-center gap-3 mb-4">
+                  <div
+                    class="w-10 h-10 bg-cyan/10 rounded-xl flex items-center justify-center"
+                  >
+                    <i data-lucide="inbox" class="w-5 h-5 text-cyan"></i>
+                  </div>
+                  <div>
+                    <p class="text-2xl font-mono font-black" id="msg-count">
+                      0
+                    </p>
+                    <p class="text-xs text-muted">Total Pesan</p>
+                  </div>
+                </div>
+
+                <div id="messages-list" class="space-y-3"></div>
+                <div
+                  id="messages-empty"
+                  class="text-center py-10 text-muted hidden"
+                >
+                  <i
+                    data-lucide="inbox"
+                    class="w-10 h-10 mx-auto mb-3 text-dim"
+                  ></i>
+                  <p class="text-sm">Belum ada pesan masuk.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+    <footer class="bg-ink2 border-t border-white/5 mt-20">
+      <div class="max-w-7xl mx-auto px-5 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+          <div>
+            <div
+              class="flex items-center gap-2 font-mono font-black text-xl mb-3"
+            >
+              <span class="text-[#e8f4f0]">&lt;</span
+              ><span class="text-cyan">Amy</span
+              ><span class="text-[#e8f4f0]">/&gt;</span>
+            </div>
+            <p class="text-muted text-sm leading-relaxed max-w-xs">
+              Membangun web yang bermakna, satu baris kode setelah yang lain.
+            </p>
+          </div>
+          <div>
+            <h4
+              class="font-mono text-xs text-mint tracking-widest uppercase mb-4"
+            >
+              Navigasi
+            </h4>
+            <ul class="space-y-2 text-sm text-muted">
+              <li>
+                <button
+                  onclick="navigate('dashboard')"
+                  class="hover:text-cyan transition-all"
+                >
+                  Dashboard
+                </button>
+              </li>
+              <li>
+                <button
+                  onclick="navigate('projects')"
+                  class="hover:text-cyan transition-all"
+                >
+                  Proyek
+                </button>
+              </li>
+              <li>
+                <button
+                  onclick="navigate('about')"
+                  class="hover:text-cyan transition-all"
+                >
+                  Tentang Saya
+                </button>
+              </li>
+              <li>
+                <button
+                  onclick="navigate('media')"
+                  class="hover:text-cyan transition-all"
+                >
+                  Favorit
+                </button>
+              </li>
+              <li>
+                <button
+                  onclick="navigate('contact')"
+                  class="hover:text-cyan transition-all"
+                >
+                  Kontak
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4
+              class="font-mono text-xs text-mint tracking-widest uppercase mb-4"
+            >
+              Temukan Saya
+            </h4>
+            <div class="flex flex-col gap-2">
+              <a
+                id="footer-github"
+                href="https://github.com/ahmaddn/"
+                target="_blank"
+                class="flex items-center gap-2 text-sm text-muted hover:text-cyan transition-all"
+                ><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"
+                  />
+                </svg>
+                GitHub</a
+              >
+              <a
+                id="footer-linkedin"
+                href="https://www.linkedin.com/in/najmy-ahmad-maulana-1545753a3/"
+                target="_blank"
+                class="flex items-center gap-2 text-sm text-muted hover:text-cyan transition-all"
+                ><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                  />
+                </svg>
+                LinkedIn</a
+              >
+              <a
+                id="footer-Instagram"
+                href="https://www.instagram.com/canbemyy"
+                target="_blank"
+                class="flex items-center gap-2 text-sm text-muted hover:text-cyan transition-all"
+              >
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                  />
+                </svg>
+                Instagram</a
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          class="border-t border-white/5 pt-6 flex flex-col md:flex-row items-center justify-between gap-3"
+        >
+          <p class="text-xs text-dim font-mono">
+            © <span id="footer-year"></span> <span id="footer-name">Amy</span>.
+            All rights reserved.
+          </p>
+          <p class="text-xs text-dim font-mono">Built with ❤️ + Tailwind CSS</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ════════════════════════════════════════
+     MODALS
+════════════════════════════════════════ -->
+
+    <!-- Admin Login Modal -->
+    <div id="modal-admin-login" class="modal-wrap">
+      <div
+        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-sm shadow-card"
+      >
+        <div
+          class="flex items-center justify-between p-6 border-b border-white/5"
+        >
+          <div class="flex items-center gap-2">
+            <i data-lucide="shield" class="w-5 h-5 text-mint"></i>
+            <h3 class="font-mono font-bold text-lg">Admin Login</h3>
+          </div>
+          <button
+            onclick="closeAdminLogin()"
+            class="w-8 h-8 bg-ink3 rounded-lg flex items-center justify-center text-muted hover:text-[#e8f4f0] transition-all"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div>
+            <label class="adm-label">Username</label>
+            <input
+              id="admin-username"
+              type="text"
+              class="adm-input"
+              placeholder="Masukkan username"
+              autocomplete="off"
+            />
+          </div>
+          <div>
+            <label class="adm-label">Password</label>
+            <input
+              id="admin-password"
+              type="password"
+              class="adm-input"
+              placeholder="Masukkan password"
+              autocomplete="off"
+            />
+          </div>
+          <div
+            id="admin-login-error"
+            class="hidden flex items-center gap-2 text-xs text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2.5"
+          >
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5 flex-shrink-0"></i>
+            Username atau password salah.
+          </div>
+        </div>
+        <div class="p-6 border-t border-white/5 flex gap-3 justify-end">
+          <button onclick="closeAdminLogin()" class="adm-btn-ghost">
+            Batal
+          </button>
+          <button onclick="doAdminLogin()" class="adm-btn-primary">
+            <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Masuk
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div id="modal-project" class="modal-wrap">
+      <div
+        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-card"
+      >
+        <div
+          class="flex items-center justify-between p-6 border-b border-white/5"
+        >
+          <h3 class="font-mono font-bold text-lg" id="modal-project-title">
+            Tambah Proyek
+          </h3>
+          <button
+            onclick="closeModal('modal-project')"
+            class="w-8 h-8 bg-ink3 rounded-lg flex items-center justify-center text-muted hover:text-[#e8f4f0] transition-all"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <input type="hidden" id="proj-id" />
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="adm-label">Icon</label>
+              <select id="proj-icon" class="adm-input">
+                <option value="code-2">Code (Default)</option>
+                <option value="laptop">Laptop</option>
+                <option value="smartphone">Smartphone</option>
+                <option value="monitor">Monitor</option>
+                <option value="cpu">CPU</option>
+                <option value="database">Database</option>
+                <option value="server">Server</option>
+                <option value="globe">Globe</option>
+                <option value="layers">Layers</option>
+                <option value="box">Box</option>
+                <option value="package">Package</option>
+                <option value="shopping-cart">Shopping Cart</option>
+                <option value="shopping-bag">Shopping Bag</option>
+                <option value="credit-card">Credit Card</option>
+                <option value="briefcase">Briefcase</option>
+                <option value="rocket">Rocket</option>
+                <option value="zap">Lightning</option>
+                <option value="activity">Activity</option>
+                <option value="bar-chart">Bar Chart</option>
+                <option value="pie-chart">Pie Chart</option>
+                <option value="trending-up">Trending Up</option>
+              </select>
+            </div>
+            <div>
+              <label class="adm-label">Status</label>
+              <select id="proj-status" class="adm-input">
+                <option>Selesai</option>
+                <option>Proses</option>
+                <option>Konsep</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="adm-label">Judul Proyek</label
+            ><input
+              id="proj-title"
+              class="adm-input"
+              placeholder="Nama Proyek"
+            />
+          </div>
+          <div>
+            <label class="adm-label">Deskripsi</label
+            ><textarea
+              id="proj-desc"
+              class="adm-input resize-none"
+              rows="3"
+              placeholder="Deskripsi singkat proyek..."
+            ></textarea>
+          </div>
+          <div>
+            <label class="adm-label">Tech Stack (pisah koma)</label
+            ><input
+              id="proj-tech"
+              class="adm-input"
+              placeholder="React, Node.js, MongoDB"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="adm-label">Link Demo</label
+              ><input
+                id="proj-link"
+                class="adm-input"
+                placeholder="https://..."
+              />
+            </div>
+            <div>
+              <label class="adm-label">GitHub</label
+              ><input
+                id="proj-github"
+                class="adm-input"
+                placeholder="https://github.com/..."
+              />
+            </div>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              id="proj-featured"
+              class="w-4 h-4 accent-cyan rounded"
+            />
+            <span class="text-sm text-muted">Featured di Dashboard</span>
+          </label>
+        </div>
+        <div class="p-6 border-t border-white/5 flex gap-3 justify-end">
+          <button onclick="closeModal('modal-project')" class="adm-btn-ghost">
+            Batal
+          </button>
+          <button onclick="saveProject()" class="adm-btn-primary">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skill Modal -->
+    <div id="modal-skill" class="modal-wrap">
+      <div
+        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-md shadow-card"
+      >
+        <div
+          class="flex items-center justify-between p-6 border-b border-white/5"
+        >
+          <h3 class="font-mono font-bold text-lg" id="modal-skill-title">
+            Tambah Skill
+          </h3>
+          <button
+            onclick="closeModal('modal-skill')"
+            class="w-8 h-8 bg-ink3 rounded-lg flex items-center justify-center text-muted hover:text-[#e8f4f0] transition-all"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <input type="hidden" id="skill-id" />
+          <div>
+            <label class="adm-label">Nama Skill</label
+            ><input
+              id="skill-name"
+              class="adm-input"
+              placeholder="JavaScript"
+            />
+          </div>
+          <div>
+            <label class="adm-label">Kategori</label>
+            <select id="skill-cat" class="adm-input">
+              <option>Frontend</option>
+              <option>Backend</option>
+              <option>Database</option>
+              <option>DevOps</option>
+              <option>Tools</option>
+              <option>Design</option>
+              <option>Mobile</option>
+            </select>
+          </div>
+          <div>
+            <label class="adm-label"
+              >Level: <span id="skill-level-label">80</span>%</label
+            >
+            <input
+              type="range"
+              id="skill-level"
+              min="1"
+              max="100"
+              value="80"
+              class="w-full accent-cyan mt-1"
+              oninput="
+                document.getElementById('skill-level-label').textContent =
+                  this.value
+              "
+            />
+          </div>
+        </div>
+        <div class="p-6 border-t border-white/5 flex gap-3 justify-end">
+          <button onclick="closeModal('modal-skill')" class="adm-btn-ghost">
+            Batal
+          </button>
+          <button onclick="saveSkill()" class="adm-btn-primary">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Experience Modal -->
+    <div id="modal-exp" class="modal-wrap">
+      <div
+        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-md shadow-card"
+      >
+        <div
+          class="flex items-center justify-between p-6 border-b border-white/5"
+        >
+          <h3 class="font-mono font-bold text-lg" id="modal-exp-title">
+            Tambah Pengalaman
+          </h3>
+          <button
+            onclick="closeModal('modal-exp')"
+            class="w-8 h-8 bg-ink3 rounded-lg flex items-center justify-center text-muted hover:text-[#e8f4f0] transition-all"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <input type="hidden" id="exp-id" />
+          <div>
+            <label class="adm-label">Periode</label
+            ><input
+              id="exp-year"
+              class="adm-input"
+              placeholder="2023 – Sekarang"
+            />
+          </div>
+          <div>
+            <label class="adm-label">Jabatan</label
+            ><input
+              id="exp-title"
+              class="adm-input"
+              placeholder="Frontend Developer"
+            />
+          </div>
+          <div>
+            <label class="adm-label">Perusahaan</label
+            ><input
+              id="exp-company"
+              class="adm-input"
+              placeholder="Nama Perusahaan"
+            />
+          </div>
+          <div>
+            <label class="adm-label">Deskripsi</label
+            ><textarea
+              id="exp-desc"
+              class="adm-input resize-none"
+              rows="3"
+              placeholder="Deskripsi pekerjaan..."
+            ></textarea>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              id="exp-active"
+              class="w-4 h-4 accent-cyan rounded"
+            />
+            <span class="text-sm text-muted">Pekerjaan saat ini (aktif)</span>
+          </label>
+        </div>
+        <div class="p-6 border-t border-white/5 flex gap-3 justify-end">
+          <button onclick="closeModal('modal-exp')" class="adm-btn-ghost">
+            Batal
+          </button>
+          <button onclick="saveExp()" class="adm-btn-primary">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Film Modal -->
+    <div id="modal-film" class="modal-wrap">
+      <div
+        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-md shadow-card"
+      >
+        <div
+          class="flex items-center justify-between p-6 border-b border-white/5"
+        >
+          <h3 class="font-mono font-bold text-lg" id="modal-film-title">
+            Tambah Film
+          </h3>
+          <button
+            onclick="closeModal('modal-film')"
+            class="w-8 h-8 bg-ink3 rounded-lg flex items-center justify-center text-muted hover:text-[#e8f4f0] transition-all"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <input type="hidden" id="film-id" />
+          <div>
+            <label class="adm-label">Judul Film</label
+            ><input
+              id="film-title"
+              class="adm-input"
+              placeholder="Judul Film"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="adm-label">Genre</label
+              ><input id="film-genre" class="adm-input" placeholder="Sci-Fi" />
+            </div>
+            <div>
+              <label class="adm-label">Tahun</label
+              ><input
+                id="film-year"
+                class="adm-input"
+                type="number"
+                placeholder="2024"
+              />
+            </div>
+          </div>
+          <div>
+            <label class="adm-label"
+              >Rating (1–10): <span id="film-rating-label">8</span></label
+            >
+            <input
+              type="range"
+              id="film-rating"
+              min="1"
+              max="10"
+              value="8"
+              class="w-full accent-cyan mt-1"
+              oninput="
+                document.getElementById('film-rating-label').textContent =
+                  this.value
+              "
+            />
+          </div>
+          <div>
+            <label class="adm-label">Review</label>
+            <textarea
+              id="film-review"
+              class="adm-input"
+              rows="3"
+              placeholder="Tulis review lengkap tentang film ini..."
+            ></textarea>
+          </div>
+          <div>
+            <label class="adm-label">Komentar Singkat</label
+            ><input
+              id="film-comment"
+              class="adm-input"
+              placeholder="Kenapa suka? (singkat)"
+            />
+          </div>
+        </div>
+        <div class="p-6 border-t border-white/5 flex gap-3 justify-end">
+          <button onclick="closeModal('modal-film')" class="adm-btn-ghost">
+            Batal
+          </button>
+          <button onclick="saveFilm()" class="adm-btn-primary">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Music Modal -->
+    <div id="modal-music" class="modal-wrap">
+      <div
+        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-md shadow-card"
+      >
+        <div
+          class="flex items-center justify-between p-6 border-b border-white/5"
+        >
+          <h3 class="font-mono font-bold text-lg" id="modal-music-title">
+            Tambah Musik
+          </h3>
+          <button
+            onclick="closeModal('modal-music')"
+            class="w-8 h-8 bg-ink3 rounded-lg flex items-center justify-center text-muted hover:text-[#e8f4f0] transition-all"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <input type="hidden" id="music-id" />
+          <div>
+            <label class="adm-label">Judul Lagu</label
+            ><input
+              id="music-title"
+              class="adm-input"
+              placeholder="Nama Lagu"
+            />
+          </div>
+          <div>
+            <label class="adm-label">Artis</label
+            ><input
+              id="music-artist"
+              class="adm-input"
+              placeholder="Nama Artis / Band"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="adm-label">Genre</label
+              ><input
+                id="music-genre"
+                class="adm-input"
+                placeholder="Lo-fi, Rock, Pop..."
+              />
+            </div>
+            <div>
+              <label class="adm-label">Mood</label>
+              <select id="music-mood" class="adm-input">
+                <option>Chill</option>
+                <option>Energik</option>
+                <option>Sedih</option>
+                <option>Semangat</option>
+                <option>Fokus</option>
+                <option>Santai</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="adm-label">Icon</label>
+            <select id="music-icon" class="adm-input">
+              <option value="music">Music (Default)</option>
+              <option value="headphones">Headphones</option>
+              <option value="mic">Microphone</option>
+              <option value="radio">Radio</option>
+              <option value="disc">Disc</option>
+              <option value="music-2">Music 2</option>
+              <option value="music-3">Music 3</option>
+              <option value="music-4">Music 4</option>
+            </select>
+          </div>
+        </div>
+        <div class="p-6 border-t border-white/5 flex gap-3 justify-end">
+          <button onclick="closeModal('modal-music')" class="adm-btn-ghost">
+            Batal
+          </button>
+          <button onclick="saveMusic()" class="adm-btn-primary">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Book Modal -->
+    <div id="modal-book" class="modal-wrap">
+      <div
+        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-md shadow-card"
+      >
+        <div
+          class="flex items-center justify-between p-6 border-b border-white/5"
+        >
+          <h3 class="font-mono font-bold text-lg" id="modal-book-title">
+            Tambah Buku
+          </h3>
+          <button
+            onclick="closeModal('modal-book')"
+            class="w-8 h-8 bg-ink3 rounded-lg flex items-center justify-center text-muted hover:text-[#e8f4f0] transition-all"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <input type="hidden" id="book-id" />
+          <div>
+            <label class="adm-label">Judul Buku</label
+            ><input
+              id="book-title"
+              class="adm-input"
+              placeholder="Judul Buku"
+            />
+          </div>
+          <div>
+            <label class="adm-label">Penulis</label
+            ><input
+              id="book-author"
+              class="adm-input"
+              placeholder="Nama Penulis"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="adm-label">Genre</label
+              ><input
+                id="book-genre"
+                class="adm-input"
+                placeholder="Non-Fiction"
+              />
+            </div>
+            <div>
+              <label class="adm-label">Status</label>
+              <select id="book-status" class="adm-input">
+                <option>Sudah Baca</option>
+                <option>Sedang Baca</option>
+                <option>Mau Baca</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="adm-label"
+              >Rating: <span id="book-rating-label">8</span>/10</label
+            >
+            <input
+              type="range"
+              id="book-rating"
+              min="1"
+              max="10"
+              value="8"
+              class="w-full accent-cyan mt-1"
+              oninput="
+                document.getElementById('book-rating-label').textContent =
+                  this.value
+              "
+            />
+          </div>
+          <div>
+            <label class="adm-label">Review Singkat</label
+            ><textarea
+              id="book-review"
+              class="adm-input resize-none"
+              rows="2"
+              placeholder="Kesan setelah baca..."
+            ></textarea>
+          </div>
+        </div>
+        <div class="p-6 border-t border-white/5 flex gap-3 justify-end">
+          <button onclick="closeModal('modal-book')" class="adm-btn-ghost">
+            Batal
+          </button>
+          <button onclick="saveBook()" class="adm-btn-primary">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Modal -->
+    <div id="modal-game" class="modal-wrap">
+      <div
+        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-md shadow-card"
+      >
+        <div
+          class="flex items-center justify-between p-6 border-b border-white/5"
+        >
+          <h3 class="font-mono font-bold text-lg" id="modal-game-title">
+            Tambah Game
+          </h3>
+          <button
+            onclick="closeModal('modal-game')"
+            class="w-8 h-8 bg-ink3 rounded-lg flex items-center justify-center text-muted hover:text-[#e8f4f0] transition-all"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <input type="hidden" id="game-id" />
+          <div>
+            <label class="adm-label">Judul Game</label
+            ><input id="game-title" class="adm-input" placeholder="Nama Game" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="adm-label">Platform</label
+              ><input
+                id="game-platform"
+                class="adm-input"
+                placeholder="PC / PS5 / Mobile"
+              />
+            </div>
+            <div>
+              <label class="adm-label">Genre</label
+              ><input
+                id="game-genre"
+                class="adm-input"
+                placeholder="RPG, FPS..."
+              />
+            </div>
+          </div>
+          <div>
+            <label class="adm-label">Status</label>
+            <select id="game-status" class="adm-input">
+              <option>Sudah Tamat</option>
+              <option>Sedang Main</option>
+              <option>Mau Main</option>
+            </select>
+          </div>
+          <div>
+            <label class="adm-label"
+              >Rating: <span id="game-rating-label">8</span>/10</label
+            >
+            <input
+              type="range"
+              id="game-rating"
+              min="1"
+              max="10"
+              value="8"
+              class="w-full accent-cyan mt-1"
+              oninput="
+                document.getElementById('game-rating-label').textContent =
+                  this.value
+              "
+            />
+          </div>
+          <div>
+            <label class="adm-label">Icon</label>
+            <select id="game-icon" class="adm-input">
+              <option value="gamepad-2">Gamepad (Default)</option>
+              <option value="trophy">Trophy</option>
+              <option value="target">Target</option>
+              <option value="sword">Sword</option>
+              <option value="shield">Shield</option>
+              <option value="flag">Flag</option>
+              <option value="zap">Lightning</option>
+              <option value="crown">Crown</option>
+            </select>
+          </div>
+        </div>
+        <div class="p-6 border-t border-white/5 flex gap-3 justify-end">
+          <button onclick="closeModal('modal-game')" class="adm-btn-ghost">
+            Batal
+          </button>
+          <button onclick="saveGame()" class="adm-btn-primary">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blog Modal -->
+    <div id="modal-blog" class="modal-wrap">
+      <div
+        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-card"
+      >
+        <div
+          class="flex items-center justify-between p-6 border-b border-white/5"
+        >
+          <h3 class="font-mono font-bold text-lg" id="modal-blog-title">
+            Tambah Artikel
+          </h3>
+          <button
+            onclick="closeModal('modal-blog')"
+            class="w-8 h-8 bg-ink3 rounded-lg flex items-center justify-center text-muted hover:text-[#e8f4f0] transition-all"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <input type="hidden" id="blog-id" />
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="adm-label">Judul Artikel</label
+              ><input
+                id="blog-title"
+                class="adm-input"
+                placeholder="Judul menarik..."
+              />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="adm-label">Kategori</label
+                ><input
+                  id="blog-cat"
+                  class="adm-input"
+                  placeholder="Tutorial, Tips..."
+                />
+              </div>
+              <div>
+                <label class="adm-label">Icon Cover</label>
+                <select id="blog-icon" class="adm-input">
+                  <option value="file-text">Document (Default)</option>
+                  <option value="pen-tool">Pen</option>
+                  <option value="book-open">Book Open</option>
+                  <option value="newspaper">Newspaper</option>
+                  <option value="edit-3">Edit</option>
+                  <option value="feather">Feather</option>
+                  <option value="bookmark">Bookmark</option>
+                  <option value="file-code">Code File</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="adm-label">Ringkasan</label
+            ><textarea
+              id="blog-summary"
+              class="adm-input resize-none"
+              rows="3"
+              placeholder="Ringkasan singkat artikel (1-2 kalimat)..."
+            ></textarea>
+          </div>
+
+          <div>
+            <label class="adm-label">Konten Artikel (Rich Text Editor)</label>
+            <div id="blog-content-editor" style="background: #232d2d"></div>
+            <input type="hidden" id="blog-content" />
+          </div>
+
+          <div>
+            <label class="adm-label">Tag (pisah koma)</label
+            ><input
+              id="blog-tags"
+              class="adm-input"
+              placeholder="javascript, react, web, tips"
+            />
+          </div>
+        </div>
+        <div class="p-6 border-t border-white/5 flex gap-3 justify-end">
+          <button onclick="closeModal('modal-blog')" class="adm-btn-ghost">
+            Batal
+          </button>
+          <button onclick="saveBlog()" class="adm-btn-primary">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Input Nama & Kelas untuk Modul Ajar -->
+    <div id="modal-modul-user" class="modal-wrap">
+      <div
+        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-md p-6 shadow-card"
+      >
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="font-mono font-bold text-xl">Akses Modul Ajar</h3>
+          <button
+            onclick="closeModal('modal-modul-user')"
+            class="text-muted hover:text-cyan transition-colors"
+          >
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label class="adm-label">Nama Lengkap</label>
+            <input
+              id="modul-user-name"
+              type="text"
+              class="adm-input"
+              placeholder="Masukkan nama lengkap Anda..."
+              required
+            />
+          </div>
+          <div>
+            <label class="adm-label">Kelas</label>
+            <select id="modul-user-class" class="adm-input" required>
+              <option value="">-- Pilih Kelas --</option>
+              <option value="11 PPLG 1">11 PPLG 1</option>
+              <option value="11 PPLG 2">11 PPLG 2</option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-6 flex gap-3 justify-end">
+          <button
+            onclick="closeModal('modal-modul-user')"
+            class="adm-btn-ghost"
+          >
+            Batal
+          </button>
+          <button onclick="submitModulUserInfo()" class="adm-btn-primary">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i> Lanjutkan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirm Dialog -->
+    <div id="confirm-dialog" class="modal-wrap">
+      <div
+        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-sm p-8 text-center shadow-card"
+      >
+        <div
+          class="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mb-4 mx-auto"
+        >
+          <i data-lucide="trash-2" class="w-6 h-6 text-red-400"></i>
+        </div>
+        <h3 class="font-mono font-bold text-lg mb-2">Hapus Data?</h3>
+        <p class="text-muted text-sm mb-6">
+          Tindakan ini tidak dapat dibatalkan.
+        </p>
+        <div class="flex gap-3 justify-center">
+          <button onclick="closeConfirm()" class="adm-btn-ghost">Batal</button>
+          <button
+            id="confirm-ok-btn"
+            class="flex items-center gap-2 text-xs text-red-400 border border-red-400/30 px-4 py-2 rounded-xl hover:bg-red-400/10 transition-all font-semibold"
+          >
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- ✅ Custom JS (dimuat paling akhir) -->
+    <script type="module" src="assets/js/app.js"></script>
+
+    <!-- 🆕 Enhanced Interactive Scripts -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("🚀 Initializing enhanced portfolio...");
+
+        // ── 1. SCROLL PROGRESS BAR ──────────────────
+        const progressBar = document.getElementById("scroll-progress");
+        window.addEventListener(
+          "scroll",
+          () => {
+            const scrolled = window.scrollY;
+            const maxScroll =
+              document.documentElement.scrollHeight - window.innerHeight;
+            const pct = maxScroll > 0 ? (scrolled / maxScroll) * 100 : 0;
+            if (progressBar) progressBar.style.width = pct + "%";
+          },
+          { passive: true },
+        );
+
+        // ── 2. CURSOR GLOW (desktop only) ──────────
+        const cursorGlow = document.getElementById("cursor-glow");
+        if (
+          cursorGlow &&
+          window.matchMedia("(hover: hover) and (pointer: fine)").matches
+        ) {
+          let cx = 0,
+            cy = 0,
+            tx = 0,
+            ty = 0;
+          document.addEventListener("mousemove", (e) => {
+            tx = e.clientX;
+            ty = e.clientY;
+          });
+          function animateCursor() {
+            cx += (tx - cx) * 0.08;
+            cy += (ty - cy) * 0.08;
+            cursorGlow.style.left = cx + "px";
+            cursorGlow.style.top = cy + "px";
+            requestAnimationFrame(animateCursor);
+          }
+          animateCursor();
+        } else if (cursorGlow) {
+          cursorGlow.style.display = "none";
+        }
+
+        // ── 3. PARTICLES.JS ─────────────────────────
+        if (typeof particlesJS !== "undefined") {
+          particlesJS("particles-js", {
+            particles: {
+              number: { value: 40, density: { enable: true, value_area: 900 } },
+              color: { value: "#77caed" },
+              shape: { type: "circle" },
+              opacity: {
+                value: 0.12,
+                random: true,
+                anim: { enable: true, speed: 0.5, opacity_min: 0.05 },
+              },
+              size: { value: 2.5, random: true },
+              line_linked: {
+                enable: true,
+                distance: 180,
+                color: "#77caed",
+                opacity: 0.06,
+                width: 1,
+              },
+              move: {
+                enable: true,
+                speed: 0.8,
+                direction: "none",
+                random: true,
+                out_mode: "out",
+              },
+            },
+            interactivity: {
+              detect_on: "window",
+              events: {
+                onhover: { enable: true, mode: "grab" },
+                onclick: { enable: false },
+                resize: true,
+              },
+              modes: {
+                grab: { distance: 140, line_linked: { opacity: 0.2 } },
+              },
+            },
+            retina_detect: true,
+          });
+        }
+
+        // ── 4. RESPONSIVE TABLE HANDLER ─────────────
+        const tableWrappers = document.querySelectorAll(".table-responsive");
+        tableWrappers.forEach((wrapper) => {
+          function checkScroll() {
+            if (wrapper.scrollWidth > wrapper.clientWidth) {
+              wrapper.classList.add("has-scroll");
+            } else {
+              wrapper.classList.remove("has-scroll");
+            }
+          }
+          checkScroll();
+          window.addEventListener("resize", checkScroll);
+
+          wrapper.addEventListener("wheel", (e) => {
+            if (e.deltaY !== 0 && wrapper.scrollWidth > wrapper.clientWidth) {
+              e.preventDefault();
+              wrapper.scrollLeft += e.deltaY;
+            }
+          });
+
+          let isDown = false,
+            startX,
+            scrollLeft;
+          wrapper.addEventListener("mousedown", (e) => {
+            isDown = true;
+            wrapper.style.cursor = "grabbing";
+            startX = e.pageX - wrapper.offsetLeft;
+            scrollLeft = wrapper.scrollLeft;
+          });
+          wrapper.addEventListener("mouseleave", () => {
+            isDown = false;
+            wrapper.style.cursor = "grab";
+          });
+          wrapper.addEventListener("mouseup", () => {
+            isDown = false;
+            wrapper.style.cursor = "grab";
+          });
+          wrapper.addEventListener("mousemove", (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            wrapper.scrollLeft =
+              scrollLeft - (e.pageX - wrapper.offsetLeft - startX) * 2;
+          });
+        });
+
+        // ── 5. SORTABLE.JS ──────────────────────────
+        const sortableTables = document.querySelectorAll(
+          ".sortable-table tbody",
+        );
+        sortableTables.forEach((tbody) => {
+          if (typeof Sortable !== "undefined") {
+            new Sortable(tbody, {
+              animation: 150,
+              handle: ".drag-handle",
+              ghostClass: "sortable-ghost",
+              onEnd: () => {
+                if (typeof showToast === "function")
+                  showToast("Urutan berhasil diubah", "success");
+              },
+            });
+          }
+        });
+
+        // ── 6. SWEETALERT2 TOAST ────────────────────
+        window.showToast = function (message, type = "success") {
+          if (typeof Swal === "undefined") return;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "bottom-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: type,
+            title: message,
+            background: "#1e2626",
+            color: "#e8f4f0",
+          });
+        };
+
+        // ── 7. LAZY LOADING IMAGES ──────────────────
+        if ("IntersectionObserver" in window) {
+          const imgObserver = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting && entry.target.dataset.src) {
+                  entry.target.src = entry.target.dataset.src;
+                  entry.target.removeAttribute("data-src");
+                  obs.unobserve(entry.target);
+                }
+              });
+            },
+            { rootMargin: "50px 0px", threshold: 0.01 },
+          );
+          document
+            .querySelectorAll("img[data-src]")
+            .forEach((img) => imgObserver.observe(img));
+        }
+
+        // ── 8. SMOOTH SCROLL ────────────────────────
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            const href = this.getAttribute("href");
+            if (href !== "#" && href.length > 1) {
+              const target = document.querySelector(href);
+              if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }
+          });
+        });
+
+        console.log("✅ All enhancements initialized!");
+      });
+
+      // ── 9. 3D TILT ON PROJECT CARDS ─────────────
+      // Applied dynamically via MutationObserver so it works after render
+      function applyTilt(card) {
+        if (card._tiltBound) return;
+        card._tiltBound = true;
+
+        // Skip on touch devices
+        if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches)
+          return;
+
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const rx = ((e.clientY - cy) / (rect.height / 2)) * -6;
+          const ry = ((e.clientX - cx) / (rect.width / 2)) * 6;
+          card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(4px)`;
+          card.style.boxShadow = `0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(119,202,237,0.12)`;
+        });
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "";
+          card.style.boxShadow = "";
+        });
+      }
+
+      const tiltObserver = new MutationObserver(() => {
+        document
+          .querySelectorAll(".project-card, #featured-projects > div")
+          .forEach(applyTilt);
+
+        // ✨ NEW: Apply tilt to avatar card as well
+        document.querySelectorAll(".avatar-card").forEach(applyTilt);
+      });
+      tiltObserver.observe(document.body, { childList: true, subtree: true });
+
+      // ── 10. SKILL BAR ANIMATED COUNTER ──────────
+      // Triggered when skills section becomes visible
+      const skillObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const bar = entry.target.querySelector(".skill-bar-fill");
+            const pctEl = entry.target.querySelector(".skill-pct");
+            if (!bar || !pctEl || bar._animated) return;
+            bar._animated = true;
+
+            const target = parseInt(bar.dataset.level || bar.style.width) || 0;
+            let current = 0;
+            const step = target / 40;
+            const interval = setInterval(() => {
+              current = Math.min(current + step, target);
+              pctEl.textContent = Math.round(current) + "%";
+              bar.style.width = Math.round(current) + "%";
+              if (current >= target) clearInterval(interval);
+            }, 18);
+          });
+        },
+        { threshold: 0.2 },
+      );
+
+      // Re-observe whenever skill items are added
+      const skillMutObs = new MutationObserver(() => {
+        document.querySelectorAll(".skill-item").forEach((item) => {
+          const bar = item.querySelector(".skill-bar-fill");
+          if (bar && !bar._observed) {
+            bar._observed = true;
+            skillObserver.observe(item);
+          }
+        });
+      });
+      skillMutObs.observe(document.body, { childList: true, subtree: true });
+
+      // ── 11. TYPEWRITER FOR HERO ROLE ─────────────
+      // Called from renderDashboard after setting role text
+      window._typewriterTimers = [];
+      window.typewriterEffect = function (elementId, text, speed = 55) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+
+        // Clear existing timers
+        window._typewriterTimers.forEach(clearTimeout);
+        window._typewriterTimers = [];
+
+        el.textContent = "";
+        let i = 0;
+        function type() {
+          if (i <= text.length) {
+            el.textContent = text.slice(0, i);
+            i++;
+            const t = setTimeout(type, speed);
+            window._typewriterTimers.push(t);
+          }
+        }
+        type();
+      };
+
+      // ── 12. STATS COUNTER ANIMATION ──────────────
+      window.animateCounter = function (elementId, target, suffix = "") {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        let current = 0;
+        const isFloat = String(target).includes(".");
+        const step = Math.max(1, Math.ceil(target / 30));
+        const interval = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = current + suffix;
+          if (current >= target) clearInterval(interval);
+        }, 40);
+      };
+
+      // ── 13. PERFORMANCE MONITORING ───────────────
+      if (window.performance && window.performance.timing) {
+        window.addEventListener("load", () => {
+          setTimeout(() => {
+            const t = window.performance.timing;
+            console.log("📊 Performance:", {
+              load: t.loadEventEnd - t.navigationStart + "ms",
+              connect: t.responseEnd - t.requestStart + "ms",
+              render: t.domComplete - t.domLoading + "ms",
+            });
+          }, 0);
+        });
+      }
+
+      // ── 14. ✨ ENHANCED HERO NAME PARALLAX ──────
+      // Subtle parallax effect on hero name when scrolling
+      let heroNameParallax = () => {
+        const heroName = document.getElementById("hero-name-display");
+        if (!heroName) return;
+
+        const scrolled = window.scrollY;
+        const offset = scrolled * 0.3;
+        heroName.style.transform = `translateY(${offset}px)`;
+      };
+
+      window.addEventListener("scroll", throttle(heroNameParallax, 50));
+
+      // ── 15. ✨ GRADIENT CURSOR TRAIL ─────────────
+      // Creates a gradient cursor trail effect (desktop only)
+      if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        let cursorGlow = document.getElementById("cursor-glow");
+        if (!cursorGlow) {
+          cursorGlow = document.createElement("div");
+          cursorGlow.id = "cursor-glow";
+          document.body.appendChild(cursorGlow);
+        }
+
+        cursorGlow.style.cssText = `
+          position: fixed;
+          width: 400px;
+          height: 400px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(119, 202, 237, 0.08) 0%, transparent 70%);
+          pointer-events: none;
+          z-index: 9999;
+          mix-blend-mode: screen;
+          transition: transform 0.15s ease-out;
+          display: none;
+        `;
+
+        let mouseX = 0,
+          mouseY = 0;
+        let cursorX = 0,
+          cursorY = 0;
+
+        document.addEventListener("mousemove", (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          cursorGlow.style.display = "block";
+        });
+
+        function animateCursor() {
+          cursorX += (mouseX - cursorX) * 0.1;
+          cursorY += (mouseY - cursorY) * 0.1;
+
+          cursorGlow.style.left = cursorX - 200 + "px";
+          cursorGlow.style.top = cursorY - 200 + "px";
+
+          requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+      }
+
+      // ── 16. ✨ INTERACTIVE STAT CARDS ────────────
+      // Add pulse animation on hover to stat cards
+      document.addEventListener("DOMContentLoaded", () => {
+        const statCards = document.querySelectorAll(".stat-card");
+        statCards.forEach((card) => {
+          card.addEventListener("mouseenter", (e) => {
+            const statNumber = card.querySelector(".stat-number");
+            if (statNumber) {
+              statNumber.style.transform = "scale(1.1)";
+              statNumber.style.transition = "transform 0.3s ease";
+            }
+          });
+
+          card.addEventListener("mouseleave", (e) => {
+            const statNumber = card.querySelector(".stat-number");
+            if (statNumber) {
+              statNumber.style.transform = "scale(1)";
+            }
+          });
+        });
+      });
+
+      console.log("✨ Enhanced interactive features loaded!");
+    </script>
+  </body>
+</html>
