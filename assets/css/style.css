@@ -145,9 +145,10 @@ body {
   justify-content: center;
   padding: 20px;
 }
-.modal-wrap.open {
+.modal-wrap.active {
   display: flex;
 }
+
 .modal-box {
   animation: scaleInAnim 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }

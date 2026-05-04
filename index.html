@@ -38,30 +38,43 @@
                 to: { opacity: "1", transform: "translateY(0)" },
               },
               floatY: {
-                "0%,100%": { transform: "translateY(0)" },
-                "50%": { transform: "translateY(-8px)" },
-              },
-              blink: { "0%,100%": { opacity: "1" }, "50%": { opacity: "0" } },
-              scaleIn: {
-                from: { opacity: "0", transform: "scale(.93)" },
-                to: { opacity: "1", transform: "scale(1)" },
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
               },
             },
             animation: {
-              "fade-up": "fadeUp .45s cubic-bezier(.16,1,.3,1) both",
+              "fade-up": "fadeUp 0.6s ease-out forwards",
               float: "floatY 4s ease-in-out infinite",
-              blink: "blink 1.2s step-end infinite",
-              "scale-in": "scaleIn .35s cubic-bezier(.34,1.56,.64,1) both",
-            },
-            boxShadow: {
-              "glow-cyan": "0 0 28px rgba(119,202,237,.2)",
-              "glow-mint": "0 0 28px rgba(120,250,185,.2)",
-              card: "0 4px 28px rgba(0,0,0,.45)",
             },
           },
         },
       };
     </script>
+
+    <!-- Global Helpers for Inline Scripts -->
+    <script>
+      window.throttle = (func, limit) => {
+        let lastFunc, lastRan;
+        return function() {
+          const context = this, args = arguments;
+          if (!lastRan) { func.apply(context, args); lastRan = Date.now(); }
+          else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(function() {
+              if ((Date.now() - lastRan) >= limit) { func.apply(context, args); lastRan = Date.now(); }
+            }, limit - (Date.now() - lastRan));
+          }
+        }
+      };
+      window.safeGet = (id) => document.getElementById(id);
+      window.safeSet = (id, prop, val) => {
+        const el = document.getElementById(id);
+        if (el) el[prop] = val;
+      };
+    </script>
+
+
+
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -109,8 +122,8 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <!-- 🆕 Intersection Observer Polyfill untuk browser lama -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
+
+
 
     <!-- ✅ Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css" />
@@ -1062,18 +1075,20 @@
             >
               <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
                 <h3 class="font-mono font-bold text-lg mb-4">
-                  Mood Musik Favorit
+                  Distribusi Genre Musik
                 </h3>
+
                 <div style="height: 220px">
                   <canvas id="moodChart"></canvas>
                 </div>
               </div>
               <div class="bg-ink2 rounded-2xl border border-white/5 p-6">
-                <h3 class="font-mono font-bold text-lg mb-4">Genre Musik</h3>
+                <h3 class="font-mono font-bold text-lg mb-4">Top Artist</h3>
                 <div style="height: 220px">
-                  <canvas id="musicGenreChart"></canvas>
+                  <canvas id="musicArtistChart"></canvas>
                 </div>
               </div>
+
             </div>
           </div>
           <!-- Tab: Books -->
@@ -2850,64 +2865,7 @@
      MODALS
 ════════════════════════════════════════ -->
 
-    <!-- Admin Login Modal -->
-    <div id="modal-admin-login" class="modal-wrap">
-      <div
-        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-sm shadow-card"
-      >
-        <div
-          class="flex items-center justify-between p-6 border-b border-white/5"
-        >
-          <div class="flex items-center gap-2">
-            <i data-lucide="shield" class="w-5 h-5 text-mint"></i>
-            <h3 class="font-mono font-bold text-lg">Admin Login</h3>
-          </div>
-          <button
-            onclick="closeAdminLogin()"
-            class="w-8 h-8 bg-ink3 rounded-lg flex items-center justify-center text-muted hover:text-[#e8f4f0] transition-all"
-          >
-            <i data-lucide="x" class="w-4 h-4"></i>
-          </button>
-        </div>
-        <div class="p-6 space-y-4">
-          <div>
-            <label class="adm-label">Username</label>
-            <input
-              id="admin-username"
-              type="text"
-              class="adm-input"
-              placeholder="Masukkan username"
-              autocomplete="off"
-            />
-          </div>
-          <div>
-            <label class="adm-label">Password</label>
-            <input
-              id="admin-password"
-              type="password"
-              class="adm-input"
-              placeholder="Masukkan password"
-              autocomplete="off"
-            />
-          </div>
-          <div
-            id="admin-login-error"
-            class="hidden flex items-center gap-2 text-xs text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2.5"
-          >
-            <i data-lucide="alert-circle" class="w-3.5 h-3.5 flex-shrink-0"></i>
-            Username atau password salah.
-          </div>
-        </div>
-        <div class="p-6 border-t border-white/5 flex gap-3 justify-end">
-          <button onclick="closeAdminLogin()" class="adm-btn-ghost">
-            Batal
-          </button>
-          <button onclick="doAdminLogin()" class="adm-btn-primary">
-            <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Masuk
-          </button>
-        </div>
-      </div>
-    </div>
+
 
     <!-- Project Modal -->
     <div id="modal-project" class="modal-wrap">
@@ -3664,7 +3622,69 @@
       </div>
     </div>
 
+    <!-- Admin Login Modal -->
+    <div id="modal-admin-login" class="modal-wrap">
+
+      <div
+        class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-sm p-8 shadow-card"
+      >
+        <div class="text-center mb-8">
+          <div
+            class="w-16 h-16 bg-cyan/10 rounded-2xl flex items-center justify-center mb-4 mx-auto"
+          >
+            <i data-lucide="shield-check" class="w-8 h-8 text-cyan"></i>
+          </div>
+          <h3 class="font-mono font-black text-2xl mb-2">Admin Login</h3>
+          <p class="text-muted text-sm">Masuk untuk mengelola portfolio</p>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block font-mono text-xs text-muted mb-2 uppercase tracking-widest">Username</label>
+            <div class="relative">
+              <i data-lucide="user" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-dim"></i>
+              <input
+                id="admin-username"
+                type="text"
+                placeholder="Username admin"
+                class="w-full bg-ink3 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-cyan/50 transition-all"
+              />
+            </div>
+          </div>
+          <div>
+            <label class="block font-mono text-xs text-muted mb-2 uppercase tracking-widest">Password</label>
+            <div class="relative">
+              <i data-lucide="lock" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-dim"></i>
+              <input
+                id="admin-password"
+                type="password"
+                placeholder="••••••••"
+                class="w-full bg-ink3 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-cyan/50 transition-all"
+              />
+            </div>
+          </div>
+        </div>
+
+        <button
+          onclick="doAdminLogin()"
+          class="w-full mt-8 flex items-center justify-center gap-2 bg-cyan text-ink font-bold py-3.5 rounded-xl hover:bg-cyan/90 hover:shadow-glow-cyan transition-all"
+        >
+          Masuk Sekarang
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+
+        <button
+          onclick="closeModal('modal-admin-login')"
+          class="w-full mt-3 text-dim text-xs font-mono hover:text-muted transition-all"
+        >
+          Batalkan
+        </button>
+
+      </div>
+    </div>
+
     <!-- Confirm Dialog -->
+
     <div id="confirm-dialog" class="modal-wrap">
       <div
         class="modal-box bg-ink2 rounded-2xl border border-white/10 w-full max-w-sm p-8 text-center shadow-card"
