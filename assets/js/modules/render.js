@@ -241,6 +241,50 @@ export function renderMedia() {
         `).join("");
     }
 
+    const booksGrid = safeGet("books-grid");
+    const booksEmpty = safeGet("books-empty");
+    if (booksGrid) {
+        if (books.length === 0) {
+            booksGrid.innerHTML = "";
+            if (booksEmpty) booksEmpty.classList.remove("hidden");
+        } else {
+            if (booksEmpty) booksEmpty.classList.add("hidden");
+            booksGrid.innerHTML = books.slice(0, 6).map(b => `
+                <div class="bg-ink3 p-4 rounded-xl flex items-center gap-4 border border-white/5 hover:border-orange-400/30 transition-all">
+                    <div class="w-12 h-12 bg-orange-400/10 rounded-lg flex items-center justify-center text-orange-400 flex-shrink-0">
+                        <i data-lucide="book" class="w-6 h-6"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="font-bold text-sm truncate">${b.title}</p>
+                        <p class="text-xs text-muted truncate">${b.author || '-'}</p>
+                    </div>
+                </div>
+            `).join("");
+        }
+    }
+
+    const gamesGrid = safeGet("games-grid");
+    const gamesEmpty = safeGet("games-empty");
+    if (gamesGrid) {
+        if (games.length === 0) {
+            gamesGrid.innerHTML = "";
+            if (gamesEmpty) gamesEmpty.classList.remove("hidden");
+        } else {
+            if (gamesEmpty) gamesEmpty.classList.add("hidden");
+            gamesGrid.innerHTML = games.slice(0, 6).map(g => `
+                <div class="bg-ink3 p-4 rounded-xl flex items-center gap-4 border border-white/5 hover:border-green-400/30 transition-all">
+                    <div class="w-12 h-12 bg-green-400/10 rounded-lg flex items-center justify-center text-green-400 flex-shrink-0">
+                        <i data-lucide="gamepad-2" class="w-6 h-6"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="font-bold text-sm truncate">${g.title}</p>
+                        <p class="text-xs text-muted truncate">${g.platform || '-'}</p>
+                    </div>
+                </div>
+            `).join("");
+        }
+    }
+
     // Charts
     renderFilmsGenreChart();
     renderFilmsRatingChart();

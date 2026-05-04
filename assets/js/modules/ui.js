@@ -7,7 +7,12 @@ import {
     renderContact, 
     renderModul,
     renderAdminOverview,
-
+    renderAdminProjects,
+    renderAdminSkills,
+    renderAdminExperience,
+    renderAdminFilms,
+    renderAdminMusic,
+    renderAdminBooks,
     renderAdminGames,
     renderAdminProfile,
     renderAdminModul
@@ -84,7 +89,7 @@ export function switchTab(tabId, forceAdmin = null) {
   
   document.querySelectorAll(paneClass).forEach((p) => p.classList.add("hidden"));
   
-  const targetId = tabId.startsWith('adm-') ? tabId : `adm-${tabId}`;
+  const targetId = isAdmin ? (tabId.startsWith('adm-') ? tabId : `adm-${tabId}`) : tabId;
   const target = safeGet(targetId);
   
   if (target) {
