@@ -6,7 +6,18 @@ import { initData } from "./modules/data.js";
 import { navigate, toggleMobile, closeMobileMenu, switchTab, updateMenuVisibility, openModal, closeModal, toggleModulVisibility } from "./modules/ui.js";
 import { throttle, debounce, safeGet, safeSet, toast } from "./modules/utils.js";
 import { doAdminLogin, doAdminLogout, updateAdminBtn, isAdmin } from "./modules/auth.js";
-import { saveProject } from "./modules/forms.js";
+import { 
+    saveProject, editProject, deleteProject, resetProjectForm,
+    saveSkill, deleteSkill, resetSkillForm,
+    saveExp, deleteExperience, resetExpForm,
+    saveFilm, deleteFilm, resetFilmForm,
+    saveMusic, deleteMusic, resetMusicForm,
+    saveBook, deleteBook, resetBookForm,
+    saveGame, deleteGame, resetGameForm,
+    saveProfile, admProjectsSearch, admSkillsSearch, admExpSearch, 
+    admFilmsSearch, admMusicSearch, admBooksSearch, admGamesSearch, 
+    searchModulFiles, saveBlog, resetBlogForm, resetAllData
+} from "./modules/forms.js";
 import { renderProjects, renderAbout, renderDashboard, refreshModulList } from "./modules/render.js";
 import { FIREBASE_CACHE } from "./modules/state.js";
 
@@ -29,6 +40,54 @@ window.toast = toast;
 window.showToast = toast;
 window.refreshModulList = refreshModulList;
 window.toggleModulVisibility = toggleModulVisibility;
+
+// Projects
+window.saveProject = saveProject;
+window.editProject = editProject;
+window.deleteProject = deleteProject;
+window.resetProjectForm = resetProjectForm;
+window.admProjectsSearch = admProjectsSearch;
+window.admSkillsSearch = admSkillsSearch;
+window.admExpSearch = admExpSearch;
+window.admFilmsSearch = admFilmsSearch;
+window.admMusicSearch = admMusicSearch;
+window.admBooksSearch = admBooksSearch;
+window.admGamesSearch = admGamesSearch;
+window.searchModulFiles = searchModulFiles;
+
+// Skills
+window.saveSkill = saveSkill;
+window.deleteSkill = deleteSkill;
+window.resetSkillForm = resetSkillForm;
+
+// Experience
+window.saveExp = saveExp;
+window.deleteExperience = deleteExperience;
+window.resetExpForm = resetExpForm;
+
+// Media
+window.saveFilm = saveFilm;
+window.deleteFilm = deleteFilm;
+window.resetFilmForm = resetFilmForm;
+
+window.saveMusic = saveMusic;
+window.deleteMusic = deleteMusic;
+window.resetMusicForm = resetMusicForm;
+
+window.saveBook = saveBook;
+window.deleteBook = deleteBook;
+window.resetBookForm = resetBookForm;
+
+window.saveGame = saveGame;
+window.deleteGame = deleteGame;
+window.resetGameForm = resetGameForm;
+
+// Profile & System
+window.saveProfile = saveProfile;
+window.saveBlog = saveBlog;
+window.resetBlogForm = resetBlogForm;
+window.resetAllData = resetAllData;
+
 window.deleteModul = async (id) => {
     if (!confirm('Hapus file modul ini dari daftar?')) return;
     const { FIREBASE_CACHE } = await import("./modules/state.js");
