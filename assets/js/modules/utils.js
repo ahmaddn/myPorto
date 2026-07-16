@@ -80,11 +80,114 @@ export function uid() {
   return Date.now() + Math.floor(Math.random() * 10000);
 }
 
+// Fallback SHA-256 pure JS implementation for non-secure contexts (HTTP)
+function sha256Fallback(ascii) {
+  function rightRotate(value, amount) {
+    return (value >>> amount) | (value << (32 - amount));
+  }
+  
+  var mathPow = Math.pow;
+  var maxWord = 0xffffffff;
+  var lengthProperty = 'length';
+  var i, j;
+  var result = '';
+
+  var words = [];
+  var asciiLength = ascii[lengthProperty] * 8;
+  
+  var hash = sha256Fallback.h = sha256Fallback.h || [];
+  var k = sha256Fallback.k = sha256Fallback.k || [];
+  var primeCounter = k[lengthProperty];
+
+  var isPrime = function(n) {
+    var divisor = 2;
+    while (divisor * divisor <= n) {
+      if (n % divisor === 0) return false;
+      divisor++;
+    }
+    return true;
+  };
+
+  var candidate = 2;
+  while (primeCounter < 64) {
+    if (isPrime(candidate)) {
+      if (primeCounter < 8) {
+        hash[primeCounter] = (mathPow(candidate, 1/2) * 0x100000000) | 0;
+      }
+      k[primeCounter] = (mathPow(candidate, 1/3) * 0x100000000) | 0;
+      primeCounter++;
+    }
+    candidate++;
+  }
+  
+  var hashBuffer = [];
+  for (i = 0; i < ascii[lengthProperty]; i++) {
+    hashBuffer[i] = ascii.charCodeAt(i);
+  }
+  hashBuffer[ascii[lengthProperty]] = 0x80;
+  while (hashBuffer[lengthProperty] % 64 !== 56) {
+    hashBuffer.push(0);
+  }
+  for (i = 0; i < hashBuffer[lengthProperty]; i++) {
+    j = (hashBuffer[i] << 24) | (hashBuffer[++i] << 16) | (hashBuffer[++i] << 8) | hashBuffer[++i];
+    words.push(j);
+  }
+  words.push((asciiLength / 0x100000000) | 0);
+  words.push(asciiLength | 0);
+  
+  var currentHash = hash.slice(0);
+  for (i = 0; i < words[lengthProperty]; ) {
+    var w = words.slice(i, i += 16);
+    var oldHash = currentHash.slice(0);
+    
+    for (j = 0; j < 64; j++) {
+      var wItem = w[j];
+      if (j >= 16) {
+        var s0 = rightRotate(w[j - 15], 7) ^ rightRotate(w[j - 15], 18) ^ (w[j - 15] >>> 3);
+        var s1 = rightRotate(w[j - 2], 17) ^ rightRotate(w[j - 2], 19) ^ (w[j - 2] >>> 10);
+        wItem = w[j] = (w[j - 16] + s0 + w[j - 7] + s1) | 0;
+      }
+      
+      var ch = (currentHash[4] & currentHash[5]) ^ (~currentHash[4] & currentHash[6]);
+      var maj = (currentHash[0] & currentHash[1]) ^ (currentHash[0] & currentHash[2]) ^ (currentHash[1] & currentHash[2]);
+      var sigma0 = rightRotate(currentHash[0], 2) ^ rightRotate(currentHash[0], 13) ^ rightRotate(currentHash[0], 22);
+      var sigma1 = rightRotate(currentHash[4], 6) ^ rightRotate(currentHash[4], 11) ^ rightRotate(currentHash[4], 25);
+      
+      var temp1 = currentHash[7] + sigma1 + ch + k[j] + (wItem || 0);
+      var temp2 = sigma0 + maj;
+      
+      currentHash = [(temp1 + temp2) | 0].concat(currentHash);
+      currentHash[4] = (currentHash[4] + temp1) | 0;
+      currentHash.length = 8;
+    }
+    
+    for (j = 0; j < 8; j++) {
+      currentHash[j] = (currentHash[j] + oldHash[j]) | 0;
+    }
+  }
+  
+  for (i = 0; i < 8; i++) {
+    var hex = (currentHash[i] >>> 0).toString(16);
+    while (hex[lengthProperty] < 8) {
+      hex = '0' + hex;
+    }
+    result += hex;
+  }
+  return result;
+}
+
 export async function hashPassword(password) {
-  const enc = new TextEncoder().encode(password);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", enc);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  if (window.crypto && window.crypto.subtle) {
+    try {
+      const enc = new TextEncoder().encode(password);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", enc);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+    } catch (e) {
+      console.warn("Crypto subtle failed, falling back to pure JS hash", e);
+    }
+  }
+  return sha256Fallback(password);
 }
 
 export function toast(msg, type = "info") {

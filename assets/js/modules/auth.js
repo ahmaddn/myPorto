@@ -32,23 +32,27 @@ export function updateAdminBtn() {
 }
 
 export async function doAdminLogin() {
-  const usernameInput = safeGet("admin-username");
-  const passwordInput = safeGet("admin-password");
-  if (!usernameInput || !passwordInput) return;
+  try {
+    const usernameInput = safeGet("admin-username");
+    const passwordInput = safeGet("admin-password");
+    if (!usernameInput || !passwordInput) return;
 
-  const username = usernameInput.value;
-  const password = passwordInput.value;
-  const hashed = await hashPassword(password);
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+    const hashed = await hashPassword(password);
 
-  if (username === ADMIN_CREDENTIALS.username && hashed === ADMIN_CREDENTIALS.password) {
-    sessionStorage.setItem("isAdmin", "true");
-    updateAdminBtn();
-    closeModal('modal-admin-login');
-    navigate("admin");
-    toast("Login berhasil!", "success");
-
-  } else {
-    toast("Username atau password salah!", "error");
+    if (username === ADMIN_CREDENTIALS.username && hashed === ADMIN_CREDENTIALS.password) {
+      sessionStorage.setItem("isAdmin", "true");
+      updateAdminBtn();
+      closeModal('modal-admin-login');
+      navigate("admin");
+      toast("Login berhasil!", "success");
+    } else {
+      toast("Username atau password salah!", "error");
+    }
+  } catch (error) {
+    console.error("Error during admin login:", error);
+    toast("Terjadi kesalahan saat login: " + error.message, "error");
   }
 }
 
