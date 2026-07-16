@@ -5,6 +5,7 @@
 import { safeGet, safeSet, toast, uid } from "./utils.js";
 import { saveData } from "./data.js";
 import { FIREBASE_CACHE } from "./state.js";
+import { addData } from "../firebase-service.js";
 import { 
     renderDashboard, 
     renderProjects, 
@@ -424,5 +425,223 @@ export async function resetAllData() {
     
     toast("Semua data telah direset!", "success");
     location.reload();
+}
+
+/**
+ * Sanitize input untuk mencegah XSS
+ */
+function sanitizeInput(input) {
+  const div = document.createElement("div");
+  div.textContent = input;
+  return div.innerHTML;
+}
+
+/**
+ * Validate email format
+ */
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+/**
+ * Detect spam patterns
+ */
+function containsSpam(text) {
+  const spamPatterns = [
+    /\b(viagra|cialis|casino|lottery|winner)\b/i,
+    /https?:\/\/[^\s]+/gi, // Multiple URLs
+    /(.)\1{10,}/, // Repeated characters
+  ];
+
+  return spamPatterns.some((pattern) => pattern.test(text));
+}
+
+function canSendMessage() {
+  const lastSent = localStorage.getItem("lastMessageSent");
+  if (!lastSent) return true;
+
+  const lastDate = new Date(lastSent);
+  const today = new Date();
+
+  // Reset jika hari berbeda
+  if (
+    lastDate.getDate() !== today.getDate() ||
+    lastDate.getMonth() !== today.getMonth() ||
+    lastDate.getFullYear() !== today.getFullYear()
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Get remaining time until can send again
+ */
+function getTimeUntilReset() {
+  const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+
+  const diff = tomorrow - now;
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+  return `${hours} jam ${minutes} menit`;
+}
+
+export async function submitContact() {
+  console.log("🚀 submitContact() called");
+
+  // 1. Check honeypot field (hidden field untuk menangkap bot)
+  const honeypot = safeGet("form-website")?.value || "";
+  if (honeypot) {
+    console.warn("Bot detected via honeypot");
+    toast("Pesan berhasil dikirim!", "success"); // Fake success untuk bot
+    return;
+  }
+
+  // 2. Get and validate inputs
+  const nameRaw = safeGet("form-name")?.value || "";
+  const emailRaw = safeGet("form-email")?.value || "";
+  const messageRaw = safeGet("form-msg")?.value || "";
+
+  console.log("📝 Input values:", {
+    name: nameRaw,
+    email: emailRaw,
+    messageLength: messageRaw.length,
+  });
+
+  if (!nameRaw || !emailRaw || !messageRaw) {
+    console.log("Empty fields detected");
+    toast("Harap isi semua field!", "error");
+    return;
+  }
+
+  // 3. Sanitize inputs
+  const name = sanitizeInput(nameRaw.trim());
+  const email = sanitizeInput(emailRaw.trim().toLowerCase());
+  const message = sanitizeInput(messageRaw.trim());
+
+  // 4. Validate email
+  if (!isValidEmail(email)) {
+    console.log("Invalid email format:", email);
+    toast("Format email tidak valid!", "error");
+    return;
+  }
+
+  // 5. Check length
+  if (name.length < 2 || name.length > 100) {
+    console.log("Invalid name length:", name.length);
+    toast("Nama harus 2-100 karakter!", "error");
+    return;
+  }
+
+  if (message.length < 10 || message.length > 1000) {
+    console.log("Invalid message length:", message.length);
+    toast("Pesan harus 10-1000 karakter!", "error");
+    return;
+  }
+
+  // 6. Spam detection
+  if (containsSpam(message) || containsSpam(name)) {
+    console.log("Spam detected");
+    toast("Pesan terdeteksi sebagai spam!", "error");
+    return;
+  }
+
+  // 7. Rate limiting check (setelah validasi)
+  const canSend = canSendMessage();
+  console.log("⏰ Rate limit check:", canSend);
+
+  if (!canSend) {
+    const timeLeft = getTimeUntilReset();
+    console.log("⏳ Rate limited. Time left:", timeLeft);
+    toast(
+      `⏳ Anda sudah mengirim pesan hari ini. Coba lagi dalam ${timeLeft}`,
+      "error",
+    );
+    return;
+  }
+
+  // 8. Prepare data
+  const messageData = {
+    id: uid(),
+    name,
+    email,
+    message,
+    timestamp: new Date().toISOString(),
+    read: false,
+    device: navigator.userAgent.substring(0, 100), // Track device
+  };
+
+  console.log("📦 Message data prepared:", messageData);
+
+  try {
+    console.log("💾 Saving to Firebase...");
+
+    // Set rate limit SEBELUM mengirim data untuk mencegah double submission
+    localStorage.setItem("lastMessageSent", new Date().toISOString());
+    console.log("localStorage set");
+
+    const result = await addData("messages", messageData);
+    console.log("📡 Firebase result:", result);
+
+    if (result.success) {
+      console.log("Message saved successfully with ID:", result.id);
+
+      // Clear form
+      safeSet("form-name", "value", "");
+      safeSet("form-email", "value", "");
+      safeSet("form-msg", "value", "");
+
+      toast("Pesan berhasil dikirim!", "success");
+    } else {
+      throw new Error(result.error || "Failed to save message");
+    }
+  } catch (error) {
+    console.error("Error submitting contact:", error);
+    // Hapus localStorage jika gagal kirim
+    localStorage.removeItem("lastMessageSent");
+    console.log("🔄 localStorage cleared due to error");
+    toast("Gagal mengirim pesan. Coba lagi!", "error");
+  }
+}
+
+/**
+ * Send message via WhatsApp
+ */
+export function sendViaWhatsApp() {
+  // Get form values
+  const name = safeGet("form-name")?.value || "";
+  const email = safeGet("form-email")?.value || "";
+  const message = safeGet("form-msg")?.value || "";
+
+  if (!name || !email || !message) {
+    toast("Harap isi semua field!", "error");
+    return;
+  }
+
+  // Format WhatsApp message
+  const waMessage = `*Pesan dari Portfolio Website*\n\n*Nama:* ${name}\n*Email:* ${email}\n\n*Pesan:*\n${message}`;
+
+  // GANTI DENGAN NOMOR WHATSAPP ANDA (format: 62xxx tanpa +)
+  const phoneNumber = "6285700391890"; // ⚠️ UBAH INI!
+
+  // Encode message untuk URL
+  const encodedMessage = encodeURIComponent(waMessage);
+
+  // Buka WhatsApp
+  const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+  window.open(waUrl, "_blank");
+
+  // Optional: Clear form setelah redirect
+  setTimeout(() => {
+    safeSet("form-name", "value", "");
+    safeSet("form-email", "value", "");
+    safeSet("form-msg", "value", "");
+  }, 500);
 }
 

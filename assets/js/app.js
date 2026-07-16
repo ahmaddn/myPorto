@@ -16,7 +16,8 @@ import {
     saveGame, deleteGame, resetGameForm,
     saveProfile, admProjectsSearch, admSkillsSearch, admExpSearch, 
     admFilmsSearch, admMusicSearch, admBooksSearch, admGamesSearch, 
-    searchModulFiles, saveBlog, resetBlogForm, resetAllData
+    searchModulFiles, saveBlog, resetBlogForm, resetAllData,
+    submitContact, sendViaWhatsApp
 } from "./modules/forms.js";
 import { renderProjects, renderAbout, renderDashboard, refreshModulList } from "./modules/render.js";
 import { FIREBASE_CACHE } from "./modules/state.js";
@@ -87,6 +88,8 @@ window.saveProfile = saveProfile;
 window.saveBlog = saveBlog;
 window.resetBlogForm = resetBlogForm;
 window.resetAllData = resetAllData;
+window.submitContact = submitContact;
+window.sendViaWhatsApp = sendViaWhatsApp;
 
 window.deleteModul = async (id) => {
     if (!confirm('Hapus file modul ini dari daftar?')) return;

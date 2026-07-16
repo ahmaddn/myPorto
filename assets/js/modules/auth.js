@@ -14,12 +14,20 @@ export function isAdmin() {
 export function updateAdminBtn() {
   const loginBtn = safeGet("admin-nav-btn");
   const dashBtn = safeGet("dashboard-nav-btn");
+  const loginBtnMob = safeGet("admin-nav-btn-mob");
+  const dashBtnMob = safeGet("dashboard-nav-btn-mob");
   const isAdminUser = isAdmin();
 
   if (loginBtn) loginBtn.style.display = isAdminUser ? "none" : "";
   if (dashBtn) {
       if (isAdminUser) dashBtn.classList.remove("hidden");
       else dashBtn.classList.add("hidden");
+  }
+
+  if (loginBtnMob) loginBtnMob.style.display = isAdminUser ? "none" : "";
+  if (dashBtnMob) {
+      if (isAdminUser) dashBtnMob.classList.remove("hidden");
+      else dashBtnMob.classList.add("hidden");
   }
 }
 
